@@ -28,13 +28,17 @@ If something looks like an obvious next step and isn't on that list, ask before 
 
 ## Read before acting
 - `research/summary.md` — the user research behind this product. Read before deciding what it should do.
-- `PRD.md` (once it exists) — the actual brief. Read before building anything.
+- `PRD.md` — the actual brief. Read before building anything.
 
 ## Agent skills
 
 ### Issue tracker
 
 Issues live as markdown files under `.scratch/<feature>/` in this repo. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default canonical labels (needs-triage, needs-info, ready-for-agent, ready-for-human, wontfix). See `docs/agents/triage-labels.md`.
 
 ### Domain docs
 
