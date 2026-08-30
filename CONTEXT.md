@@ -5,7 +5,7 @@ Redline analyzes a contract a user has been sent and is deciding whether to sign
 ## Language
 
 **User**:
-A freelancer or small business owner who has been sent a contract by a Client and is deciding whether to sign it. Redline serves this person in v1 — not the party who drafted the document, and not an individual consumer clicking through a ToS.
+A freelancer or small business owner who has been sent a contract by a Client and is deciding whether to sign it — reactive use only. Redline serves this person in v1 — not the party who drafted the document, not an individual consumer clicking through a ToS, and not someone auditing their own outgoing template before sending it (proactive use; see ADR-0009).
 _Avoid_: consumer, customer, reader.
 
 **Client**:
