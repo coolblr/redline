@@ -65,7 +65,7 @@ agent to write down everything else it would otherwise ask about, rather than st
 | — | Fixtures (tests/fixtures/) | done | 6 planted flags + 2 defects in adhesion-contract.txt, clean-contract.txt has none; all sourceSentences verified as exact substrings |
 | 01 | Walking skeleton | done | Supabase auth (`/login`, `/auth/signout`), `lib/openrouter.ts` wrapper, `/demo` page wired to a real (verified live) OpenRouter call. Vercel deploy and end-to-end auth click-through not performed — no Vercel project/credentials and no Supabase project exist in this environment. |
 | 02 | Upload & browser-side parse | done | `lib/parse-document.ts` (.txt/.pdf/.docx, client-side, real fixture tests, no OCR fallback); upload at `/app` (matches existing landing-page CTA); `app/documents/[id]/page.tsx`; `supabase/migrations/0001_documents.sql` (unverified against a live DB — no Supabase CLI/Docker here) |
-| 03 | Analysis schema design | pending | |
+| 03 | Analysis schema design | done | `lib/domain-types.ts` (Flag/DocumentDefect/CounterOffer/Answer zod schemas + types, 7-value ClauseType incl. arbitration); `supabase/migrations/0002_analysis_schema.sql` (flags/document_defects/counter_offers/qa_history, owner-scoped RLS via documents join, unverified against a live DB); honest-skip round-trip smoke test at `tests/integration/analysis-schema.smoke.test.ts` |
 | 04 | analyzeDocument core | pending | |
 | 05 | Sharp-treatment tuning | pending | |
 | 06 | Document defects | pending | |
@@ -103,6 +103,14 @@ agent to write down everything else it would otherwise ask about, rather than st
   `npm run build` confirms pdfjs-dist/mammoth are code-split into the `/app` route.
   Actual drag-and-drop and the pdfjs web-worker asset resolving correctly in a real
   browser were not clicked through (no browser available in this environment).
+
+- **Ticket 03 — `supabase/migrations/0002_analysis_schema.sql`.** Same constraint as
+  0001: no Supabase CLI/Docker here, unapplied. `tests/integration/analysis-schema.smoke.test.ts`
+  is written against a service-role key (RLS bypass, needed since the schema has no
+  anon-safe way to fabricate an authenticated `auth.uid()` outside a real sign-in
+  flow) and self-skips with a clear message until a human sets
+  `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` and applies both
+  migrations — running `npm test` again at that point is the actual verification.
 
 ## Commands to run first
 
