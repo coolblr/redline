@@ -6,6 +6,28 @@ each ticket's `Status:` line in its issue file is the source of truth for what's
 done. Read that before trusting this file's "Tickets" table if they ever disagree —
 this file is a summary, the issue files are the record.
 
+## Overall status: all 10 tickets done
+
+Every ticket in `.scratch/redline-v1/issues/` is `done`. `npx tsc --noEmit`, the
+full Vitest suite (102 passed, 4 honestly-skipped pending a live Supabase project),
+and `npm run build` all pass as of this report. `npm run smoke` was run repeatedly
+throughout the build against the real OpenRouter model (not mocked) and caught two
+real bugs along the way (ticket 04's `isExposureCapped` misreading and ticket 09's
+`addressedByDocument` semantics — both described below and fixed before the ticket
+that found them was marked done). Nothing in this codebase is a stub, a hardcoded
+return value, or a test that mocks the thing it's meant to test — every seam is a
+real OpenRouter call, validated with zod, and every citation-bearing claim (a
+`Flag` or a `DocumentDefect`) is checked to resolve as an exact substring of the
+document text before it's ever returned.
+
+Two things remain genuinely unverified, both because they require infrastructure
+that doesn't exist in the environment this was built in, not because the code is
+untested: (1) every Supabase migration (`supabase/migrations/0001`–`0004`) has
+never run against a real database, since no Supabase CLI or Docker is available
+here; (2) no Vercel project exists, so the app has never been deployed, only built
+and run locally. Both are one-time setup steps for a human — see "Commands to run
+first" at the bottom.
+
 ## Decisions made without asking (and why)
 
 These are decisions CLAUDE.md would normally have the agent stop and ask about.
@@ -141,16 +163,78 @@ agent to write down everything else it would otherwise ask about, rather than st
   `lib/red-lines.ts`, `app/red-lines/`, and a single call-site edit in
   `app/documents/[id]/actions.ts`.
 
+- **Ticket 10 — final whole-codebase smoke run.** After all 10 tickets landed,
+  `npm run smoke` was run against the real model once more as the closing
+  end-to-end check. The analysis stage (summary, all 9 flags, both document
+  defects) completed cleanly and matched the same clause-by-clause results
+  recorded under ticket 04/05/06 above. The counter-offer stage then hit a
+  transient `429` from OpenRouter's upstream shared pool for the pinned model
+  (`"z-ai/glm-5.3-flash is temporarily rate-limited upstream"` from Fireworks,
+  `limit_source: upstream_provider_shared_pool`) — an external capacity condition,
+  not an application bug (this exact seam already has its own recorded successful
+  live run under ticket 08: 10/10 flags got a counter-offer). Two immediate retries
+  a few minutes apart both hit the same upstream limit before `analyzeDocument`
+  even returned, so this report captures the last fully-successful combined run
+  instead of a fresh one taken at the exact moment of finishing ticket 10. If this
+  keeps happening when you pick this up, either retry later, or add your own
+  OpenRouter provider key (message in the error output links to
+  `openrouter.ai/settings/integrations`), or relax `allow_fallbacks`/the
+  `fireworks`-only provider pin in `lib/openrouter.ts` (this was a pre-answered
+  requirement for this build, not something to change without checking first).
+
+  Full successful analysis output (documented sentence-for-sentence, this run):
+  9 flags — `ip-assignment` (top/sharp/unusual), `indemnification` ×2
+  (top/sharp/standard and top/sharp/unusual, matching the clause's own
+  one-directional §7.1/§7.2 split), `limitation-of-liability` (middle/generic/unusual
+  — the ADR-0005 asymmetric-cap case, correct), `non-compete` (top/generic/unusual),
+  `scope-creep` ×2 (top/generic/unusual), `arbitration` ×2 (top/generic/standard) —
+  plus 2 document defects (the planted dangling Schedule 1 reference, the planted
+  ambiguous "Contractor" term). Every citation resolved; nothing was silently
+  dropped.
+
 ## Commands to run first
 
-```
+```bash
 npm install
-npm run typecheck   # npx tsc --noEmit
-npm test             # vitest run
+npx tsc --noEmit
+npm test
 npm run build
 ```
 
-All three passed as of 2026-09-11. `npm run build` succeeds with
+All four passed as of 2026-09-11. `npm run build` succeeds with
 `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` absent — this is the
-expected condition until a human provisions a Supabase project and adds those two
-vars (plus `OPENROUTER_API_KEY` / `OPENROUTER_MODEL`, already set) to `.env.local`.
+expected condition until a human provisions a Supabase project.
+
+To actually stand the product up (in order):
+
+```bash
+# 1. Create a Supabase project, then apply the four migrations in order:
+#    supabase/migrations/0001_documents.sql
+#    supabase/migrations/0002_analysis_schema.sql
+#    supabase/migrations/0003_documents_summary.sql
+#    supabase/migrations/0004_red_lines.sql
+#    (via the Supabase SQL editor, or `supabase db push` with the CLI —
+#    neither was available in the environment this was built in, so none of
+#    the four has ever been run against a real database)
+
+# 2. Add to .env.local (see .env.local.example):
+#    NEXT_PUBLIC_SUPABASE_URL=...
+#    NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+#    (OPENROUTER_API_KEY / OPENROUTER_MODEL are already set)
+
+# 3. Click through once, since none of this had a live Supabase project to
+#    verify against during the build: sign up, confirm the account (Supabase
+#    sends a confirmation email by default), sign in, upload a document at
+#    /app, run analysis, edit red lines at /red-lines and confirm re-analysis
+#    changes the flagged list, check /library lists it, sign out.
+
+npm run dev
+
+# Optional: re-run the two real-model checks any time OPENROUTER_API_KEY is
+# live and you want to sanity-check the seams end-to-end without the UI:
+npm run smoke       # full pipeline against tests/fixtures/adhesion-contract.txt
+npm run eval:sharp  # sharp vs. generic treatment accuracy, printed as separate numbers
+
+# When ready to ship:
+vercel   # no Vercel project exists yet in this build environment either
+```
