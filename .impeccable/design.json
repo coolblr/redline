@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-11T00:00:00Z",
+  "title": "Design System: Redline",
+  "extensions": {
+    "colorMeta": {
+      "flag": {
+        "role": "primary",
+        "displayName": "Muted Rust Flag",
+        "canonical": "#b3452e",
+        "tonalRamp": ["#3a150e", "#5c221a", "#7e2f24", "#a03c2e", "#b3452e", "#c96f5c", "#deA290", "#f2d6cc"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ledger Ink",
+        "canonical": "#1c2733",
+        "tonalRamp": ["#0d1218", "#161f28", "#1c2733", "#2e3b48", "#4a5967", "#6f7d8a", "#a3aeb7", "#dde2e6"]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Warm Paper",
+        "canonical": "#f7f4ee",
+        "tonalRamp": ["#d8cfba", "#e1dac9", "#e9e3d7", "#efeae0", "#f7f4ee", "#faf8f4", "#fcfbf9", "#fefefd"]
+      },
+      "slate": {
+        "role": "neutral",
+        "displayName": "Structural Slate",
+        "canonical": "#5b6572",
+        "tonalRamp": ["#1e2226", "#2f353c", "#414852", "#5b6572", "#79828d", "#9aa1a9", "#bfc4c9", "#e2e4e6"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Headline", "purpose": "Hero headline only, italic Spectral, capped 14ch." },
+      "citation": { "displayName": "Citation", "purpose": "Exact quoted source sentence inside a flagged row; always italic and quoted." },
+      "label": { "displayName": "Ledger Label", "purpose": "Uppercase column headers in the ledger (Clause / Exposure / Tier)." },
+      "wordmark": { "displayName": "Wordmark", "purpose": "The Redline mark, topbar and footer." },
+      "body": { "displayName": "Body", "purpose": "Subhead copy under the headline, capped 42ch." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "settle", "value": "translateY(6px) -> translateY(0), opacity 0 -> 1, 0.6s cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Ledger rows and totals row settle into place on load, staggered 0.12s per row." },
+      { "name": "cta-transition", "value": "background-color 0.2s ease, transform 0.2s ease", "purpose": "CTA hover/active feedback." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "640px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary CTA Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single call to action, 'Try it on a document', linking into the app.",
+      "html": "<a class=\"ds-cta\" href=\"/app\">Try it on a document</a>",
+      "css": ".ds-cta { display: inline-flex; align-items: center; background: #1c2733; color: #f7f4ee; border: 1px solid #1c2733; padding: 0.9rem 1.75rem; font-size: 1rem; font-weight: 600; font-family: var(--font-archivo, Archivo, sans-serif); text-decoration: none; border-radius: 3px; transition: background-color 0.2s ease, transform 0.2s ease; } .ds-cta:hover { background: #12191f; } .ds-cta:active { transform: translateY(1px); } .ds-cta:focus-visible { outline: 2px solid #1c2733; outline-offset: 3px; }"
+    },
+    {
+      "name": "Ledger Row",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The signature component: a flagged clause rendered as an invoice line item, with quoted source citation, exposure, and severity tier.",
+      "html": "<div class=\"ds-row\"><div class=\"ds-clause-cell\"><p class=\"ds-clause-name\">Indemnification</p><p class=\"ds-citation\">You agree to indemnify, defend, and hold harmless the Client from and against any and all claims, damages, liabilities, and expenses, without limitation.</p></div><p class=\"ds-exposure\">Uncapped, one-sided</p><p class=\"ds-tier ds-tier-top\">Top</p></div>",
+      "css": ".ds-row { display: grid; grid-template-columns: minmax(0,1fr) auto auto; gap: 1.5rem; align-items: start; padding: 1rem 0; border-bottom: 1px solid rgba(91,101,114,0.18); font-family: var(--font-archivo, Archivo, sans-serif); color: #1c2733; } .ds-clause-name { font-weight: 600; margin: 0 0 0.4rem; } .ds-citation { font-family: var(--font-spectral, Spectral, serif); font-style: italic; color: rgba(28,39,51,0.7); font-size: 0.9375rem; line-height: 1.5; margin: 0; quotes: '\\201C' '\\201D'; } .ds-citation::before { content: open-quote; } .ds-citation::after { content: close-quote; } .ds-exposure { text-align: right; font-size: 0.9375rem; color: rgba(28,39,51,0.7); white-space: nowrap; padding-top: 0.15rem; margin: 0; } .ds-tier { text-align: right; font-weight: 600; font-size: 0.9375rem; white-space: nowrap; padding-top: 0.15rem; margin: 0; } .ds-tier-top { color: #b3452e; } .ds-tier-middle { color: #1c2733; } .ds-tier-cite-only { color: #5b6572; }"
+    },
+    {
+      "name": "Ledger Header",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Column labels (Clause / Exposure / Tier) opening the ledger.",
+      "html": "<div class=\"ds-ledger-header\"><span>Clause</span><span>Exposure</span><span>Tier</span></div>",
+      "css": ".ds-ledger-header { display: grid; grid-template-columns: minmax(0,1fr) auto auto; gap: 1.5rem; padding: 0.65rem 0; font-family: var(--font-archivo, Archivo, sans-serif); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #5b6572; border-bottom: 1px solid rgba(91,101,114,0.18); } .ds-ledger-header span:nth-child(2), .ds-ledger-header span:nth-child(3) { text-align: right; }"
+    },
+    {
+      "name": "Footer",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Wordmark repeated plus a one-line disclaimer, separated from the page by a slate rule.",
+      "html": "<footer class=\"ds-footer\"><p class=\"ds-footer-note\">Redline</p><p class=\"ds-footer-note\">States what the document says, never what a court would do.</p></footer>",
+      "css": ".ds-footer { padding: 1.75rem clamp(1.25rem,5vw,4rem) 2.25rem; border-top: 1px solid rgba(91,101,114,0.18); display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; } .ds-footer-note { font-family: var(--font-archivo, Archivo, sans-serif); font-size: 0.8125rem; color: #5b6572; margin: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Ledger",
+    "overview": "Redline's first shipped surface renders a flagged contract the way the User already reads their own invoices and statements: a plain paper ground, ruled rows, right-aligned numerals, and a totals line that closes the account. There is no dashboard chrome, no gradient hero, no card grid — the direction contract names both of these as rejected. The system is quiet by default and interrupts itself exactly once, with a single reserved color, only when a real finding exists.\n\nThe pairing of an italic display serif (Spectral) for headline and citation text against an upright grotesque (Archivo, with tabular lining figures) for structural and UI text mirrors the product's own claim: the document's language is quoted verbatim (serif, italic, in quotation marks) while the tool's own analysis is typeset as data (sans, tabular). This is a legibility device, not decoration — it lets a reader tell 'what the contract says' from 'what Redline concluded' at a glance, without a label.\n\nConfirmed visual rejections: no hero-gradient card grid ('generic AI legal report' look), no alarmist red-pen treatment, and no color-coded severity system — tier state is carried by ink weight and rule pattern, never hue, except for the single reserved Flag red.",
+    "keyCharacteristics": [
+      "Paper-and-ink ledger, not a SaaS dashboard",
+      "One reserved accent color, spent only on an actual finding",
+      "Serif-quoted source text vs. sans-set structural/UI text as the core legibility split",
+      "Tabular numerals and ruled dividers standing in for grid lines",
+      "Flat, borderless surfaces — depth comes from rule weight, not shadow"
+    ],
+    "rules": [
+      { "name": "The One Flag Rule", "body": "Flag red (#B3452E) appears only on an actual top-tier severity finding and its selection tint. It never brands, decorates, or labels chrome — if it appears, something was found.", "section": "colors" },
+      { "name": "The Two-Weight Rule", "body": "Structural rules come in exactly two strengths: full ink (#1C2733) for section boundaries (ledger top, totals row) and slate-18% for internal row dividers. State and hierarchy are read from which rule weight is used, never from added color.", "section": "colors" },
+      { "name": "The Quote-Is-Serif Rule", "body": "Any text that is a direct quotation from the User's own document is set in Spectral italic with true quotation marks. Any text that is Redline's own structural or computed output (labels, tier, exposure, totals) is set in Archivo upright with tabular figures. The two never swap roles.", "section": "typography" },
+      { "name": "The No-Shadow Rule", "body": "Hierarchy is drawn with rule lines and weight, never elevation. If a future component reaches for box-shadow, that is a break from the shipped system, not an extension of it.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do reserve Flag red (#B3452E) for an actual severity finding only — never for chrome, branding, or emphasis without a finding behind it.",
+      "Do set any direct quotation from the User's document in Spectral italic with true quotation marks; keep Redline's own structural/computed text in upright Archivo with tabular figures.",
+      "Do draw hierarchy and state with rule weight (full ink vs. slate-18%) rather than added color or shadow.",
+      "Do keep the content column capped near 46rem and left-aligned; this is an invoice register, not a centered marketing hero."
+    ],
+    "donts": [
+      "Don't introduce a hero-gradient card grid or dashboard-tile layout — the direction contract explicitly rejects the 'generic AI legal report' look this would produce.",
+      "Don't color-code severity tiers beyond the single reserved Flag red for top tier; middle and cite-only tiers are ink and slate, not a traffic-light system.",
+      "Don't add box-shadow to any surface — this system is flat by evidence, not by omission.",
+      "Don't round corners beyond the CTA's 3px; the ledger, rows, and footer are unrounded and rule-bound."
+    ]
+  }
+}
