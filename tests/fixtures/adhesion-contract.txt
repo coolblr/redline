@@ -1,0 +1,129 @@
+FREELANCE SERVICES AGREEMENT
+
+This Freelance Services Agreement ("Agreement") is entered into as of March 3, 2026, by and between Acme Retail Group LLC, a Delaware limited liability company ("Client"), and Jordan Ruiz, an individual doing business as Ruiz Digital Studio ("Contractor").
+
+RECITALS
+
+WHEREAS, Client operates an e-commerce retail business and wishes to engage Contractor to design and build a customer-facing web application; and
+
+WHEREAS, Contractor has the skills and experience necessary to perform the Services described below and is willing to perform them on the terms set forth in this Agreement;
+
+NOW, THEREFORE, in consideration of the mutual promises contained herein, the parties agree as follows:
+
+1. DEFINITIONS
+
+1.1 "Services" means the web design, development, and related deliverables described in Section 2 of this Agreement.
+
+1.2 Client has separately engaged Bright Path Media LLC, a creative production agency, to support delivery of certain marketing assets, and as used in this Agreement, the term "Contractor" refers to Jordan Ruiz individually except where context indicates it refers to Bright Path Media LLC as well.
+
+1.3 "Confidential Information" means any non-public information disclosed by either party in connection with this Agreement, including business plans, source code, and customer data.
+
+2. SERVICES
+
+2.1 Contractor shall design, develop, and deliver a customer-facing web application for Client, including the features, milestones, technical specifications, and acceptance criteria set forth in Schedule 1, attached hereto and incorporated by reference.
+
+2.2 Contractor shall perform the Services in a professional and workmanlike manner consistent with generally accepted industry standards.
+
+2.3 Client shall provide Contractor with timely access to information, personnel, and materials reasonably necessary for Contractor to perform the Services.
+
+3. TERM AND TERMINATION
+
+3.1 This Agreement shall commence on the Effective Date and continue until the Services are completed, unless earlier terminated as provided herein.
+
+3.2 Either party may terminate this Agreement for convenience upon thirty (30) days' prior written notice to the other party.
+
+3.3 Either party may terminate this Agreement immediately upon written notice if the other party materially breaches this Agreement and fails to cure such breach within fifteen (15) days after receiving written notice of the breach.
+
+3.4 Upon termination, Client shall pay Contractor for all Services performed and expenses properly incurred through the effective date of termination.
+
+4. PAYMENT TERMS
+
+4.1 Client shall pay Contractor the fees set forth in the applicable invoice within thirty (30) days of receipt of each invoice.
+
+4.2 Contractor shall invoice Client on a monthly basis for Services performed during the preceding month.
+
+4.3 Late payments shall accrue interest at the rate of one percent (1%) per month, or the maximum rate permitted by applicable law, whichever is lower.
+
+5. INTELLECTUAL PROPERTY
+
+5.1 As between the parties, Contractor shall retain ownership of all pre-existing tools, libraries, and methodologies that Contractor incorporates into the deliverables ("Contractor IP").
+
+5.2 All work product, deliverables, and other materials created by Contractor specifically for Client under this Agreement, excluding Contractor IP, shall be deemed works made for hire, and all right, title, and interest in such deliverables shall vest in Client automatically upon creation, regardless of whether Client has paid any fees then due under this Agreement.
+
+5.3 Contractor hereby assigns to Client all right, title, and interest in the deliverables to the extent such deliverables are not deemed works made for hire under applicable law.
+
+6. CONFIDENTIALITY
+
+6.1 Each party shall maintain the confidentiality of the other party's Confidential Information and shall not disclose it to any third party except as necessary to perform its obligations under this Agreement.
+
+6.2 The obligations in this Section 6 shall survive termination of this Agreement for a period of two (2) years.
+
+6.3 Confidential Information does not include information that is or becomes publicly available through no fault of the receiving party.
+
+7. INDEMNIFICATION
+
+7.1 Contractor shall indemnify, defend, and hold harmless Client, its officers, directors, employees, and agents from and against any and all claims, damages, losses, liabilities, and expenses, including reasonable attorneys' fees, arising out of or relating in any way to Contractor's performance of the Services, without limitation as to amount.
+
+7.2 Client shall have no obligation to indemnify Contractor under this Agreement.
+
+8. LIMITATION OF LIABILITY
+
+8.1 Client's total liability arising out of or relating to this Agreement shall not exceed twenty-five thousand dollars ($25,000), while Contractor's liability arising out of or relating to this Agreement shall be uncapped and shall not be subject to any limitation.
+
+8.2 Neither party shall be liable for any indirect, incidental, or consequential damages, except as set forth in Section 8.1.
+
+9. NON-COMPETE AND NON-SOLICITATION
+
+9.1 During the term of this Agreement and for a period of three (3) years thereafter, Contractor shall not, anywhere in the United States, directly or indirectly provide services similar to the Services to any business that competes with Client in any industry in which Client now or hereafter operates.
+
+9.2 Contractor shall not, during the term of this Agreement and for two (2) years thereafter, solicit for employment or engagement any employee or contractor of Client.
+
+10. REVISIONS AND SCOPE CHANGES
+
+10.1 Contractor shall provide unlimited revisions to the deliverables at Client's request until Client determines, in its sole discretion, that the deliverables are acceptable, at no additional cost to Client.
+
+10.2 Client may request additional features or modifications to the scope of the Services at any time, and Contractor shall incorporate such requests as part of the Services already covered by the fees set forth in Section 4.
+
+11. DISPUTE RESOLUTION
+
+11.1 Any dispute arising out of or relating to this Agreement shall be resolved by binding arbitration administered by the American Arbitration Association in accordance with its Commercial Arbitration Rules, and judgment on the award rendered by the arbitrator may be entered in any court having jurisdiction.
+
+11.2 Each party waives any right to a jury trial or to participate in a class action, collective action, or representative proceeding against the other party.
+
+11.3 Arbitration shall take place in the state where Client's principal office is located.
+
+12. INSURANCE
+
+12.1 Contractor shall maintain commercially reasonable general liability insurance during the term of this Agreement.
+
+12.2 Upon Client's request, Contractor shall provide Client with a certificate evidencing such insurance.
+
+13. REPRESENTATIONS AND WARRANTIES
+
+13.1 Each party represents and warrants that it has the full right and authority to enter into this Agreement.
+
+13.2 Contractor represents and warrants that the deliverables will not knowingly infringe the intellectual property rights of any third party.
+
+14. GENERAL PROVISIONS
+
+14.1 This Agreement shall be governed by the laws of the state where Client's principal office is located, without regard to conflict of laws principles.
+
+14.2 If any provision of this Agreement is held invalid or unenforceable, the remaining provisions shall continue in full force and effect.
+
+14.3 This Agreement, together with Schedule 1, constitutes the entire agreement between the parties and supersedes all prior negotiations, representations, or agreements relating to its subject matter.
+
+14.4 Notices under this Agreement shall be delivered in writing to the addresses set forth in the signature block below.
+
+14.5 This Agreement may be executed in counterparts, each of which shall be deemed an original.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.
+
+CLIENT: Acme Retail Group LLC
+By: _________________________
+Name: Morgan Lee
+Title: VP of Operations
+
+CONTRACTOR: Jordan Ruiz d/b/a Ruiz Digital Studio
+By: _________________________
+Name: Jordan Ruiz
+Title: Owner

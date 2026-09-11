@@ -1,0 +1,64 @@
+{
+  "flags": [
+    {
+      "clauseType": "indemnification",
+      "sourceSentence": "Contractor shall indemnify, defend, and hold harmless Client, its officers, directors, employees, and agents from and against any and all claims, damages, losses, liabilities, and expenses, including reasonable attorneys' fees, arising out of or relating in any way to Contractor's performance of the Services, without limitation as to amount.",
+      "expectedSeverityTier": "top",
+      "expectedStandardOrUnusual": "unusual",
+      "expectedTreatmentDepth": "sharp",
+      "note": "Uncapped ('without limitation as to amount') and one-sided: Section 7.2 explicitly removes any reciprocal obligation for Client to indemnify Contractor."
+    },
+    {
+      "clauseType": "ip-assignment",
+      "sourceSentence": "All work product, deliverables, and other materials created by Contractor specifically for Client under this Agreement, excluding Contractor IP, shall be deemed works made for hire, and all right, title, and interest in such deliverables shall vest in Client automatically upon creation, regardless of whether Client has paid any fees then due under this Agreement.",
+      "expectedSeverityTier": "top",
+      "expectedStandardOrUnusual": "unusual",
+      "expectedTreatmentDepth": "sharp",
+      "note": "Ownership vests in Client on creation and is explicitly independent of payment ('regardless of whether Client has paid any fees then due') -- the dangerous ownership-before-payment pattern named in PRD.md's red lines."
+    },
+    {
+      "clauseType": "limitation-of-liability",
+      "sourceSentence": "Client's total liability arising out of or relating to this Agreement shall not exceed twenty-five thousand dollars ($25,000), while Contractor's liability arising out of or relating to this Agreement shall be uncapped and shall not be subject to any limitation.",
+      "expectedSeverityTier": "middle",
+      "expectedStandardOrUnusual": "unusual",
+      "expectedTreatmentDepth": "generic",
+      "note": "Capped-but-asymmetric: Client's exposure is capped at a specific numeric figure ($25,000) while Contractor's is explicitly uncapped. This is the ADR-0005 case that must land at middle, not cite-only, since asymmetry alone earns real severity even though a cap exists on one side."
+    },
+    {
+      "clauseType": "non-compete",
+      "sourceSentence": "During the term of this Agreement and for a period of three (3) years thereafter, Contractor shall not, anywhere in the United States, directly or indirectly provide services similar to the Services to any business that competes with Client in any industry in which Client now or hereafter operates.",
+      "expectedSeverityTier": "top",
+      "expectedStandardOrUnusual": "unusual",
+      "expectedTreatmentDepth": "generic",
+      "note": "Broad in duration (3 years post-term), geography (anywhere in the United States), and industry scope ('any industry in which Client now or hereafter operates') -- a nationwide, industry-wide restriction that can block Contractor from working in their field at all."
+    },
+    {
+      "clauseType": "arbitration",
+      "sourceSentence": "Each party waives any right to a jury trial or to participate in a class action, collective action, or representative proceeding against the other party.",
+      "expectedSeverityTier": "top",
+      "expectedStandardOrUnusual": "standard",
+      "expectedTreatmentDepth": "generic",
+      "note": "Standard, near-universal boilerplate, but still strips a real legal right (jury trial, class action) and per PRD.md must be flagged at real/high severity every time it appears, not discounted for being expected -- the standard-vs-unusual label changes presentation, not severity."
+    },
+    {
+      "clauseType": "scope-creep",
+      "sourceSentence": "Contractor shall provide unlimited revisions to the deliverables at Client's request until Client determines, in its sole discretion, that the deliverables are acceptable, at no additional cost to Client.",
+      "expectedSeverityTier": "middle",
+      "expectedStandardOrUnusual": "unusual",
+      "expectedTreatmentDepth": "generic",
+      "note": "Unlimited revisions gated only by Client's sole discretion, at no additional cost -- the scope-creep pattern PRD.md names as the weakest-evidenced clause type, so this flag should carry an explicit lower-confidence marker in its rationale even though it is still flagged."
+    }
+  ],
+  "defects": [
+    {
+      "defectType": "dangling-reference",
+      "sourceSentence": "Contractor shall design, develop, and deliver a customer-facing web application for Client, including the features, milestones, technical specifications, and acceptance criteria set forth in Schedule 1, attached hereto and incorporated by reference.",
+      "note": "References 'Schedule 1' as attached and incorporated by reference (reinforced again in Section 14.3), but no Schedule 1 content appears anywhere in the extracted document text."
+    },
+    {
+      "defectType": "ambiguous-term",
+      "sourceSentence": "Client has separately engaged Bright Path Media LLC, a creative production agency, to support delivery of certain marketing assets, and as used in this Agreement, the term \"Contractor\" refers to Jordan Ruiz individually except where context indicates it refers to Bright Path Media LLC as well.",
+      "note": "The definition of 'Contractor' is conditioned on an undefined, unresolvable test ('except where context indicates') that could make later uses of 'Contractor' refer to Jordan Ruiz individually or to Bright Path Media LLC, without the document ever specifying which sections mean which."
+    }
+  ]
+}

@@ -62,7 +62,7 @@ agent to write down everything else it would otherwise ask about, rather than st
 
 | # | Title | Status | Notes |
 |---|-------|--------|-------|
-| — | Fixtures (tests/fixtures/) | pending | |
+| — | Fixtures (tests/fixtures/) | done | 6 planted flags + 2 defects in adhesion-contract.txt, clean-contract.txt has none; all sourceSentences verified as exact substrings |
 | 01 | Walking skeleton | pending | |
 | 02 | Upload & browser-side parse | pending | |
 | 03 | Analysis schema design | pending | |

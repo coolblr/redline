@@ -1,0 +1,127 @@
+FREELANCE SERVICES AGREEMENT
+
+This Freelance Services Agreement ("Agreement") is entered into as of March 3, 2026, by and between Harbor & Finch Consulting LLC, a California limited liability company ("Client"), and Priya Nakamura, an individual doing business as Nakamura Design Co ("Contractor").
+
+RECITALS
+
+WHEREAS, Client wishes to engage Contractor to design a set of marketing materials and a brand style guide for Client's business; and
+
+WHEREAS, Contractor has the skills and experience necessary to perform the Services described below and is willing to perform them on the terms set forth in this Agreement;
+
+NOW, THEREFORE, in consideration of the mutual promises contained herein, the parties agree as follows:
+
+1. DEFINITIONS
+
+1.1 "Services" means the design and delivery of the marketing materials and brand style guide described in Section 2 of this Agreement.
+
+1.2 "Contractor" means Priya Nakamura, individually, and does not include any other person or entity.
+
+1.3 "Confidential Information" means any non-public information disclosed by either party in connection with this Agreement, including business plans, designs, and customer data.
+
+2. SERVICES
+
+2.1 Contractor shall design and deliver a brand style guide, a set of social media templates, and a one-page marketing flyer for Client, with the specific dimensions, file formats, and delivery dates for each item set forth directly in this Section 2.
+
+2.2 The brand style guide, social media templates, and marketing flyer shall each be delivered as final, editable source files within thirty (30) days of the Effective Date.
+
+2.3 Contractor shall perform the Services in a professional and workmanlike manner consistent with generally accepted industry standards.
+
+2.4 Client shall provide Contractor with timely access to information, brand assets, and feedback reasonably necessary for Contractor to perform the Services.
+
+2.5 The Services include up to three (3) rounds of revisions per deliverable; additional rounds of revision beyond the third shall be billed at Contractor's then-current hourly rate, as agreed in writing by both parties before the additional work begins.
+
+3. TERM AND TERMINATION
+
+3.1 This Agreement shall commence on the Effective Date and continue until the Services are completed, unless earlier terminated as provided herein.
+
+3.2 Either party may terminate this Agreement for convenience upon fourteen (14) days' prior written notice to the other party.
+
+3.3 Either party may terminate this Agreement immediately upon written notice if the other party materially breaches this Agreement and fails to cure such breach within fifteen (15) days after receiving written notice of the breach.
+
+3.4 Upon termination for any reason, Client shall pay Contractor for all Services performed and expenses properly incurred through the effective date of termination, including a kill fee equal to twenty-five percent (25%) of the fees remaining under the applicable invoice if Client terminates for convenience.
+
+4. PAYMENT TERMS
+
+4.1 Client shall pay Contractor fifty percent (50%) of the total fees upon execution of this Agreement and the remaining fifty percent (50%) upon final delivery and acceptance of the Services.
+
+4.2 Client shall pay each invoice within fifteen (15) days of receipt.
+
+4.3 Late payments shall accrue interest at the rate of one percent (1%) per month, or the maximum rate permitted by applicable law, whichever is lower.
+
+5. INTELLECTUAL PROPERTY
+
+5.1 As between the parties, Contractor shall retain ownership of all pre-existing tools, templates, and methodologies that Contractor incorporates into the deliverables ("Contractor IP").
+
+5.2 Upon Client's payment in full of all fees due under this Agreement, all right, title, and interest in the deliverables, excluding Contractor IP, shall transfer to Client.
+
+5.3 Until such payment in full is received, Contractor retains ownership of the deliverables, and Client's use of the deliverables prior to full payment is limited to internal review purposes only.
+
+5.4 Contractor grants Client a perpetual, non-exclusive license to use any Contractor IP incorporated into the deliverables solely as part of the delivered work product.
+
+6. CONFIDENTIALITY
+
+6.1 Each party shall maintain the confidentiality of the other party's Confidential Information and shall not disclose it to any third party except as necessary to perform its obligations under this Agreement.
+
+6.2 The obligations in this Section 6 shall survive termination of this Agreement for a period of two (2) years.
+
+6.3 Confidential Information does not include information that is or becomes publicly available through no fault of the receiving party.
+
+7. INDEMNIFICATION
+
+7.1 Each party shall indemnify, defend, and hold harmless the other party, its officers, directors, employees, and agents from and against third-party claims, damages, losses, and reasonable expenses arising out of the indemnifying party's gross negligence, willful misconduct, or material breach of this Agreement.
+
+7.2 Each party's obligation to indemnify the other under this Section 7 shall not exceed the total fees paid or payable under this Agreement.
+
+7.3 Neither party's indemnification obligation applies to claims arising from the other party's own negligence or breach of this Agreement.
+
+8. LIMITATION OF LIABILITY
+
+8.1 In no event shall either party's total liability arising out of or relating to this Agreement exceed the total fees paid or payable under this Agreement.
+
+8.2 Neither party shall be liable to the other for any indirect, incidental, special, or consequential damages, regardless of the theory of liability.
+
+9. NON-SOLICITATION
+
+9.1 During the term of this Agreement and for a period of six (6) months thereafter, neither party shall knowingly solicit for employment any individual who worked directly on the Services for the other party, without that party's prior written consent.
+
+10. DISPUTE RESOLUTION
+
+10.1 Any dispute arising out of or relating to this Agreement that is not resolved informally within thirty (30) days shall be resolved in the state or federal courts located in the state where Client's principal office is located, and each party consents to the jurisdiction of those courts.
+
+10.2 Nothing in this Section 10 limits either party's right to seek injunctive relief in a court of competent jurisdiction to protect its Confidential Information.
+
+11. INSURANCE
+
+11.1 Contractor shall maintain commercially reasonable general liability insurance during the term of this Agreement.
+
+11.2 Upon Client's request, Contractor shall provide Client with a certificate evidencing such insurance.
+
+12. REPRESENTATIONS AND WARRANTIES
+
+12.1 Each party represents and warrants that it has the full right and authority to enter into this Agreement.
+
+12.2 Contractor represents and warrants that the deliverables will not knowingly infringe the intellectual property rights of any third party.
+
+13. GENERAL PROVISIONS
+
+13.1 This Agreement shall be governed by the laws of the state where Client's principal office is located, without regard to conflict of laws principles.
+
+13.2 If any provision of this Agreement is held invalid or unenforceable, the remaining provisions shall continue in full force and effect.
+
+13.3 This Agreement constitutes the entire agreement between the parties and supersedes all prior negotiations, representations, or agreements relating to its subject matter.
+
+13.4 Notices under this Agreement shall be delivered in writing to the addresses set forth in the signature block below.
+
+13.5 This Agreement may be executed in counterparts, each of which shall be deemed an original.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.
+
+CLIENT: Harbor & Finch Consulting LLC
+By: _________________________
+Name: Sam Okafor
+Title: Managing Partner
+
+CONTRACTOR: Priya Nakamura d/b/a Nakamura Design Co
+By: _________________________
+Name: Priya Nakamura
+Title: Owner
