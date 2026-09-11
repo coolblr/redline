@@ -11,6 +11,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { analyzeDocument } from "../lib/seams/analyze-document";
+import { draftCounterOffer } from "../lib/seams/draft-counter-offer";
 import { DEFAULT_RED_LINES } from "../lib/red-lines";
 
 // No dotenv dependency: .env.local is a handful of KEY=VALUE lines, so a
@@ -74,6 +75,18 @@ async function main() {
   }
   for (const defect of documentDefects) {
     console.log(`${defect.defectType} | ${defect.citation}`);
+  }
+
+  console.log();
+  console.log("=== Counter-offers ===");
+  console.log("clauseType | counter-offer text");
+  for (const flag of flags) {
+    const counterOffer = await draftCounterOffer(documentText, flag);
+    const truncated =
+      counterOffer.text.length > 200
+        ? `${counterOffer.text.slice(0, 200)}...`
+        : counterOffer.text;
+    console.log(`${flag.clauseType} | ${truncated}`);
   }
 }
 

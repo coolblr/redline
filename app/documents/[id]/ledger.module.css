@@ -64,6 +64,35 @@
   content: close-quote;
 }
 
+/* The drafted counter-offer, if one is persisted for this flag: Redline's
+   own generated text, not a quotation from the User's document (DESIGN.md
+   "The Quote-Is-Serif Rule"), so upright Archivo, never Spectral italic,
+   never quoted -- deliberately not reusing .citation above. The label
+   above it matches the ledger header's Label style (600, 0.75rem,
+   letter-spacing 0.08em, uppercase, Archivo). */
+.counterOffer {
+  margin-top: 0.75rem;
+}
+
+.counterOfferLabel {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin: 0 0 0.3rem;
+}
+
+.counterOfferText {
+  font-family: var(--font-body);
+  font-style: normal;
+  color: var(--ink-70);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
 .exposure {
   text-align: right;
   font-size: 0.9375rem;

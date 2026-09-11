@@ -70,7 +70,7 @@ agent to write down everything else it would otherwise ask about, rather than st
 | 05 | Sharp-treatment tuning | done | IP-assignment gets its own timing-based tier function (deterministic, not model-self-reported); `npm run eval:sharp` reports sharp/generic as separate numbers (6/6, 4/4 live) |
 | 06 | Document defects | done | `analyzeDocument` now returns `{ summary, flags, documentDefects }` — defects detected in the same OpenRouter call, same citation-drop discipline as flags (ADR-0001 applied per ADR-0008); document page renders a defects section above the ledger; live smoke run caught both planted defects |
 | 07 | Editable red lines | done | Per-user `red_lines` table + `/red-lines` editor; filtering by enabled clause type happens outside analyzeDocument (`filterFlagsByRedLines`), deterministic and stub-testable — built in parallel with 05, no file overlap |
-| 08 | draftCounterOffer seam | pending | |
+| 08 | draftCounterOffer seam | done | `lib/seams/draft-counter-offer.ts`, one call per persisted (post-red-lines-filter) flag; per-flag failures caught/logged, never fail the whole `runAnalysis`; live smoke run: 10/10 flags got a counter-offer, zero outcome-prediction hits |
 | 09 | answerQuestion seam | pending | |
 | 10 | Saved document library | pending | |
 

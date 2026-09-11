@@ -32,6 +32,12 @@ type PersistedDefect = {
   citation: string;
 };
 
+type PersistedCounterOffer = {
+  id: string;
+  flag_id: string;
+  text: string;
+};
+
 const DEFECT_TYPE_LABELS: Record<DefectType, string> = {
   "dangling-reference": "Dangling reference",
   "ambiguous-term": "Ambiguous term",
@@ -176,6 +182,25 @@ export default async function DocumentPage({ params }: Props) {
     documentDefects = (defectRows as PersistedDefect[] | null) ?? [];
   }
 
+  // Same "only fetch once analyzed" gating as flags above. Keyed by
+  // flag_id so each row can look up its own counter-offer, if any --
+  // draftCounterOffer runs per flag and a single flag's draft can fail
+  // without failing the rest of runAnalysis (see ./actions.ts), so not
+  // every flag is guaranteed to have one.
+  let counterOfferByFlagId = new Map<string, string>();
+  if (analyzed) {
+    const { data: counterOfferRows } = await supabase
+      .from("counter_offers")
+      .select("id, flag_id, text")
+      .eq("document_id", document.id);
+    counterOfferByFlagId = new Map(
+      ((counterOfferRows as PersistedCounterOffer[] | null) ?? []).map((row) => [
+        row.flag_id,
+        row.text,
+      ])
+    );
+  }
+
   return (
     <main className={styles.page}>
       <a className={styles.wordmark} href="/">
@@ -234,24 +259,37 @@ export default async function DocumentPage({ params }: Props) {
                 </p>
               ) : (
                 <>
-                  {flags.map((flag) => (
-                    <div className={ledgerStyles.row} key={flag.id}>
-                      <div className={ledgerStyles.clauseCell}>
-                        <p className={ledgerStyles.clauseName}>
-                          {CLAUSE_LABELS[flag.clause_type]}
+                  {flags.map((flag) => {
+                    const counterOffer = counterOfferByFlagId.get(flag.id);
+                    return (
+                      <div className={ledgerStyles.row} key={flag.id}>
+                        <div className={ledgerStyles.clauseCell}>
+                          <p className={ledgerStyles.clauseName}>
+                            {CLAUSE_LABELS[flag.clause_type]}
+                          </p>
+                          <p className={ledgerStyles.citation}>{flag.citation}</p>
+                          {counterOffer ? (
+                            <div className={ledgerStyles.counterOffer}>
+                              <p className={ledgerStyles.counterOfferLabel}>
+                                Counter-offer
+                              </p>
+                              <p className={ledgerStyles.counterOfferText}>
+                                {counterOffer}
+                              </p>
+                            </div>
+                          ) : null}
+                        </div>
+                        <p className={ledgerStyles.exposure}>
+                          {exposureLabel(flag.severity_tier)}
                         </p>
-                        <p className={ledgerStyles.citation}>{flag.citation}</p>
+                        <p
+                          className={`${ledgerStyles.tier} ${TIER_CLASS[flag.severity_tier]}`}
+                        >
+                          {TIER_LABELS[flag.severity_tier]}
+                        </p>
                       </div>
-                      <p className={ledgerStyles.exposure}>
-                        {exposureLabel(flag.severity_tier)}
-                      </p>
-                      <p
-                        className={`${ledgerStyles.tier} ${TIER_CLASS[flag.severity_tier]}`}
-                      >
-                        {TIER_LABELS[flag.severity_tier]}
-                      </p>
-                    </div>
-                  ))}
+                    );
+                  })}
                   <p className={ledgerStyles.closing}>
                     {flags.length} clause{flags.length === 1 ? "" : "s"} checked.
                   </p>
