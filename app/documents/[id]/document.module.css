@@ -67,3 +67,63 @@
   padding: 1.25rem clamp(1rem, 3vw, 1.5rem);
   border: 1px solid var(--slate-18);
 }
+
+.sectionLabel {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin: 2rem 0 0.75rem;
+}
+
+.sectionLabel:first-of-type {
+  margin-top: 0;
+}
+
+.summaryText {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0 0 1.5rem;
+  max-width: 60ch;
+}
+
+.runAnalysis {
+  margin: 1.5rem 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.9rem;
+}
+
+.runNotice {
+  font-size: 0.9375rem;
+  color: var(--ink-70);
+  margin: 0;
+  max-width: 50ch;
+}
+
+.runButton {
+  display: inline-flex;
+  align-items: center;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  padding: 0.9rem 1.75rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.runButton:hover {
+  background: #12191f;
+}
+
+.runButton:active {
+  transform: translateY(1px);
+}

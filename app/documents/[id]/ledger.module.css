@@ -1,0 +1,137 @@
+/* The Ledger Row component (DESIGN.md): a 3-column grid (Clause / Exposure
+   / Tier), Spectral italic true-quoted citation text under an upright
+   Archivo clause name, tier state carried by ink weight only except the
+   single reserved Flag red on top tier, ruled slate-18% dividers between
+   rows, full-ink borders opening and closing the ledger. No shadows, no
+   rounding beyond the shared 3px button radius (unused here). */
+
+.ledger {
+  width: 100%;
+  border-top: 1px solid var(--ink);
+}
+
+.ledgerHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 1.5rem;
+  padding: 0.65rem 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate);
+  border-bottom: 1px solid var(--slate-18);
+}
+
+.ledgerHeader span:nth-child(2),
+.ledgerHeader span:nth-child(3) {
+  text-align: right;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 1.5rem;
+  align-items: start;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--slate-18);
+}
+
+.clauseCell {
+  min-width: 0;
+}
+
+.clauseName {
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+}
+
+.citation {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--ink-70);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 0;
+  quotes: "\201C" "\201D";
+}
+
+.citation::before {
+  content: open-quote;
+}
+
+.citation::after {
+  content: close-quote;
+}
+
+.exposure {
+  text-align: right;
+  font-size: 0.9375rem;
+  color: var(--ink-70);
+  white-space: nowrap;
+  padding-top: 0.15rem;
+}
+
+.tier {
+  text-align: right;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  white-space: nowrap;
+  padding-top: 0.15rem;
+}
+
+.tierTop {
+  color: var(--flag);
+}
+
+.tierMiddle {
+  color: var(--ink);
+}
+
+.tierCiteOnly {
+  color: var(--slate);
+}
+
+.closing {
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--ink);
+  font-size: 0.875rem;
+  color: var(--slate);
+}
+
+.empty {
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--ink);
+  font-size: 0.9375rem;
+  color: var(--ink-70);
+}
+
+@media (max-width: 640px) {
+  .ledgerHeader,
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.35rem;
+  }
+
+  .ledgerHeader span:nth-child(2),
+  .ledgerHeader span:nth-child(3) {
+    display: none;
+  }
+
+  .exposure,
+  .tier {
+    text-align: left;
+    padding-top: 0;
+  }
+
+  .exposure::before {
+    content: "Exposure: ";
+    color: var(--slate);
+    font-weight: 400;
+  }
+
+  .tier::before {
+    content: "Tier: ";
+    font-weight: 400;
+  }
+}

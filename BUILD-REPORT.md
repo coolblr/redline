@@ -66,7 +66,7 @@ agent to write down everything else it would otherwise ask about, rather than st
 | 01 | Walking skeleton | done | Supabase auth (`/login`, `/auth/signout`), `lib/openrouter.ts` wrapper, `/demo` page wired to a real (verified live) OpenRouter call. Vercel deploy and end-to-end auth click-through not performed — no Vercel project/credentials and no Supabase project exist in this environment. |
 | 02 | Upload & browser-side parse | done | `lib/parse-document.ts` (.txt/.pdf/.docx, client-side, real fixture tests, no OCR fallback); upload at `/app` (matches existing landing-page CTA); `app/documents/[id]/page.tsx`; `supabase/migrations/0001_documents.sql` (unverified against a live DB — no Supabase CLI/Docker here) |
 | 03 | Analysis schema design | done | `lib/domain-types.ts` (Flag/DocumentDefect/CounterOffer/Answer zod schemas + types, 7-value ClauseType incl. arbitration); `supabase/migrations/0002_analysis_schema.sql` (flags/document_defects/counter_offers/qa_history, owner-scoped RLS via documents join, unverified against a live DB); honest-skip round-trip smoke test at `tests/integration/analysis-schema.smoke.test.ts` |
-| 04 | analyzeDocument core | pending | |
+| 04 | analyzeDocument core | done | `lib/seams/analyze-document.ts` + `lib/seams/severity.ts` (severityTier/treatmentDepth computed deterministically in code, never self-reported by the model — the actual correctness lever for the ADR-0005 middle-tier case); ledger UI on the document page per DESIGN.md; `npm run smoke` exists and was run live (see below) |
 | 05 | Sharp-treatment tuning | pending | |
 | 06 | Document defects | pending | |
 | 07 | Editable red lines | pending | |
@@ -111,6 +111,26 @@ agent to write down everything else it would otherwise ask about, rather than st
   flow) and self-skips with a clear message until a human sets
   `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` and applies both
   migrations — running `npm test` again at that point is the actual verification.
+
+- **Ticket 04 — `supabase/migrations/0003_documents_summary.sql`.** Same constraint
+  as 0001/0002: no Supabase CLI/Docker here, unapplied.
+- **Ticket 04 — real model behavior (`npm run smoke`, live OpenRouter call against
+  `tests/fixtures/adhesion-contract.txt`).** Ran twice. First run surfaced a real bug:
+  `limitation-of-liability` (the deliberately-asymmetric middle-tier fixture clause)
+  came back `top` because the prompt's definition of `isExposureCapped` read as false
+  when the *User's own* side of the clause was the uncapped one. Fixed by adding an
+  explicit worked example to the system prompt (a cap that exists anywhere in the
+  clause, applied unevenly, is capped-and-one-sided — not fully-uncapped). Second run
+  confirmed the fix: `limitation-of-liability` → `middle`, correctly. This is exactly
+  the failure mode ADR-0005 names as "most likely to be miscategorized by a naive
+  implementation," caught by the smoke test before it could compound into 05/06/08/09.
+  Two accepted deviations from the fixture's planted answers, both within the ticket's
+  stated bar: `unilateral-termination` was flagged as a false alarm beyond the 6
+  planted clauses (ADR-0006 accepts this — its citation still resolved exactly);
+  `scope-creep` came back `top` instead of the fixture's `middle` (scope-creep is a
+  recall-bar clause type per spec.md — presence matters more than exact tier here,
+  flagged for whoever tunes ticket 05/06 next). No flags were silently dropped for a
+  bad citation in either run.
 
 ## Commands to run first
 
