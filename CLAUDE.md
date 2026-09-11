@@ -25,6 +25,7 @@ If something looks like an obvious next step and isn't on that list, ask before 
 ## Standing rules
 - Keep credentials in `.env.local` (gitignored). Never commit a secret — it's public the moment it's pushed and has to be rotated, not just removed.
 - Ask before adding a dependency.
+- Every piece of user-facing copy in this product — landing page, UI labels, error messages, empty states — must be run through the humanizer skill before it's committed. Copy that reads like a model wrote it is a defect, not a style preference.
 
 ## Read before acting
 - `research/summary.md` — the user research behind this product. Read before deciding what it should do.
