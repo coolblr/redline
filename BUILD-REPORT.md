@@ -63,8 +63,8 @@ agent to write down everything else it would otherwise ask about, rather than st
 | # | Title | Status | Notes |
 |---|-------|--------|-------|
 | — | Fixtures (tests/fixtures/) | done | 6 planted flags + 2 defects in adhesion-contract.txt, clean-contract.txt has none; all sourceSentences verified as exact substrings |
-| 01 | Walking skeleton | pending | |
-| 02 | Upload & browser-side parse | pending | |
+| 01 | Walking skeleton | done | Supabase auth (`/login`, `/auth/signout`), `lib/openrouter.ts` wrapper, `/demo` page wired to a real (verified live) OpenRouter call. Vercel deploy and end-to-end auth click-through not performed — no Vercel project/credentials and no Supabase project exist in this environment. |
+| 02 | Upload & browser-side parse | done | `lib/parse-document.ts` (.txt/.pdf/.docx, client-side, real fixture tests, no OCR fallback); upload at `/app` (matches existing landing-page CTA); `app/documents/[id]/page.tsx`; `supabase/migrations/0001_documents.sql` (unverified against a live DB — no Supabase CLI/Docker here) |
 | 03 | Analysis schema design | pending | |
 | 04 | analyzeDocument core | pending | |
 | 05 | Sharp-treatment tuning | pending | |
@@ -76,8 +76,44 @@ agent to write down everything else it would otherwise ask about, rather than st
 
 ## What could not be verified
 
-(filled in as the build proceeds)
+- **Ticket 01 — Vercel deployment.** No Vercel project or credentials exist in this
+  environment, so the app was verified locally (`npm run build`, `npm run dev`) only.
+  A human needs to create/link the Vercel project and deploy.
+- **Ticket 01 — Supabase sign-up/sign-in/sign-out round trip.** No Supabase project
+  exists yet (`NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` are unset).
+  `/login` and `/auth/signout` are implemented per the standard `@supabase/ssr`
+  Next.js pattern and the app correctly falls back to a "no account system
+  connected yet" state with both vars absent (confirmed by curling `/login` and
+  `/demo` with the dev server running), but the actual auth round trip — sign up,
+  email confirmation, sign in, session cookie, sign out — has not been exercised
+  against a live project. A human should provision Supabase, fill in the two env
+  vars, and click through this once.
+- **Ticket 01 — OpenRouter demo call.** This *was* verified: the same request shape
+  `lib/openrouter.ts` sends was posted directly against the live OpenRouter API
+  using the real key in `.env.local` and returned HTTP 200 with a valid parsed
+  `{ message: "..." }` JSON body. The `/demo` page's UI path (signed-in User clicks
+  the button, sees the response) could not be clicked through end-to-end because
+  that page is gated on a Supabase session, which doesn't exist yet — see above.
+
+- **Ticket 02 — `supabase/migrations/0001_documents.sql`.** No Supabase CLI or Docker
+  is available in this environment. Written as standard Postgres + Supabase RLS SQL,
+  not applied anywhere. A human needs to run it once a Supabase project exists.
+- **Ticket 02 — in-browser upload UX.** `parseDocumentFile`'s `.txt`/`.pdf`/`.docx`
+  paths are covered by real (non-mocked) Vitest tests against real fixture files, and
+  `npm run build` confirms pdfjs-dist/mammoth are code-split into the `/app` route.
+  Actual drag-and-drop and the pdfjs web-worker asset resolving correctly in a real
+  browser were not clicked through (no browser available in this environment).
 
 ## Commands to run first
 
-(filled in at the end)
+```
+npm install
+npm run typecheck   # npx tsc --noEmit
+npm test             # vitest run
+npm run build
+```
+
+All three passed as of 2026-09-11. `npm run build` succeeds with
+`NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` absent — this is the
+expected condition until a human provisions a Supabase project and adds those two
+vars (plus `OPENROUTER_API_KEY` / `OPENROUTER_MODEL`, already set) to `.env.local`.

@@ -1,0 +1,146 @@
+.page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2rem clamp(1.25rem, 5vw, 4rem) 3rem;
+  gap: clamp(1.75rem, 4vw, 2.75rem);
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-style: italic;
+  font-size: 1.375rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.card {
+  width: 100%;
+  max-width: 30rem;
+  border-top: 1px solid var(--ink);
+  padding-top: 1.5rem;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-style: italic;
+  font-size: 1.75rem;
+  letter-spacing: -0.01em;
+  margin: 0 0 1rem;
+}
+
+.notice {
+  font-size: 0.9375rem;
+  color: var(--ink-70);
+  line-height: 1.5;
+  margin: 0 0 1.5rem;
+  max-width: 42ch;
+}
+
+.link {
+  font-size: 0.9375rem;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  border: 1px dashed var(--slate-30);
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.dropzoneActive {
+  border-color: var(--ink);
+  background: var(--flag-12);
+}
+
+.dropzoneText {
+  font-size: 0.9375rem;
+  color: var(--ink-70);
+  margin: 0;
+}
+
+.hiddenInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  background: #12191f;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.secondaryButton {
+  background: none;
+  border: 1px solid var(--slate-18);
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9375rem;
+  color: var(--ink);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.secondaryButton:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.error {
+  margin-top: 1.25rem;
+  font-size: 0.9375rem;
+  color: var(--flag);
+}
+
+.warningBox {
+  border-top: 1px solid var(--slate-18);
+  padding-top: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.warning {
+  font-size: 0.9375rem;
+  color: var(--ink-70);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 42ch;
+}
