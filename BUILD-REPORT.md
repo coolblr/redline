@@ -72,7 +72,7 @@ agent to write down everything else it would otherwise ask about, rather than st
 | 07 | Editable red lines | done | Per-user `red_lines` table + `/red-lines` editor; filtering by enabled clause type happens outside analyzeDocument (`filterFlagsByRedLines`), deterministic and stub-testable — built in parallel with 05, no file overlap |
 | 08 | draftCounterOffer seam | done | `lib/seams/draft-counter-offer.ts`, one call per persisted (post-red-lines-filter) flag; per-flag failures caught/logged, never fail the whole `runAnalysis`; live smoke run: 10/10 flags got a counter-offer, zero outcome-prediction hits |
 | 09 | answerQuestion seam | done | `lib/seams/answer-question.ts`; Q&A box available pre-analysis (only needs extracted text); live smoke run caught a real bug in `addressedByDocument` semantics (model said "true" when it could derive a correct answer from unrelated context, e.g. "no arbitration, court litigation instead") — fixed with an explicit worked example distinguishing "topic present" from "I can still answer" |
-| 10 | Saved document library | pending | |
+| 10 | Saved document library | done | `/library` listing page, UI-only, no new seam logic; verified by inspection that opening a document never re-triggers analysis/parsing/OpenRouter calls |
 
 ## What could not be verified
 

@@ -230,6 +230,9 @@ export default async function DocumentPage({ params }: Props) {
       </a>
 
       <div className={styles.card}>
+        <a className={styles.backLink} href="/library">
+          Back to library
+        </a>
         <h1 className={styles.heading}>
           {(document.filename as string | null) || "Untitled document"}
         </h1>

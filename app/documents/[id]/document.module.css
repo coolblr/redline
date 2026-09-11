@@ -39,6 +39,15 @@
   margin: 0 0 1.5rem;
 }
 
+.backLink {
+  font-size: 0.8125rem;
+  color: var(--slate);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  margin: 0 0 0.75rem;
+  display: inline-block;
+}
+
 .notice {
   font-size: 0.9375rem;
   color: var(--ink-70);

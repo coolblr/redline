@@ -62,6 +62,11 @@ export default async function UploadPage() {
             Edit what Redline flags for you
           </a>
         </p>
+        <p className={styles.notice}>
+          <a className={styles.link} href="/library">
+            View your saved documents
+          </a>
+        </p>
       </div>
     </main>
   );
