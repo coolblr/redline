@@ -60,6 +60,7 @@ const STUB_RESPONSE = {
       rationale: "States an open-ended revisions obligation gated only by Client's discretion.",
     },
   ],
+  candidateDefects: [],
 };
 
 describe("editing red lines visibly changes Flag[] (deterministic, stub-backed)", () => {

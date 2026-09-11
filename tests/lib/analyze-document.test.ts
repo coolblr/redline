@@ -9,7 +9,7 @@ import {
 import { findOutcomePredictionPhrases } from "@/lib/copy-checks";
 import { DEFAULT_RED_LINES } from "@/lib/red-lines";
 import { createStubClient } from "../support/stub-openrouter-client";
-import type { ClauseType, SeverityTier, StandardOrUnusual } from "@/lib/domain-types";
+import type { ClauseType, DefectType, SeverityTier, StandardOrUnusual } from "@/lib/domain-types";
 import adhesionExpected from "../fixtures/adhesion-contract.expected.json";
 
 function fixtureText(name: string): string {
@@ -68,6 +68,33 @@ const byClauseType = Object.fromEntries(
   adhesionFlags.map((flag) => [flag.clauseType, flag])
 ) as Record<string, ExpectedFixtureFlag>;
 
+// --- Document defects (ticket 06) -----------------------------------------
+
+type ExpectedFixtureDefect = {
+  defectType: DefectType;
+  sourceSentence: string;
+  note: string;
+};
+
+const adhesionDefects = adhesionExpected.defects as ExpectedFixtureDefect[];
+const byDefectType = Object.fromEntries(
+  adhesionDefects.map((defect) => [defect.defectType, defect])
+) as Record<string, ExpectedFixtureDefect>;
+
+function candidateDefectFromExpected(expected: ExpectedFixtureDefect) {
+  return {
+    defectType: expected.defectType,
+    citation: expected.sourceSentence,
+    description: expected.note,
+  };
+}
+
+// A candidate defect whose citation is NOT an exact substring of the
+// document text -- standing in for a model hallucination, same role as
+// BROKEN_CITATION plays for flags below.
+const BROKEN_DEFECT_CITATION =
+  "Schedule 1 requires weekly status calls that either party may cancel without notice.";
+
 // A candidate flag whose citation is NOT an exact substring of the
 // document text -- a slightly invented/paraphrased sentence, standing in
 // for a model hallucination. Used to prove the ADR-0001 drop actually
@@ -117,6 +144,7 @@ const ADHESION_STUB_RESPONSE = {
   summary:
     "This is a web-development services agreement between Acme Retail Group LLC and Jordan Ruiz d/b/a Ruiz Digital Studio.",
   candidateFlags: buildAdhesionCandidateFlags(),
+  candidateDefects: adhesionDefects.map(candidateDefectFromExpected),
 };
 
 const CLEAN_STUB_RESPONSE = {
@@ -144,6 +172,7 @@ const CLEAN_STUB_RESPONSE = {
       rationale: "States a liability cap that applies equally to both parties.",
     },
   ],
+  candidateDefects: [],
 };
 
 describe("analyzeDocument", () => {
@@ -295,6 +324,80 @@ describe("analyzeDocument", () => {
       expect(flags.length).toBeGreaterThan(0);
       for (const flag of flags) {
         expect(cleanText.includes(flag.citation)).toBe(true);
+      }
+    });
+  });
+
+  describe("document defects (ADR-0008, ticket 06)", () => {
+    it("returns both planted defects from the adhesion fixture as DocumentDefects", async () => {
+      const client = createStubClient(ADHESION_STUB_RESPONSE);
+      const { documentDefects } = await analyzeDocument(adhesionText, DEFAULT_RED_LINES, {
+        client,
+      });
+
+      expect(documentDefects).toHaveLength(2);
+
+      const danglingReference = documentDefects.find(
+        (defect) => defect.defectType === "dangling-reference"
+      );
+      expect(danglingReference).toBeDefined();
+      expect(danglingReference?.citation).toBe(byDefectType["dangling-reference"].sourceSentence);
+
+      const ambiguousTerm = documentDefects.find(
+        (defect) => defect.defectType === "ambiguous-term"
+      );
+      expect(ambiguousTerm).toBeDefined();
+      expect(ambiguousTerm?.citation).toBe(byDefectType["ambiguous-term"].sourceSentence);
+    });
+
+    describe("citation-resolution enforcement (ADR-0001, applied to defects per ADR-0008)", () => {
+      it("drops a candidate defect whose citation is not an exact substring of documentText", async () => {
+        const client = createStubClient({
+          ...ADHESION_STUB_RESPONSE,
+          candidateDefects: [
+            ...adhesionDefects.map(candidateDefectFromExpected),
+            {
+              defectType: "dangling-reference" as DefectType,
+              citation: BROKEN_DEFECT_CITATION,
+              description: "An invented defect standing in for a model hallucination.",
+            },
+          ],
+        });
+
+        const { documentDefects } = await analyzeDocument(adhesionText, DEFAULT_RED_LINES, {
+          client,
+        });
+
+        // The invented defect never comes back...
+        expect(documentDefects.some((defect) => defect.citation === BROKEN_DEFECT_CITATION)).toBe(
+          false
+        );
+        // ...but the two legitimate, planted defects still do.
+        expect(documentDefects).toHaveLength(2);
+        expect(warnSpy).toHaveBeenCalled();
+      });
+    });
+
+    it("keeps flags and documentDefects as always-separate collections", async () => {
+      const client = createStubClient(ADHESION_STUB_RESPONSE);
+      const { flags, documentDefects } = await analyzeDocument(adhesionText, DEFAULT_RED_LINES, {
+        client,
+      });
+
+      // Neither collection is empty, so this isn't a tautology about two
+      // empty arrays both being "distinct."
+      expect(flags.length).toBeGreaterThan(0);
+      expect(documentDefects.length).toBeGreaterThan(0);
+
+      // A flag is never shaped like a defect (no defectType field) and a
+      // defect is never shaped like a flag (no clauseType/severityTier
+      // field) -- the two collections never cross-contaminate.
+      for (const flag of flags) {
+        expect(flag).not.toHaveProperty("defectType");
+      }
+      for (const defect of documentDefects) {
+        expect(defect).not.toHaveProperty("clauseType");
+        expect(defect).not.toHaveProperty("severityTier");
       }
     });
   });

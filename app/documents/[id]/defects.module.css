@@ -1,0 +1,72 @@
+/* Document Defects section (ADR-0008): a plain list, not the 3-column
+   ledger grid -- a defect doesn't carry Exposure/Tier columns the way a
+   flag does. Reuses the ledger's rule-line vocabulary (full-ink
+   open/close borders, slate-18% dividers between entries) and the same
+   Spectral-italic-quoted-citation / Archivo-structural split, so the
+   section reads as part of the same system while staying visually
+   distinct from the ledger itself. No shadows, no rounding. */
+
+.defects {
+  width: 100%;
+  border-top: 1px solid var(--ink);
+}
+
+.intro {
+  font-size: 0.9375rem;
+  color: var(--ink-70);
+  line-height: 1.5;
+  margin: 0;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--slate-18);
+  max-width: 56ch;
+}
+
+.row {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--slate-18);
+}
+
+.row:last-of-type {
+  border-bottom: 1px solid var(--ink);
+}
+
+.defectType {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  margin: 0 0 0.4rem;
+}
+
+.citation {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--ink-70);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  margin: 0 0 0.5rem;
+  quotes: "\201C" "\201D";
+}
+
+.citation::before {
+  content: open-quote;
+}
+
+.citation::after {
+  content: close-quote;
+}
+
+.description {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0;
+  max-width: 56ch;
+}
+
+.empty {
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--ink);
+  font-size: 0.9375rem;
+  color: var(--ink-70);
+}

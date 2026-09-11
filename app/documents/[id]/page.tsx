@@ -2,7 +2,14 @@ import { createClient } from "@/lib/supabase/server";
 import { runAnalysis } from "./actions";
 import styles from "./document.module.css";
 import ledgerStyles from "./ledger.module.css";
-import type { ClauseType, SeverityTier, StandardOrUnusual, TreatmentDepth } from "@/lib/domain-types";
+import defectsStyles from "./defects.module.css";
+import type {
+  ClauseType,
+  DefectType,
+  SeverityTier,
+  StandardOrUnusual,
+  TreatmentDepth,
+} from "@/lib/domain-types";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -16,6 +23,18 @@ type PersistedFlag = {
   treatment_depth: TreatmentDepth;
   citation: string;
   rationale: string;
+};
+
+type PersistedDefect = {
+  id: string;
+  defect_type: DefectType;
+  description: string;
+  citation: string;
+};
+
+const DEFECT_TYPE_LABELS: Record<DefectType, string> = {
+  "dangling-reference": "Dangling reference",
+  "ambiguous-term": "Ambiguous term",
 };
 
 const CLAUSE_LABELS: Record<ClauseType, string> = {
@@ -147,6 +166,16 @@ export default async function DocumentPage({ params }: Props) {
     );
   }
 
+  // Same "only fetch once analyzed" gating as flags above.
+  let documentDefects: PersistedDefect[] = [];
+  if (analyzed) {
+    const { data: defectRows } = await supabase
+      .from("document_defects")
+      .select("id, defect_type, description, citation")
+      .eq("document_id", document.id);
+    documentDefects = (defectRows as PersistedDefect[] | null) ?? [];
+  }
+
   return (
     <main className={styles.page}>
       <a className={styles.wordmark} href="/">
@@ -163,6 +192,32 @@ export default async function DocumentPage({ params }: Props) {
           <>
             <p className={styles.sectionLabel}>Summary</p>
             <p className={styles.summaryText}>{summary}</p>
+
+            <p className={styles.sectionLabel}>Document defects</p>
+            <section className={defectsStyles.defects} aria-label="Document defects">
+              {documentDefects.length === 0 ? (
+                <p className={defectsStyles.empty}>
+                  No dangling references or ambiguous terms found.
+                </p>
+              ) : (
+                <>
+                  <p className={defectsStyles.intro}>
+                    These are places where Redline isn&rsquo;t sure it read
+                    the document correctly, which affects how much to trust
+                    everything below.
+                  </p>
+                  {documentDefects.map((defect) => (
+                    <div className={defectsStyles.row} key={defect.id}>
+                      <p className={defectsStyles.defectType}>
+                        {DEFECT_TYPE_LABELS[defect.defect_type]}
+                      </p>
+                      <p className={defectsStyles.citation}>{defect.citation}</p>
+                      <p className={defectsStyles.description}>{defect.description}</p>
+                    </div>
+                  ))}
+                </>
+              )}
+            </section>
 
             <p className={styles.sectionLabel}>Flags</p>
             <section className={ledgerStyles.ledger} aria-label="Flagged clauses">
@@ -224,7 +279,7 @@ export default async function DocumentPage({ params }: Props) {
           {(document.extracted_text as string) || "(No text was extracted from this file.)"}
         </pre>
 
-        {/* Document defects, counter-offers, and Q&A render here once available */}
+        {/* Counter-offers and Q&A render here once available */}
       </div>
     </main>
   );

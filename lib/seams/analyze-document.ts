@@ -3,20 +3,27 @@
 //
 // The model's job is extraction only: a plain-English summary, plus a
 // candidate flag per matching clause carrying two structured *facts*
-// (isExposureCapped, isMutual) rather than a self-reported severity tier.
-// Everything that determines correctness -- severity tier (ADR-0005),
-// treatment depth (ADR-0004), citation resolution (ADR-0001), the
-// scope-creep hedge (PRD.md), and the "nothing above cite-only" statement
-// -- is computed in plain TypeScript below, not trusted to model output.
+// (isExposureCapped, isMutual) rather than a self-reported severity tier,
+// plus a candidate document defect per dangling reference or ambiguous
+// term it notices while reading. Everything that determines correctness --
+// severity tier (ADR-0005), treatment depth (ADR-0004), citation
+// resolution (ADR-0001, which applies to document defects too per
+// ADR-0008), the scope-creep hedge (PRD.md), and the "nothing above
+// cite-only" statement -- is computed in plain TypeScript below, not
+// trusted to model output.
 //
-// Document defects are explicitly out of scope for this seam (ticket 06
-// owns them): the return type is exactly { summary, flags }.
+// Document defects (ticket 06) are detected in this same OpenRouter call,
+// not a second round-trip, and are always returned as their own
+// collection -- documentDefects -- never folded into flags (ADR-0008).
 
 import { z } from "zod";
 import {
   ClauseTypeSchema,
+  DefectTypeSchema,
+  DocumentDefectSchema,
   FlagSchema,
   StandardOrUnusualSchema,
+  type DocumentDefect,
   type Flag,
 } from "@/lib/domain-types";
 import { openRouterClient, type OpenRouterClient } from "@/lib/openrouter";
@@ -49,9 +56,16 @@ const RawCandidateFlagSchema = z.object({
   rationale: z.string().min(1),
 });
 
+const RawCandidateDefectSchema = z.object({
+  defectType: DefectTypeSchema,
+  citation: z.string().min(1),
+  description: z.string().min(1),
+});
+
 const RawAnalysisResponseSchema = z.object({
   summary: z.string().min(1),
   candidateFlags: z.array(RawCandidateFlagSchema),
+  candidateDefects: z.array(RawCandidateDefectSchema),
 });
 
 // --- JSON schema passed to OpenRouter -----------------------------------
@@ -65,6 +79,8 @@ const CLAUSE_TYPE_VALUES = [
   "scope-creep",
   "arbitration",
 ] as const;
+
+const DEFECT_TYPE_VALUES = ["dangling-reference", "ambiguous-term"] as const;
 
 const ANALYSIS_JSON_SCHEMA = {
   name: "redline_document_analysis",
@@ -100,8 +116,21 @@ const ANALYSIS_JSON_SCHEMA = {
           additionalProperties: false,
         },
       },
+      candidateDefects: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            defectType: { type: "string", enum: [...DEFECT_TYPE_VALUES] },
+            citation: { type: "string" },
+            description: { type: "string" },
+          },
+          required: ["defectType", "citation", "description"],
+          additionalProperties: false,
+        },
+      },
     },
-    required: ["summary", "candidateFlags"],
+    required: ["summary", "candidateFlags", "candidateDefects"],
     additionalProperties: false,
   },
 } as const;
@@ -126,6 +155,17 @@ Worked example, because this is the case most tools get wrong: "Client's liabili
 - ipAssignmentTiming: for clauseType "ip-assignment" only -- report which of three timings the clause's own language supports: "on-creation" if ownership vests in Client as soon as the work is created (including "upon creation," work-made-for-hire language that vests immediately, or ownership stated as independent of payment), "on-delivery" if ownership vests when Contractor delivers or completes the work but before Client has paid for it, or "on-full-payment" if ownership vests only once Client has paid in full (the safe pattern). Base this only on what the clause actually says -- if it's genuinely ambiguous, pick the closest supported reading rather than guessing wildly. For every other clauseType, report ipAssignmentTiming: null.
 - standardOrUnusual: "standard" if this is expected boilerplate for a freelance or service agreement, "unusual" if it's atypical for this kind of document. This is independent of how serious the clause is -- a clause can be standard and still worth real attention (arbitration is the clearest example).
 - rationale: state the pattern in the clause, never predict an outcome. Acceptable: "this pattern is usually unfavorable to the party with less negotiating leverage." Forbidden: "you would lose in court over this," "this clause is unenforceable," or any other forecast of what a court or counterparty would actually do.
+
+In this same pass, also watch for two kinds of document-level defects -- problems with the document's own internal consistency or completeness, not a risk inside a clause. Report each one you notice as a candidate defect, separately from candidate flags:
+- dangling-reference: a clause references a schedule, exhibit, appendix, or attachment (for example, "as set forth in Schedule 1," "attached as Exhibit B") whose actual content does not appear anywhere else in the document text you were given. The citation is the sentence containing the reference itself, not the missing content -- by definition, that content isn't there to quote.
+- ambiguous-term: a defined term (for example, "Contractor," "Company," "Party") is defined or used in a way that could plausibly refer to more than one party in the document. Only report this when the ambiguity is genuine, not just because a term is used often. The citation is the sentence where the ambiguity is most evident -- the definition itself, or a usage that could go either way.
+
+For each candidate defect, report:
+- defectType: "dangling-reference" or "ambiguous-term".
+- citation: the exact sentence from the document, copied character for character, same precision rule as flag citations above -- this is checked in code afterward, and a defect you can't point to with an exact quoted sentence is discarded and the User never sees it.
+- description: a plain-English explanation of what makes this a defect.
+
+If the document has no dangling references and no ambiguous terms, report an empty candidateDefects array rather than inventing one to fill the field.
 
 The summary field is a plain-English paragraph, no more than 4-5 sentences, describing what the document covers, who the parties are, and what it asks of each of them. State what the document says, never predict what would happen because of it. Write it as complete sentences -- do not trail off partway through a thought.
 
@@ -164,7 +204,7 @@ export async function analyzeDocument(
   documentText: string,
   redLines: RedLine[],
   opts?: { client?: OpenRouterClient }
-): Promise<{ summary: string; flags: Flag[] }> {
+): Promise<{ summary: string; flags: Flag[]; documentDefects: DocumentDefect[] }> {
   const client = opts?.client ?? openRouterClient;
 
   const raw = await client.complete({
@@ -260,9 +300,33 @@ export async function analyzeDocument(
     summary = `${summary} ${NOTHING_ABOVE_CITE_ONLY_SENTENCE}`;
   }
 
+  const documentDefects: DocumentDefect[] = [];
+
+  for (const candidate of parsed.candidateDefects) {
+    // Same ADR-0001 invariant as flags, applied at the document-defect
+    // level per ADR-0008: a defect whose citation doesn't resolve against
+    // the input text is never returned, not merely flagged low-confidence.
+    if (!documentText.includes(candidate.citation)) {
+      console.warn(
+        "analyzeDocument: dropped a candidate document defect because its " +
+          "citation did not resolve as an exact substring of documentText " +
+          "(ADR-0001, applied per ADR-0008).",
+        { defectType: candidate.defectType, citation: candidate.citation }
+      );
+      continue;
+    }
+
+    documentDefects.push({
+      defectType: candidate.defectType,
+      description: candidate.description,
+      citation: candidate.citation,
+    });
+  }
+
   // Hard guarantee: this should always pass given the construction above,
   // but validate anyway rather than silently returning a malformed shape.
   const validatedFlags = z.array(FlagSchema).parse(flags);
+  const validatedDefects = z.array(DocumentDefectSchema).parse(documentDefects);
 
-  return { summary, flags: validatedFlags };
+  return { summary, flags: validatedFlags, documentDefects: validatedDefects };
 }

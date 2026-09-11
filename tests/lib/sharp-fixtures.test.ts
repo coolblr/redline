@@ -78,6 +78,7 @@ describe("sharp-indemnification fixture (all three exposure combinations)", () =
     const client = createStubClient({
       summary: "Three standalone indemnification clauses for review.",
       candidateFlags: expectedFlags.map(indemnificationCandidate),
+      candidateDefects: [],
     });
 
     const { flags } = await analyzeDocument(sharpIndemnificationText, DEFAULT_RED_LINES, {
@@ -101,6 +102,7 @@ describe("sharp-ip-assignment fixture (all three ownership timings)", () => {
     const client = createStubClient({
       summary: "Three standalone ip-assignment clauses for review.",
       candidateFlags: expectedFlags.map(ipAssignmentCandidate),
+      candidateDefects: [],
     });
 
     const { flags } = await analyzeDocument(sharpIpAssignmentText, DEFAULT_RED_LINES, {
@@ -131,6 +133,7 @@ describe("sharp-ip-assignment fixture (all three ownership timings)", () => {
           rationale: "Stub rationale with a missing timing fact.",
         },
       ],
+      candidateDefects: [],
     });
 
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});

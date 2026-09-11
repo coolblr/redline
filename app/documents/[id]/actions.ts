@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { analyzeDocument } from "@/lib/seams/analyze-document";
 import { filterFlagsByRedLines } from "@/lib/red-lines";
 import { getOrSeedRedLines } from "@/lib/red-lines-store";
-import type { Flag } from "@/lib/domain-types";
+import type { DocumentDefect, Flag } from "@/lib/domain-types";
 
 // Server Action bound to a specific document id from the page (a Server
 // Component), per Next.js's pattern for passing extra arguments into a
@@ -43,7 +43,7 @@ export async function runAnalysis(documentId: string): Promise<void> {
 
   const userRedLines = await getOrSeedRedLines(supabase, user.id);
 
-  const { summary, flags: allFlags } = await analyzeDocument(
+  const { summary, flags: allFlags, documentDefects } = await analyzeDocument(
     (document.extracted_text as string) ?? "",
     userRedLines
   );
@@ -77,6 +77,21 @@ export async function runAnalysis(documentId: string): Promise<void> {
 
     if (flagsError) {
       throw new Error("Couldn't save the flagged clauses. Try again.");
+    }
+  }
+
+  if (documentDefects.length > 0) {
+    const { error: defectsError } = await supabase.from("document_defects").insert(
+      documentDefects.map((defect: DocumentDefect) => ({
+        document_id: documentId,
+        defect_type: defect.defectType,
+        description: defect.description,
+        citation: defect.citation,
+      }))
+    );
+
+    if (defectsError) {
+      throw new Error("Couldn't save the document defects. Try again.");
     }
   }
 

@@ -5,8 +5,8 @@
 // schema mismatch, parsing failure) before later tickets (05/06/08/09)
 // build on this seam.
 //
-// Kept deliberately simple and easy to extend: ticket 06 will add
-// document defects, 08 counter-offers, 09 Q&A to this same script.
+// Kept deliberately simple and easy to extend: ticket 06 adds document
+// defects below; 08 counter-offers and 09 Q&A are still to come.
 
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -52,7 +52,10 @@ async function main() {
   const fixturePath = path.join(__dirname, "..", "tests", "fixtures", "adhesion-contract.txt");
   const documentText = readFileSync(fixturePath, "utf-8");
 
-  const { summary, flags } = await analyzeDocument(documentText, DEFAULT_RED_LINES);
+  const { summary, flags, documentDefects } = await analyzeDocument(
+    documentText,
+    DEFAULT_RED_LINES
+  );
 
   console.log("=== Summary ===");
   console.log(summary);
@@ -63,6 +66,14 @@ async function main() {
     console.log(
       `${flag.clauseType} | ${flag.severityTier} | ${flag.treatmentDepth} | ${flag.standardOrUnusual} | ${flag.citation}`
     );
+  }
+  console.log();
+  console.log("=== Document defects ===");
+  if (documentDefects.length === 0) {
+    console.log("(none found)");
+  }
+  for (const defect of documentDefects) {
+    console.log(`${defect.defectType} | ${defect.citation}`);
   }
 }
 
