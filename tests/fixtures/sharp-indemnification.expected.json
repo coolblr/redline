@@ -1,0 +1,28 @@
+{
+  "flags": [
+    {
+      "clauseType": "indemnification",
+      "sourceSentence": "Contractor shall indemnify, defend, and hold harmless Client, its affiliates, officers, and employees from any and all third-party claims, losses, damages, and expenses, including attorneys' fees, arising out of or in connection with Contractor's performance under this Agreement, without limitation as to amount.",
+      "expectedSeverityTier": "top",
+      "expectedStandardOrUnusual": "unusual",
+      "expectedTreatmentDepth": "sharp",
+      "note": "Clause A: uncapped ('without limitation as to amount') and one-sided -- Section 9.2 expressly removes any reciprocal duty for Client to indemnify Contractor."
+    },
+    {
+      "clauseType": "indemnification",
+      "sourceSentence": "Contractor shall indemnify, defend, and hold harmless Client from third-party claims arising out of Contractor's gross negligence or willful misconduct in performing the Services, provided that Contractor's total indemnification liability under this Section 11 shall not exceed fifteen thousand dollars ($15,000) in the aggregate.",
+      "expectedSeverityTier": "middle",
+      "expectedStandardOrUnusual": "unusual",
+      "expectedTreatmentDepth": "sharp",
+      "note": "Clause B: capped at a specific numeric figure ($15,000) but still one-sided -- Section 11.2 confirms Client owes Contractor no reciprocal indemnity and carries no cap of its own anywhere in the agreement."
+    },
+    {
+      "clauseType": "indemnification",
+      "sourceSentence": "Each party's obligation to indemnify the other under this Section 6 shall not exceed the total fees paid or payable under this Agreement, and this cap and indemnification obligation apply equally and reciprocally to both Client and Contractor.",
+      "expectedSeverityTier": "cite-only",
+      "expectedStandardOrUnusual": "standard",
+      "expectedTreatmentDepth": "sharp",
+      "note": "Clause C: capped at total fees paid or payable, and the cap and the underlying obligation both apply equally and reciprocally to both parties -- bounded, symmetric exposure."
+    }
+  ]
+}

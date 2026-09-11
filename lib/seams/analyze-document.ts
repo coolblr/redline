@@ -20,7 +20,11 @@ import {
   type Flag,
 } from "@/lib/domain-types";
 import { openRouterClient, type OpenRouterClient } from "@/lib/openrouter";
-import { computeSeverityTier, computeTreatmentDepth } from "@/lib/seams/severity";
+import {
+  computeIpAssignmentSeverityTier,
+  computeSeverityTier,
+  computeTreatmentDepth,
+} from "@/lib/seams/severity";
 import { findOutcomePredictionPhrases } from "@/lib/copy-checks";
 import type { RedLine } from "@/lib/red-lines";
 
@@ -29,11 +33,18 @@ import type { RedLine } from "@/lib/red-lines";
 // facts, not a severityTier label (that's computed after citation
 // resolution, see computeSeverityTier).
 
+const IpAssignmentTimingSchema = z.enum(["on-creation", "on-delivery", "on-full-payment"]);
+
 const RawCandidateFlagSchema = z.object({
   clauseType: ClauseTypeSchema,
   citation: z.string().min(1),
   isExposureCapped: z.boolean(),
   isMutual: z.boolean(),
+  // Meaningful only when clauseType is "ip-assignment" -- null for every
+  // other clause type. Required-but-nullable (not optional) so the
+  // OpenRouter json_schema `required` list stays satisfied under
+  // strict: true, matching isExposureCapped/isMutual's pattern.
+  ipAssignmentTiming: IpAssignmentTimingSchema.nullable(),
   standardOrUnusual: StandardOrUnusualSchema,
   rationale: z.string().min(1),
 });
@@ -70,6 +81,10 @@ const ANALYSIS_JSON_SCHEMA = {
             citation: { type: "string" },
             isExposureCapped: { type: "boolean" },
             isMutual: { type: "boolean" },
+            ipAssignmentTiming: {
+              type: ["string", "null"],
+              enum: ["on-creation", "on-delivery", "on-full-payment", null],
+            },
             standardOrUnusual: { type: "string", enum: ["standard", "unusual"] },
             rationale: { type: "string" },
           },
@@ -78,6 +93,7 @@ const ANALYSIS_JSON_SCHEMA = {
             "citation",
             "isExposureCapped",
             "isMutual",
+            "ipAssignmentTiming",
             "standardOrUnusual",
             "rationale",
           ],
@@ -107,6 +123,7 @@ For each candidate flag, report:
 - isMutual: true if the same treatment (a cap, or the lack of one) applies equally to both parties. false if one party gets a cap or protection the other doesn't.
 
 Worked example, because this is the case most tools get wrong: "Client's liability shall not exceed $25,000, while Contractor's liability shall be uncapped." Report isExposureCapped: true (a $25,000 ceiling exists in the clause) and isMutual: false (the ceiling protects only the Client, not Contractor). Do not report isExposureCapped: false just because the User's own side of the clause is the uncapped one -- a cap that exists but is applied unevenly is the capped-and-one-sided pattern, not the fully-uncapped pattern. Fully uncapped means no cap appears anywhere in the clause for anyone, as in "Contractor shall indemnify Client ... without limitation as to amount."
+- ipAssignmentTiming: for clauseType "ip-assignment" only -- report which of three timings the clause's own language supports: "on-creation" if ownership vests in Client as soon as the work is created (including "upon creation," work-made-for-hire language that vests immediately, or ownership stated as independent of payment), "on-delivery" if ownership vests when Contractor delivers or completes the work but before Client has paid for it, or "on-full-payment" if ownership vests only once Client has paid in full (the safe pattern). Base this only on what the clause actually says -- if it's genuinely ambiguous, pick the closest supported reading rather than guessing wildly. For every other clauseType, report ipAssignmentTiming: null.
 - standardOrUnusual: "standard" if this is expected boilerplate for a freelance or service agreement, "unusual" if it's atypical for this kind of document. This is independent of how serious the clause is -- a clause can be standard and still worth real attention (arbitration is the clearest example).
 - rationale: state the pattern in the clause, never predict an outcome. Acceptable: "this pattern is usually unfavorable to the party with less negotiating leverage." Forbidden: "you would lose in court over this," "this clause is unenforceable," or any other forecast of what a court or counterparty would actually do.
 
@@ -175,7 +192,28 @@ export async function analyzeDocument(
       continue;
     }
 
-    const severityTier = computeSeverityTier(candidate.isExposureCapped, candidate.isMutual);
+    let severityTier;
+    if (candidate.clauseType === "ip-assignment") {
+      // IP-assignment's danger axis is timing, not exposure/mutuality
+      // (PRD.md "My red lines"): ownership transfer before or independent
+      // of payment is the dangerous pattern, not caps or mutual exposure.
+      let timing = candidate.ipAssignmentTiming;
+      if (timing === null) {
+        // ADR-0006, optimize against misses: if the model didn't report a
+        // timing for an ip-assignment clause despite the prompt
+        // instruction, assume the most dangerous reading rather than
+        // silently under-severity a flag the User needs to see.
+        console.warn(
+          "analyzeDocument: ip-assignment candidate flag had a null " +
+            "ipAssignmentTiming; falling back to 'on-creation' (ADR-0006).",
+          { citation: candidate.citation }
+        );
+        timing = "on-creation";
+      }
+      severityTier = computeIpAssignmentSeverityTier(timing);
+    } else {
+      severityTier = computeSeverityTier(candidate.isExposureCapped, candidate.isMutual);
+    }
     const treatmentDepth = computeTreatmentDepth(candidate.clauseType);
 
     let rationale = candidate.rationale;

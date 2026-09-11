@@ -36,6 +36,17 @@ type ExpectedFixtureFlag = {
   expectedTreatmentDepth: string;
 };
 
+// Inverts computeIpAssignmentSeverityTier: given the expected tier, derive
+// the ipAssignmentTiming fact a stub payload would need to report for
+// analyzeDocument to arrive back at that tier.
+function ipAssignmentTimingForTier(
+  tier: SeverityTier
+): "on-creation" | "on-delivery" | "on-full-payment" {
+  if (tier === "top") return "on-creation";
+  if (tier === "middle") return "on-delivery";
+  return "on-full-payment";
+}
+
 function candidateFromExpected(expected: ExpectedFixtureFlag, rationale: string) {
   const facts = factsForTier(expected.expectedSeverityTier);
   return {
@@ -43,6 +54,10 @@ function candidateFromExpected(expected: ExpectedFixtureFlag, rationale: string)
     citation: expected.sourceSentence,
     isExposureCapped: facts.isExposureCapped,
     isMutual: facts.isMutual,
+    ipAssignmentTiming:
+      expected.clauseType === "ip-assignment"
+        ? ipAssignmentTimingForTier(expected.expectedSeverityTier)
+        : null,
     standardOrUnusual: expected.expectedStandardOrUnusual,
     rationale,
   };
@@ -91,6 +106,7 @@ function buildAdhesionCandidateFlags() {
       citation: BROKEN_CITATION,
       isExposureCapped: true,
       isMutual: false,
+      ipAssignmentTiming: null,
       standardOrUnusual: "unusual" as StandardOrUnusual,
       rationale: "States a termination pattern with no notice period and no kill fee.",
     },
@@ -113,6 +129,7 @@ const CLEAN_STUB_RESPONSE = {
         "Each party's obligation to indemnify the other under this Section 7 shall not exceed the total fees paid or payable under this Agreement.",
       isExposureCapped: true,
       isMutual: true,
+      ipAssignmentTiming: null,
       standardOrUnusual: "standard" as StandardOrUnusual,
       rationale: "States a liability cap shared equally by both parties, with no asymmetry.",
     },
@@ -122,6 +139,7 @@ const CLEAN_STUB_RESPONSE = {
         "In no event shall either party's total liability arising out of or relating to this Agreement exceed the total fees paid or payable under this Agreement.",
       isExposureCapped: true,
       isMutual: true,
+      ipAssignmentTiming: null,
       standardOrUnusual: "standard" as StandardOrUnusual,
       rationale: "States a liability cap that applies equally to both parties.",
     },

@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { computeSeverityTier, computeTreatmentDepth } from "@/lib/seams/severity";
+import {
+  computeIpAssignmentSeverityTier,
+  computeSeverityTier,
+  computeTreatmentDepth,
+} from "@/lib/seams/severity";
 import { ClauseTypeSchema } from "@/lib/domain-types";
 
 describe("computeSeverityTier", () => {
@@ -18,6 +22,24 @@ describe("computeSeverityTier", () => {
 
   it("capped + mutual -> cite-only", () => {
     expect(computeSeverityTier(true, true)).toBe("cite-only");
+  });
+});
+
+describe("computeIpAssignmentSeverityTier", () => {
+  // PRD.md's own three-way timing test for ip-assignment (My red lines):
+  // "severity depends on when ownership transfers -- on creation, on
+  // delivery, or only on full payment. Transfer that happens before or
+  // independent of payment is the dangerous pattern."
+  it("on-creation -> top (rights transfer before any work product exists)", () => {
+    expect(computeIpAssignmentSeverityTier("on-creation")).toBe("top");
+  });
+
+  it("on-delivery -> middle (transfers before payment, but after completed work)", () => {
+    expect(computeIpAssignmentSeverityTier("on-delivery")).toBe("middle");
+  });
+
+  it("on-full-payment -> cite-only (matches the User's interest, the safe pattern)", () => {
+    expect(computeIpAssignmentSeverityTier("on-full-payment")).toBe("cite-only");
   });
 });
 

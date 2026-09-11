@@ -67,9 +67,9 @@ agent to write down everything else it would otherwise ask about, rather than st
 | 02 | Upload & browser-side parse | done | `lib/parse-document.ts` (.txt/.pdf/.docx, client-side, real fixture tests, no OCR fallback); upload at `/app` (matches existing landing-page CTA); `app/documents/[id]/page.tsx`; `supabase/migrations/0001_documents.sql` (unverified against a live DB — no Supabase CLI/Docker here) |
 | 03 | Analysis schema design | done | `lib/domain-types.ts` (Flag/DocumentDefect/CounterOffer/Answer zod schemas + types, 7-value ClauseType incl. arbitration); `supabase/migrations/0002_analysis_schema.sql` (flags/document_defects/counter_offers/qa_history, owner-scoped RLS via documents join, unverified against a live DB); honest-skip round-trip smoke test at `tests/integration/analysis-schema.smoke.test.ts` |
 | 04 | analyzeDocument core | done | `lib/seams/analyze-document.ts` + `lib/seams/severity.ts` (severityTier/treatmentDepth computed deterministically in code, never self-reported by the model — the actual correctness lever for the ADR-0005 middle-tier case); ledger UI on the document page per DESIGN.md; `npm run smoke` exists and was run live (see below) |
-| 05 | Sharp-treatment tuning | pending | |
+| 05 | Sharp-treatment tuning | done | IP-assignment gets its own timing-based tier function (deterministic, not model-self-reported); `npm run eval:sharp` reports sharp/generic as separate numbers (6/6, 4/4 live) |
 | 06 | Document defects | pending | |
-| 07 | Editable red lines | pending | |
+| 07 | Editable red lines | done | Per-user `red_lines` table + `/red-lines` editor; filtering by enabled clause type happens outside analyzeDocument (`filterFlagsByRedLines`), deterministic and stub-testable — built in parallel with 05, no file overlap |
 | 08 | draftCounterOffer seam | pending | |
 | 09 | answerQuestion seam | pending | |
 | 10 | Saved document library | pending | |
@@ -131,6 +131,15 @@ agent to write down everything else it would otherwise ask about, rather than st
   recall-bar clause type per spec.md — presence matters more than exact tier here,
   flagged for whoever tunes ticket 05/06 next). No flags were silently dropped for a
   bad citation in either run.
+
+- **Ticket 07 — `supabase/migrations/0004_red_lines.sql`.** Same constraint as prior
+  migrations: no Supabase CLI/Docker here, unapplied.
+- **Tickets 05 and 07 were built in parallel** (different seams of the spec, no shared
+  files — verified by the orchestrator after both landed: `git status` showed no
+  overlapping paths, `npm test`/`npm run build` passed cleanly against the merged
+  tree). 05 owns `lib/seams/analyze-document.ts`/`severity.ts`; 07 owns
+  `lib/red-lines.ts`, `app/red-lines/`, and a single call-site edit in
+  `app/documents/[id]/actions.ts`.
 
 ## Commands to run first
 

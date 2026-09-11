@@ -1,0 +1,21 @@
+IP ASSIGNMENT CLAUSE REVIEW PACKET
+
+The following three intellectual property assignment provisions are drawn from three separate freelance services agreements, each between a Client and a Contractor, reproduced here as standalone clauses for review.
+
+CLAUSE A: Cobalt Robotics Development Agreement, Section 5
+
+5.1 All work product and deliverables created by Contractor under this Agreement shall be deemed works made for hire, and all right, title, and interest in such work product and deliverables shall vest in Client automatically and immediately upon creation, regardless of whether Client has paid any fees then due under this Agreement.
+
+5.2 Contractor waives any claim to withhold delivery of, or access to, any work product on the grounds that Client has not yet paid for it, since ownership already resides with Client from the moment the work product is created.
+
+CLAUSE B: Meridian Publishing Illustration Agreement, Section 4
+
+4.1 All right, title, and interest in the illustrations and related deliverables created by Contractor under this Agreement shall transfer to Client upon Contractor's delivery of the final files to Client, whether or not Client has paid the invoice covering those deliverables at the time of delivery.
+
+4.2 Prior to delivery, Contractor retains all ownership rights in the illustrations and may decline to deliver final files until Contractor deems the work complete, but once delivered, ownership passes to Client regardless of the payment status of the associated invoice.
+
+CLAUSE C: Alderwood Brand Studio Agreement, Section 5
+
+5.1 Contractor retains all right, title, and interest in the deliverables created under this Agreement until Client has paid in full all fees due under this Agreement.
+
+5.2 Upon Client's payment in full of all fees due under this Agreement, and not before, all right, title, and interest in the deliverables shall transfer to Client, and Contractor shall have no further ownership interest in the deliverables at that point.

@@ -3,7 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { analyzeDocument } from "@/lib/seams/analyze-document";
-import { DEFAULT_RED_LINES } from "@/lib/red-lines";
+import { filterFlagsByRedLines } from "@/lib/red-lines";
+import { getOrSeedRedLines } from "@/lib/red-lines-store";
 import type { Flag } from "@/lib/domain-types";
 
 // Server Action bound to a specific document id from the page (a Server
@@ -40,10 +41,17 @@ export async function runAnalysis(documentId: string): Promise<void> {
     throw new Error("Couldn't find that document.");
   }
 
-  const { summary, flags } = await analyzeDocument(
+  const userRedLines = await getOrSeedRedLines(supabase, user.id);
+
+  const { summary, flags: allFlags } = await analyzeDocument(
     (document.extracted_text as string) ?? "",
-    DEFAULT_RED_LINES
+    userRedLines
   );
+
+  // analyzeDocument always tries to extract every checkable clause type;
+  // which of those the User actually wants to see is decided here, after
+  // the fact, based on which clause types they've enabled (lib/red-lines.ts).
+  const flags = filterFlagsByRedLines(allFlags, userRedLines);
 
   const { error: summaryError } = await supabase
     .from("documents")

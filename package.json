@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "smoke": "tsx scripts/smoke.ts"
+    "smoke": "tsx scripts/smoke.ts",
+    "eval:sharp": "tsx scripts/eval-sharp.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

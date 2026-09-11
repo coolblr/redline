@@ -57,6 +57,11 @@ export default async function UploadPage() {
           there&rsquo;s no text on the page for Redline to read.
         </p>
         <UploadForm />
+        <p className={styles.notice}>
+          <a className={styles.link} href="/red-lines">
+            Edit what Redline flags for you
+          </a>
+        </p>
       </div>
     </main>
   );

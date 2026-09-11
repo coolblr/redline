@@ -1,0 +1,28 @@
+{
+  "flags": [
+    {
+      "clauseType": "ip-assignment",
+      "sourceSentence": "All work product and deliverables created by Contractor under this Agreement shall be deemed works made for hire, and all right, title, and interest in such work product and deliverables shall vest in Client automatically and immediately upon creation, regardless of whether Client has paid any fees then due under this Agreement.",
+      "expectedSeverityTier": "top",
+      "expectedStandardOrUnusual": "unusual",
+      "expectedTreatmentDepth": "sharp",
+      "note": "Clause A: ownership vests in Client immediately upon creation, explicitly independent of payment -- the on-creation timing PRD.md names as the dangerous pattern."
+    },
+    {
+      "clauseType": "ip-assignment",
+      "sourceSentence": "All right, title, and interest in the illustrations and related deliverables created by Contractor under this Agreement shall transfer to Client upon Contractor's delivery of the final files to Client, whether or not Client has paid the invoice covering those deliverables at the time of delivery.",
+      "expectedSeverityTier": "middle",
+      "expectedStandardOrUnusual": "unusual",
+      "expectedTreatmentDepth": "sharp",
+      "note": "Clause B: ownership transfers on delivery of the final files, before payment -- still before/independent of payment, but only after the work is completed, unlike Clause A's on-creation transfer."
+    },
+    {
+      "clauseType": "ip-assignment",
+      "sourceSentence": "Upon Client's payment in full of all fees due under this Agreement, and not before, all right, title, and interest in the deliverables shall transfer to Client, and Contractor shall have no further ownership interest in the deliverables at that point.",
+      "expectedSeverityTier": "cite-only",
+      "expectedStandardOrUnusual": "standard",
+      "expectedTreatmentDepth": "sharp",
+      "note": "Clause C: ownership transfers only upon payment in full -- the safe pattern PRD.md names, matching the User's own interest."
+    }
+  ]
+}
