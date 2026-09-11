@@ -1,8 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { runAnalysis } from "./actions";
+import { QaForm } from "./qa-form";
 import styles from "./document.module.css";
 import ledgerStyles from "./ledger.module.css";
 import defectsStyles from "./defects.module.css";
+import qaStyles from "./qa.module.css";
 import type {
   ClauseType,
   DefectType,
@@ -36,6 +38,14 @@ type PersistedCounterOffer = {
   id: string;
   flag_id: string;
   text: string;
+};
+
+type PersistedQaEntry = {
+  id: string;
+  question: string;
+  answer: string;
+  addressed_by_document: boolean;
+  created_at: string;
 };
 
 const DEFECT_TYPE_LABELS: Record<DefectType, string> = {
@@ -201,6 +211,18 @@ export default async function DocumentPage({ params }: Props) {
     );
   }
 
+  // Q&A history is fetched regardless of analysis status -- unlike flags,
+  // defects, and counter-offers above, answerQuestion only needs
+  // extracted_text (which exists from upload alone), not analyzeDocument's
+  // output, so the Q&A section is available before a User has run
+  // analysis. See the report for this ticket for the reasoning.
+  const { data: qaRows } = await supabase
+    .from("qa_history")
+    .select("id, question, answer, addressed_by_document, created_at")
+    .eq("document_id", document.id)
+    .order("created_at", { ascending: false });
+  const qaHistory = (qaRows as PersistedQaEntry[] | null) ?? [];
+
   return (
     <main className={styles.page}>
       <a className={styles.wordmark} href="/">
@@ -312,12 +334,33 @@ export default async function DocumentPage({ params }: Props) {
           </div>
         )}
 
+        <p className={styles.sectionLabel}>Ask about this document</p>
+        <section className={qaStyles.qa} aria-label="Ask about this document">
+          <QaForm documentId={document.id as string} />
+
+          {qaHistory.length === 0 ? (
+            <p className={qaStyles.empty}>Nothing asked about this document yet.</p>
+          ) : (
+            <div className={qaStyles.history}>
+              {qaHistory.map((entry) => (
+                <div className={qaStyles.entry} key={entry.id}>
+                  <p className={qaStyles.question}>{entry.question}</p>
+                  {!entry.addressed_by_document && (
+                    <span className={qaStyles.notAddressedTag}>
+                      Not addressed by this document
+                    </span>
+                  )}
+                  <p className={qaStyles.answer}>{entry.answer}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
         <p className={styles.sectionLabel}>Extracted text</p>
         <pre className={styles.extractedText}>
           {(document.extracted_text as string) || "(No text was extracted from this file.)"}
         </pre>
-
-        {/* Counter-offers and Q&A render here once available */}
       </div>
     </main>
   );

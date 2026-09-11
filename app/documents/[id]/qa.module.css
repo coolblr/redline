@@ -1,0 +1,132 @@
+/* Ask about this document (ticket 09). A new kind of UI element not in
+   DESIGN.md's component list -- kept on-brand rather than inventing a new
+   visual language: same rule-line vocabulary as the ledger and defects
+   sections (full-ink open border, slate-18% dividers between entries), same
+   Label style for the small headers. Redline's own answer text is upright
+   Archivo, never Spectral italic or quoted (DESIGN.md "The Quote-Is-Serif
+   Rule") -- it's generated output, not a quotation from the User's
+   document, same reasoning as the counter-offer text in ledger.module.css. */
+
+.qa {
+  width: 100%;
+  border-top: 1px solid var(--ink);
+}
+
+.form {
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--slate-18);
+}
+
+.formRow {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--slate-18);
+  border-radius: 3px;
+  padding: 0.65rem 0.9rem;
+}
+
+.input:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: 1px;
+}
+
+.input:disabled {
+  color: var(--ink-70);
+}
+
+.submitButton {
+  display: inline-flex;
+  align-items: center;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  padding: 0.65rem 1.25rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: #12191f;
+}
+
+.submitButton:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.submitButton:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.formError {
+  font-size: 0.875rem;
+  color: var(--flag);
+  margin: 0.6rem 0 0;
+}
+
+.empty {
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--ink);
+  font-size: 0.9375rem;
+  color: var(--ink-70);
+}
+
+.history {
+  width: 100%;
+}
+
+.entry {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--slate-18);
+}
+
+.entry:last-of-type {
+  border-bottom: 1px solid var(--ink);
+}
+
+.question {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--ink);
+  margin: 0 0 0.4rem;
+}
+
+/* The answer: Redline's own generated text, upright Archivo, never
+   Spectral italic and never quoted -- it isn't a quotation from the
+   User's document. */
+.answer {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--ink-70);
+  margin: 0;
+  max-width: 56ch;
+}
+
+.notAddressedTag {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--slate);
+  border: 1px solid var(--slate-18);
+  border-radius: 3px;
+  padding: 0.2rem 0.5rem;
+  margin: 0 0 0.5rem;
+}

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { analyzeDocument } from "@/lib/seams/analyze-document";
 import { draftCounterOffer } from "@/lib/seams/draft-counter-offer";
+import { answerQuestion } from "@/lib/seams/answer-question";
 import { filterFlagsByRedLines } from "@/lib/red-lines";
 import { getOrSeedRedLines } from "@/lib/red-lines-store";
 import type { DocumentDefect, Flag } from "@/lib/domain-types";
@@ -160,6 +161,61 @@ export async function runAnalysis(documentId: string): Promise<void> {
     if (defectsError) {
       throw new Error("Couldn't save the document defects. Try again.");
     }
+  }
+
+  revalidatePath(`/documents/${documentId}`);
+}
+
+// Server Action for the document-scoped Q&A box (ticket 09). Doesn't
+// require analysis to have run first -- it only needs the document's
+// extracted_text, which exists from upload alone (see the page's comment
+// on why Q&A is available before analysis).
+//
+// Re-verifies the signed-in User owns the document the same way
+// runAnalysis does above -- the page itself also gates access, but this is
+// the established defense-in-depth convention in this codebase, not
+// something to skip because the UI already checks.
+export async function askQuestion(documentId: string, question: string): Promise<void> {
+  const trimmedQuestion = question.trim();
+  if (!trimmedQuestion) {
+    throw new Error("Enter a question before submitting.");
+  }
+
+  const supabase = await createClient();
+  if (!supabase) {
+    throw new Error("No account system is connected yet.");
+  }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    throw new Error("Sign in to ask a question.");
+  }
+
+  const { data: document } = await supabase
+    .from("documents")
+    .select("id, extracted_text")
+    .eq("id", documentId)
+    .maybeSingle();
+
+  if (!document) {
+    throw new Error("Couldn't find that document.");
+  }
+
+  const extractedText = (document.extracted_text as string) ?? "";
+
+  const answer = await answerQuestion(extractedText, trimmedQuestion);
+
+  const { error: qaError } = await supabase.from("qa_history").insert({
+    document_id: documentId,
+    question: trimmedQuestion,
+    answer: answer.text,
+    addressed_by_document: answer.addressedByDocument,
+  });
+
+  if (qaError) {
+    throw new Error("Couldn't save that answer. Try again.");
   }
 
   revalidatePath(`/documents/${documentId}`);

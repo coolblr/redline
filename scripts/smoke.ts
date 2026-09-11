@@ -12,6 +12,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { analyzeDocument } from "../lib/seams/analyze-document";
 import { draftCounterOffer } from "../lib/seams/draft-counter-offer";
+import { answerQuestion } from "../lib/seams/answer-question";
 import { DEFAULT_RED_LINES } from "../lib/red-lines";
 
 // No dotenv dependency: .env.local is a handful of KEY=VALUE lines, so a
@@ -88,6 +89,32 @@ async function main() {
         : counterOffer.text;
     console.log(`${flag.clauseType} | ${truncated}`);
   }
+
+  // Q&A (ticket 09): two fixed questions against the real model -- one the
+  // document plainly addresses, one it doesn't. The known-absent case
+  // (arbitration against clean-contract.txt, which was deliberately built
+  // with no arbitration/class-action-waiver clause -- see
+  // tests/fixtures/clean-contract.txt and .expected.json) is the real
+  // proof of this ticket's core claim: the stub tests in
+  // tests/lib/answer-question.test.ts only prove the seam's plumbing.
+  console.log();
+  console.log("=== Q&A: known-addressed question ===");
+  const addressedQuestion = "Does this contract include an indemnification clause?";
+  console.log(`Question: ${addressedQuestion}`);
+  const addressedAnswer = await answerQuestion(documentText, addressedQuestion);
+  console.log(`Answer: ${addressedAnswer.text}`);
+  console.log(`addressedByDocument: ${addressedAnswer.addressedByDocument}`);
+
+  const cleanFixturePath = path.join(__dirname, "..", "tests", "fixtures", "clean-contract.txt");
+  const cleanDocumentText = readFileSync(cleanFixturePath, "utf-8");
+
+  console.log();
+  console.log("=== Q&A: known-absent-answer question ===");
+  const absentQuestion = "Does this contract include an arbitration clause?";
+  console.log(`Question: ${absentQuestion}`);
+  const absentAnswer = await answerQuestion(cleanDocumentText, absentQuestion);
+  console.log(`Answer: ${absentAnswer.text}`);
+  console.log(`addressedByDocument: ${absentAnswer.addressedByDocument}`);
 }
 
 main().catch((err) => {
