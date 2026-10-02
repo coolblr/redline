@@ -136,7 +136,7 @@ PRD says: nothing about onboarding. Items 1 and 9 are reachable only after a sec
 
 Severity: stops a reader
 
-Status: FIXED on branch fix-critical-findings (end-to-end check by hand: pending, see below). The sign-up call set no redirect, so Supabase sent the link to the Site URL, and nothing exchanged the `?code=` for a session. A new route, app/auth/callback/route.ts, now exchanges the code and sends the reader to /app (fixed destination, no `next` parameter, so it is not an open redirect); a missing, rejected or already-used code goes to /login; the sign-up call points the link at it. Five tests cover the route (they failed before it existed). The existing Supabase redirect URLs (`<origin>/**`) already cover /auth/callback, so no Supabase setting changed. Not yet checked end to end: that needs a real confirmation email to an address Supabase will deliver to (see finding 12).
+Status: FIXED on branch fix-critical-findings, CONFIRMED END TO END: a second Gmail account signed up on the local app, the confirmation email arrived, and clicking the link in the same browser landed on the upload page already signed in (the database shows the account's last sign-in at the same minute as its confirmation). The sign-up call set no redirect, so Supabase sent the link to the Site URL, and nothing exchanged the `?code=` for a session. A new route, app/auth/callback/route.ts, now exchanges the code and sends the reader to /app (fixed destination, no `next` parameter, so it is not an open redirect); a missing, rejected or already-used code goes to /login; the sign-up call points the link at it. Five tests cover the route (they failed before it existed). The existing Supabase redirect URLs (`<origin>/**`) already cover /auth/callback, so no Supabase setting changed. Not yet checked end to end: that needs a real confirmation email to an address Supabase will deliver to (see finding 12).
 
 ## 11. The landing page has no sign-in or create-account link
 
@@ -151,7 +151,7 @@ Severity: cosmetic (confusing, but there is a path)
 
 ## 12. A new reader with their own email may never receive the confirmation email
 
-Status: NOT reproduced. This comes from the course handbook, not from a test. Check it with a second email address before fixing anything.
+Status: NOT reproduced on 2026-10-02. A confirmation email was sent to a second Gmail address and arrived, and the account was confirmed. Still to rule out: whether that address is on the Supabase project's team (the handbook says only team members receive email until a custom mail sender is set up). If it is not a team member, this finding is closed; if it is, a client with an outside address may still get nothing. This comes from the course handbook, not from a test of an unrelated address.
 
 What the handbook says: until a custom mail sender is set up in Supabase, sign-in and confirmation emails are sent only to people on the Supabase project's own team, and a new project sends about two auth emails an hour. If true, a client who signs up with their own email gets no confirmation and cannot finish creating an account.
 
