@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { runAnalysis } from "./actions";
 import { QaForm } from "./qa-form";
+import { RunAnalysisButton } from "./run-analysis-button";
 import styles from "./document.module.css";
 import ledgerStyles from "./ledger.module.css";
 import defectsStyles from "./defects.module.css";
@@ -338,9 +339,7 @@ export default async function DocumentPage({ params }: Props) {
               clauses, cited to the exact sentence each one came from.
             </p>
             <form action={runAnalysis.bind(null, document.id as string)}>
-              <button type="submit" className={styles.runButton}>
-                Run analysis
-              </button>
+              <RunAnalysisButton />
             </form>
           </div>
         )}

@@ -136,3 +136,8 @@
 .runButton:active {
   transform: translateY(1px);
 }
+
+.runButton:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}

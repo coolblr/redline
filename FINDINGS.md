@@ -60,7 +60,7 @@ What happened: each flag row shows only the clause name, the quoted sentence, a 
 
 Severity: misleads a reader
 
-Status: FIXED on branch fix-critical-findings (checked by hand: pending). The label was always generated and saved (every stored arbitration flag is "standard"), and the page read it back, but the flag row never rendered it. It now shows "Standard" or "Unusual" beside the clause name. No automated test: the page needs a database and a signed-in user to render. Separate, not fixed here: the Exposure column derives "Uncapped" from the tier alone, so any Top flag (including IP assignment or scope creep) reads "Uncapped"; this belongs with the finding 2 product decision.
+Status: FIXED on branch fix-critical-findings (checked by hand: confirmed, Scope Creep reads Unusual and Arbitration reads Standard). The label was always generated and saved (every stored arbitration flag is "standard"), and the page read it back, but the flag row never rendered it. It now shows "Standard" or "Unusual" beside the clause name. No automated test: the page needs a database and a signed-in user to render. Separate, not fixed here: the Exposure column derives "Uncapped" from the tier alone, so any Top flag (including IP assignment or scope creep) reads "Uncapped"; this belongs with the finding 2 product decision.
 
 ## 5. "Run analysis" on a full contract shows no progress and never updates the page
 
@@ -74,6 +74,8 @@ PRD says: nothing about progress. This is a promise to the reader that the butto
 What happened: the button stays enabled and nothing changes (no spinner, no text, no disabled state). The result only appears after a manual reload. I saw this on 4 documents. The tiny documents (the one-liner, the empty file and the recipe) did update in place. A reader is likely to click again, which can start more model runs. On injection.txt I clicked about four times, so there were probably several runs. The long.txt double click may have started two. I did not count the actual runs.
 
 Severity: stops a reader (and spends model credit)
+
+Status: FIXED on branch fix-critical-findings (checked by hand: pending). The button was a plain submit button in a server component, so nothing showed while the 20 to 60 second model call ran, and a second click could start another paid analysis. It is now a small client component that disables itself and reads "Analyzing…" while the request is in flight. No automated test: it needs a browser. Not established: why the page needs a reload to show the result when the action finishes; check that by hand.
 
 ## 6. Double-clicking "Ask" records the question twice
 
