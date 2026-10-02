@@ -172,6 +172,22 @@ Severity: stops a reader
 
 Status: FIXED on branch fix-critical-findings (checked by hand: confirmed with a deliberately wrong API key, which gives the generic message; the page did not crash, the raw provider error stayed in the server log, and nothing was saved. The 429 wording itself is covered by unit tests only, since a real 429 cannot be triggered on demand). Run analysis now goes through a wrapper action (runAnalysisAction in app/documents/[id]/actions.ts) that catches the failure and returns a short message, shown under the button: "The analysis service is busy right now. Wait a few seconds and try again." for a 429, and "The analysis didn't finish. Try again in a moment." for anything else. The raw provider text is no longer shown (it stays in the server log). lib/analysis-errors.ts does the mapping; six tests cover it and failed before it existed. A 429 happens before anything is saved, so a retry is safe. No automatic retry was added. Not changed: the /demo page still prints the raw error.
 
+## 14. The landing page centres its content column; every other page left-aligns under the wordmark
+
+Found by hand (not by the testing agent).
+
+Steps:
+1. Open the landing page on a wide screen. The "Redline" wordmark is at the top left, and the content column sits near the middle of the page.
+2. Open /app, /library or /login. The column is at the left, under the wordmark.
+
+What happened: app/page.module.css sets `align-items: center` on `.main`, which centres the 46rem column. DESIGN.md contradicts itself here: the layout section says "centered on the page via flex", while its rules say to keep the column "left-aligned; this is an invoice register, not a centered marketing hero".
+
+PRD says: nothing about layout.
+
+Severity: cosmetic
+
+Status: DEFERRED until after the critical-fix branch is merged (the handbook says to fix nothing cosmetic first). Planned change: `align-items: flex-start` on `.main`, and make DESIGN.md's layout sentence agree with its own rule.
+
 ## Seen once
 
 - Q&A shows raw markdown symbols: the answer to "should I sign it" displays literal `**Indemnification (Section 7):**` and "- " list markers. I saw it in one answer only.
