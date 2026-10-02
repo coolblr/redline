@@ -46,6 +46,18 @@
   margin: 0 0 0.4rem;
 }
 
+/* Standard-or-unusual label beside the clause name. Same Label style as
+   the counter-offer label below: 600, 0.75rem, 0.08em, uppercase, Archivo. */
+.standardLabel {
+  margin-left: 0.6rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
 .citation {
   font-family: var(--font-display);
   font-style: italic;

@@ -69,6 +69,11 @@ const TIER_LABELS: Record<SeverityTier, string> = {
   "cite-only": "Cite-only",
 };
 
+const STANDARD_LABELS: Record<StandardOrUnusual, string> = {
+  standard: "Standard",
+  unusual: "Unusual",
+};
+
 const TIER_CLASS: Record<SeverityTier, string> = {
   top: ledgerStyles.tierTop,
   middle: ledgerStyles.tierMiddle,
@@ -291,6 +296,9 @@ export default async function DocumentPage({ params }: Props) {
                         <div className={ledgerStyles.clauseCell}>
                           <p className={ledgerStyles.clauseName}>
                             {CLAUSE_LABELS[flag.clause_type]}
+                            <span className={ledgerStyles.standardLabel}>
+                              {STANDARD_LABELS[flag.standard_or_unusual]}
+                            </span>
                           </p>
                           <p className={ledgerStyles.citation}>{flag.citation}</p>
                           {counterOffer ? (

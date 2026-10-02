@@ -60,6 +60,8 @@ What happened: each flag row shows only the clause name, the quoted sentence, a 
 
 Severity: misleads a reader
 
+Status: FIXED on branch fix-critical-findings (checked by hand: pending). The label was always generated and saved (every stored arbitration flag is "standard"), and the page read it back, but the flag row never rendered it. It now shows "Standard" or "Unusual" beside the clause name. No automated test: the page needs a database and a signed-in user to render. Separate, not fixed here: the Exposure column derives "Uncapped" from the tier alone, so any Top flag (including IP assignment or scope creep) reads "Uncapped"; this belongs with the finding 2 product decision.
+
 ## 5. "Run analysis" on a full contract shows no progress and never updates the page
 
 Steps:
