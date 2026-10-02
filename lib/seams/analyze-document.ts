@@ -198,6 +198,38 @@ function hasScopeCreepHedge(rationale: string): boolean {
 export const NOTHING_ABOVE_CITE_ONLY_SENTENCE =
   "Nothing in this document reached Redline's top or middle severity tier. Every clause below is cite-only.";
 
+// --- Citation resolution ----------------------------------------------------
+
+// Extracted PDF text keeps hard line breaks and runs of spaces inside
+// sentences; the model quotes the same sentence on one line. Match ignoring
+// whitespace differences, but hand back the document's own wording (ADR-0001:
+// the User must be able to find the cited sentence in their own document).
+// Returns null if the words themselves are not in the document.
+function makeCitationResolver(documentText: string): (citation: string) => string | null {
+  let collapsed = "";
+  const origin: number[] = [];
+  let i = 0;
+  while (i < documentText.length) {
+    origin.push(i);
+    if (/\s/.test(documentText[i])) {
+      collapsed += " ";
+      while (i < documentText.length && /\s/.test(documentText[i])) i++;
+    } else {
+      collapsed += documentText[i];
+      i++;
+    }
+  }
+
+  return (citation) => {
+    if (documentText.includes(citation)) return citation;
+    const wanted = citation.trim().replace(/\s+/g, " ");
+    if (wanted === "") return null;
+    const at = collapsed.indexOf(wanted);
+    if (at === -1) return null;
+    return documentText.slice(origin[at], origin[at + wanted.length - 1] + 1);
+  };
+}
+
 // --- The seam --------------------------------------------------------------
 
 export async function analyzeDocument(
@@ -217,13 +249,15 @@ export async function analyzeDocument(
 
   const parsed = RawAnalysisResponseSchema.parse(raw);
 
+  const resolveCitation = makeCitationResolver(documentText);
   const flags: Flag[] = [];
 
   for (const candidate of parsed.candidateFlags) {
     // ADR-0001, non-negotiable: a flag whose citation doesn't resolve
     // against the input text is a bug, not a low-confidence result. Drop
     // it entirely -- do not return it, do not throw for the whole call.
-    if (!documentText.includes(candidate.citation)) {
+    const citation = resolveCitation(candidate.citation);
+    if (citation === null) {
       console.warn(
         "analyzeDocument: dropped a candidate flag because its citation " +
           "did not resolve as an exact substring of documentText (ADR-0001).",
@@ -266,7 +300,7 @@ export async function analyzeDocument(
       severityTier,
       standardOrUnusual: candidate.standardOrUnusual,
       treatmentDepth,
-      citation: candidate.citation,
+      citation,
       rationale,
     });
   }
@@ -306,7 +340,8 @@ export async function analyzeDocument(
     // Same ADR-0001 invariant as flags, applied at the document-defect
     // level per ADR-0008: a defect whose citation doesn't resolve against
     // the input text is never returned, not merely flagged low-confidence.
-    if (!documentText.includes(candidate.citation)) {
+    const citation = resolveCitation(candidate.citation);
+    if (citation === null) {
       console.warn(
         "analyzeDocument: dropped a candidate document defect because its " +
           "citation did not resolve as an exact substring of documentText " +
@@ -319,7 +354,7 @@ export async function analyzeDocument(
     documentDefects.push({
       defectType: candidate.defectType,
       description: candidate.description,
-      citation: candidate.citation,
+      citation,
     });
   }
 
