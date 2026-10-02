@@ -15,6 +15,8 @@ What happened: this contract refers to Schedule 1 "attached hereto", but the tex
 
 Severity: misleads a reader
 
+Status: partly fixed in PR #1 (ae2f396). That PR fixes one cause: valid quotes dropped because PDF text has mid-sentence line breaks (a real flooring PDF went from 0-1 flags to 4-6, all quotes verbatim). Not covered: (a) the `.txt` runs above: NOT REPRODUCED. Re-running adhesion-contract.txt gave 2 defects (dangling reference, ambiguous term), and the database shows the testing agent's own runs of injection.txt, adhesion-contract.txt and long.txt had 3, 3 and 2 defects saved, so the "none found" it reported does not match what was stored (it may have read the page before the result loaded; see finding 5). Skipped for the homework. (b) The page still prints "none found" when every candidate was dropped, because the dropped count is not stored. That is not reproducible now that the line-break cause is fixed.
+
 ## 2. The same contract gets different severity tiers on different runs, and some are wrong by the PRD's own tests
 
 Steps:
@@ -97,6 +99,55 @@ Steps:
 What happened: the card order changed (it began Indemnification, IP, ..., Arbitration and later began with Arbitration). The textareas have no length limit. I saved about 3,000 characters without any warning. This is the text that drives the analysis.
 
 Severity: cosmetic
+
+## Found by hand while setting up (not by the testing agent)
+
+The PRD says nothing about sign-up or onboarding. These are rated against what it does promise: item 1 ("Accept an uploaded freelance or service agreement") and item 9 ("Save a library of the User's past documents"), neither of which a new reader can reach without signing in. Whether the intended flow is the one below is a product decision.
+
+## 9. After signing in, the reader lands on the leftover "OpenRouter demo" page, not the product
+
+Steps:
+1. Open /login on the live app or locally, sign in with email and password.
+2. Note where you land.
+
+What happened: the reader is sent to /demo, a developer test page ("OpenRouter demo", a "Send a test message" button). It has no link to the upload page (/app) or the library (/library). The signed-in state on /login also links to "Go to the demo". Seen by hand, repeatedly, on both local and live.
+
+PRD says: items 1 and 9 above. The reader's first screen after signing in does not lead to either.
+
+Severity: stops a reader
+
+## 10. The email confirmation link does not sign the reader in
+
+Steps:
+1. On /login, choose create account, enter an email and password.
+2. Click the confirmation link in the email, in the same browser.
+
+What happened: the link opens the landing page at `/?code=...` and the reader is signed out. Nothing in the app exchanges that code for a session (no auth callback route exists). The reader must go back to /login and enter the password again, then lands on the demo page (finding 9). Seen by hand, once; the dev server log shows the request.
+
+PRD says: nothing about onboarding. Items 1 and 9 are reachable only after a second, unexplained sign-in.
+
+Severity: stops a reader
+
+## 11. The landing page has no sign-in or create-account link
+
+Steps:
+1. Open the live address signed out. Look for a way to sign in or create an account.
+
+What happened: the only action is "Try it on a document", which goes to /app. A signed-out reader there sees "Sign in to upload a document" and a link to /login, which works but is not signposted from the landing page. A returning reader has no direct "Sign in" link.
+
+PRD says: nothing about onboarding.
+
+Severity: cosmetic (confusing, but there is a path)
+
+## 12. A new reader with their own email may never receive the confirmation email
+
+Status: NOT reproduced. This comes from the course handbook, not from a test. Check it with a second email address before fixing anything.
+
+What the handbook says: until a custom mail sender is set up in Supabase, sign-in and confirmation emails are sent only to people on the Supabase project's own team, and a new project sends about two auth emails an hour. If true, a client who signs up with their own email gets no confirmation and cannot finish creating an account.
+
+PRD says: nothing about onboarding.
+
+Severity: stops a reader (if confirmed)
 
 ## Seen once
 
