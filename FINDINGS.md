@@ -75,7 +75,7 @@ What happened: the button stays enabled and nothing changes (no spinner, no text
 
 Severity: stops a reader (and spends model credit)
 
-Status: FIXED on branch fix-critical-findings (checked by hand: pending). The button was a plain submit button in a server component, so nothing showed while the 20 to 60 second model call ran, and a second click could start another paid analysis. It is now a small client component that disables itself and reads "Analyzing…" while the request is in flight. No automated test: it needs a browser. Not established: why the page needs a reload to show the result when the action finishes; check that by hand.
+Status: FIXED on branch fix-critical-findings (checked by hand: confirmed, the button disables and reads "Analyzing…", and the analysis completed with flags and defects). The button was a plain submit button in a server component, so nothing showed while the 20 to 60 second model call ran, and a second click could start another paid analysis. It is now a small client component that disables itself and reads "Analyzing…" while the request is in flight. No automated test: it needs a browser. Also confirmed by hand: after the fix the page updated by itself when the analysis finished. The "needs a manual reload" the testing agent saw did not recur, so the missing feedback was likely the whole problem.
 
 ## 6. Double-clicking "Ask" records the question twice
 
@@ -122,6 +122,8 @@ PRD says: items 1 and 9 above. The reader's first screen after signing in does n
 
 Severity: stops a reader
 
+Status: FIXED on branch fix-critical-findings (checked by hand: pending). Signing in now goes to /app (the upload page, which links to the library and red lines), and the signed-in state on /login links to "Upload a document". The /demo page itself is untouched. No automated test: the login page is a client component that talks to Supabase.
+
 ## 10. The email confirmation link does not sign the reader in
 
 Steps:
@@ -154,6 +156,17 @@ What the handbook says: until a custom mail sender is set up in Supabase, sign-i
 PRD says: nothing about onboarding.
 
 Severity: stops a reader (if confirmed)
+
+## 13. When the model provider is rate-limited, the analysis crashes the page instead of saying so
+
+Steps:
+1. On a document that has not been analysed, click Run analysis while the model provider is rate-limiting (it happened repeatedly on 2026-10-02 with the configured model, z-ai/glm-5.3-flash served by Fireworks).
+
+What happened: OpenRouter returns status 429 ("temporarily rate-limited upstream... retry shortly", with retry_after_seconds 5). lib/openrouter.ts throws, nothing in analyzeDocument or runAnalysis catches it, and the page errors out. Locally that is the Next.js error overlay with the raw provider message. The same raw message also printed on the /demo page. Nothing is saved, so a retry works, but the reader gets no plain explanation and no hint to try again. Seen by hand, three times. Not yet checked: what the live site shows.
+
+PRD says: nothing about failure handling.
+
+Severity: stops a reader
 
 ## Seen once
 

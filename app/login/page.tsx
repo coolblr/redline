@@ -54,8 +54,8 @@ export default function LoginPage() {
         <div className={styles.card}>
           <p className={styles.notice}>Signed in as {signedInEmail}.</p>
           <div className={styles.row}>
-            <a className={styles.link} href="/demo">
-              Go to the demo
+            <a className={styles.link} href="/app">
+              Upload a document
             </a>
             <form action="/auth/signout" method="post">
               <button className={styles.secondaryButton} type="submit">
@@ -82,7 +82,7 @@ export default function LoginPage() {
         setStatus({ kind: "error", text: error.message });
         return;
       }
-      router.push("/demo");
+      router.push("/app");
       router.refresh();
       return;
     }
