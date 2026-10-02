@@ -15,6 +15,8 @@ What happened: this contract refers to Schedule 1 "attached hereto", but the tex
 
 Severity: misleads a reader
 
+Status: partly fixed in PR #1 (ae2f396). That PR fixes one cause: valid quotes dropped because PDF text has mid-sentence line breaks (a real flooring PDF went from 0-1 flags to 4-6, all quotes verbatim). Not covered: (a) the `.txt` runs above: NOT REPRODUCED. Re-running adhesion-contract.txt gave 2 defects (dangling reference, ambiguous term), and the database shows the testing agent's own runs of injection.txt, adhesion-contract.txt and long.txt had 3, 3 and 2 defects saved, so the "none found" it reported does not match what was stored (it may have read the page before the result loaded; see finding 5). Skipped for the homework. (b) The page still prints "none found" when every candidate was dropped, because the dropped count is not stored. That is not reproducible now that the line-break cause is fixed.
+
 ## 2. The same contract gets different severity tiers on different runs, and some are wrong by the PRD's own tests
 
 Steps:
@@ -45,6 +47,8 @@ What happened: all three results said "Nothing in this document reached Redline'
 
 Severity: misleads a reader
 
+Status: FIXED on branch fix-critical-findings. The "nothing reached top or middle severity... every clause below is cite-only" sentence was added whenever no flag was above cite-only, which included having no flags at all. It is now added only when at least one flag exists. The model-written parts of those summaries (for example "pasted or attached", "four sentences") are not code and are not changed.
+
 ## 4. The flag list never shows the standard-or-unusual label
 
 Steps:
@@ -55,6 +59,8 @@ PRD says (What the first version does, 3): "each flag separately carries a stand
 What happened: each flag row shows only the clause name, the quoted sentence, a counter-offer, the exposure and the tier. No flag has a standard/unusual field. The word "standard" appears only inside counter-offer prose. Arbitration is therefore shown as Top or Cite-only with no standard label.
 
 Severity: misleads a reader
+
+Status: FIXED on branch fix-critical-findings (checked by hand: confirmed, Scope Creep reads Unusual and Arbitration reads Standard). The label was always generated and saved (every stored arbitration flag is "standard"), and the page read it back, but the flag row never rendered it. It now shows "Standard" or "Unusual" beside the clause name. No automated test: the page needs a database and a signed-in user to render. Separate, not fixed here: the Exposure column derives "Uncapped" from the tier alone, so any Top flag (including IP assignment or scope creep) reads "Uncapped"; this belongs with the finding 2 product decision.
 
 ## 5. "Run analysis" on a full contract shows no progress and never updates the page
 
@@ -68,6 +74,8 @@ PRD says: nothing about progress. This is a promise to the reader that the butto
 What happened: the button stays enabled and nothing changes (no spinner, no text, no disabled state). The result only appears after a manual reload. I saw this on 4 documents. The tiny documents (the one-liner, the empty file and the recipe) did update in place. A reader is likely to click again, which can start more model runs. On injection.txt I clicked about four times, so there were probably several runs. The long.txt double click may have started two. I did not count the actual runs.
 
 Severity: stops a reader (and spends model credit)
+
+Status: FIXED on branch fix-critical-findings (checked by hand: confirmed, the button disables and reads "Analyzing…", and the analysis completed with flags and defects). The button was a plain submit button in a server component, so nothing showed while the 20 to 60 second model call ran, and a second click could start another paid analysis. It is now a small client component that disables itself and reads "Analyzing…" while the request is in flight. No automated test: it needs a browser. Also confirmed by hand: after the fix the page updated by itself when the analysis finished. The "needs a manual reload" the testing agent saw did not recur, so the missing feedback was likely the whole problem.
 
 ## 6. Double-clicking "Ask" records the question twice
 
@@ -98,6 +106,88 @@ What happened: the card order changed (it began Indemnification, IP, ..., Arbitr
 
 Severity: cosmetic
 
+## Found by hand while setting up (not by the testing agent)
+
+The PRD says nothing about sign-up or onboarding. These are rated against what it does promise: item 1 ("Accept an uploaded freelance or service agreement") and item 9 ("Save a library of the User's past documents"), neither of which a new reader can reach without signing in. Whether the intended flow is the one below is a product decision.
+
+## 9. After signing in, the reader lands on the leftover "OpenRouter demo" page, not the product
+
+Steps:
+1. Open /login on the live app or locally, sign in with email and password.
+2. Note where you land.
+
+What happened: the reader is sent to /demo, a developer test page ("OpenRouter demo", a "Send a test message" button). It has no link to the upload page (/app) or the library (/library). The signed-in state on /login also links to "Go to the demo". Seen by hand, repeatedly, on both local and live.
+
+PRD says: items 1 and 9 above. The reader's first screen after signing in does not lead to either.
+
+Severity: stops a reader
+
+Status: FIXED on branch fix-critical-findings (checked by hand: confirmed, signing in with email and password lands on the upload page). Signing in now goes to /app (the upload page, which links to the library and red lines), and the signed-in state on /login links to "Upload a document". The /demo page itself is untouched. No automated test: the login page is a client component that talks to Supabase.
+
+## 10. The email confirmation link does not sign the reader in
+
+Steps:
+1. On /login, choose create account, enter an email and password.
+2. Click the confirmation link in the email, in the same browser.
+
+What happened: the link opens the landing page at `/?code=...` and the reader is signed out. Nothing in the app exchanges that code for a session (no auth callback route exists). The reader must go back to /login and enter the password again, then lands on the demo page (finding 9). Seen by hand, once; the dev server log shows the request.
+
+PRD says: nothing about onboarding. Items 1 and 9 are reachable only after a second, unexplained sign-in.
+
+Severity: stops a reader
+
+Status: FIXED on branch fix-critical-findings, CONFIRMED END TO END: a second Gmail account signed up on the local app, the confirmation email arrived, and clicking the link in the same browser landed on the upload page already signed in (the database shows the account's last sign-in at the same minute as its confirmation). The sign-up call set no redirect, so Supabase sent the link to the Site URL, and nothing exchanged the `?code=` for a session. A new route, app/auth/callback/route.ts, now exchanges the code and sends the reader to /app (fixed destination, no `next` parameter, so it is not an open redirect); a missing, rejected or already-used code goes to /login; the sign-up call points the link at it. Five tests cover the route (they failed before it existed). The existing Supabase redirect URLs (`<origin>/**`) already cover /auth/callback, so no Supabase setting changed. Not yet checked end to end: that needs a real confirmation email to an address Supabase will deliver to (see finding 12).
+
+## 11. The landing page has no sign-in or create-account link
+
+Steps:
+1. Open the live address signed out. Look for a way to sign in or create an account.
+
+What happened: the only action is "Try it on a document", which goes to /app. A signed-out reader there sees "Sign in to upload a document" and a link to /login, which works but is not signposted from the landing page. A returning reader has no direct "Sign in" link.
+
+PRD says: nothing about onboarding.
+
+Severity: cosmetic (confusing, but there is a path)
+
+## 12. A new reader with their own email may never receive the confirmation email
+
+Status: CLOSED, not reproduced on 2026-10-02. A confirmation email was sent to a second Gmail address and arrived, and the account was confirmed. That address is not the Supabase team member: the GitHub account the Supabase project was created from has one verified email (a different Gmail address), and nobody else was invited. So Supabase delivered to an address outside the team, which the course handbook said it would not. The Supabase Team page itself was not opened. Still true and worth knowing: Supabase's built-in email sender is rate-limited (the handbook says about two auth emails an hour on a new project), so a burst of sign-ups can run into that limit; a custom mail sender is the usual fix before inviting many clients.
+
+What the handbook says: until a custom mail sender is set up in Supabase, sign-in and confirmation emails are sent only to people on the Supabase project's own team, and a new project sends about two auth emails an hour. If true, a client who signs up with their own email gets no confirmation and cannot finish creating an account.
+
+PRD says: nothing about onboarding.
+
+Severity: stops a reader (if confirmed)
+
+## 13. When the model provider is rate-limited, the analysis crashes the page instead of saying so
+
+Steps:
+1. On a document that has not been analysed, click Run analysis while the model provider is rate-limiting (it happened repeatedly on 2026-10-02 with the configured model, z-ai/glm-5.3-flash served by Fireworks).
+
+What happened: OpenRouter returns status 429 ("temporarily rate-limited upstream... retry shortly", with retry_after_seconds 5). lib/openrouter.ts throws, nothing in analyzeDocument or runAnalysis catches it, and the page errors out. Locally that is the Next.js error overlay with the raw provider message. The same raw message also printed on the /demo page. Nothing is saved, so a retry works, but the reader gets no plain explanation and no hint to try again. Seen by hand, three times. Not yet checked: what the live site shows.
+
+PRD says: nothing about failure handling.
+
+Severity: stops a reader
+
+Status: FIXED on branch fix-critical-findings (checked by hand: confirmed with a deliberately wrong API key, which gives the generic message; the page did not crash, the raw provider error stayed in the server log, and nothing was saved. The 429 wording itself is covered by unit tests only, since a real 429 cannot be triggered on demand). Run analysis now goes through a wrapper action (runAnalysisAction in app/documents/[id]/actions.ts) that catches the failure and returns a short message, shown under the button: "The analysis service is busy right now. Wait a few seconds and try again." for a 429, and "The analysis didn't finish. Try again in a moment." for anything else. The raw provider text is no longer shown (it stays in the server log). lib/analysis-errors.ts does the mapping; six tests cover it and failed before it existed. A 429 happens before anything is saved, so a retry is safe. No automatic retry was added. Not changed: the /demo page still prints the raw error.
+
+## 14. The landing page centres its content column; every other page left-aligns under the wordmark
+
+Found by hand (not by the testing agent).
+
+Steps:
+1. Open the landing page on a wide screen. The "Redline" wordmark is at the top left, and the content column sits near the middle of the page.
+2. Open /app, /library or /login. The column is at the left, under the wordmark.
+
+What happened: app/page.module.css sets `align-items: center` on `.main`, which centres the 46rem column. DESIGN.md contradicts itself here: the layout section says "centered on the page via flex", while its rules say to keep the column "left-aligned; this is an invoice register, not a centered marketing hero".
+
+PRD says: nothing about layout.
+
+Severity: cosmetic
+
+Status: DEFERRED until after the critical-fix branch is merged (the handbook says to fix nothing cosmetic first). Planned change: `align-items: flex-start` on `.main`, and make DESIGN.md's layout sentence agree with its own rule.
+
 ## Seen once
 
 - Q&A shows raw markdown symbols: the answer to "should I sign it" displays literal `**Indemnification (Section 7):**` and "- " list markers. I saw it in one answer only.
@@ -117,3 +207,37 @@ Severity: cosmetic
 - Hidden-instruction and legal-advice requests did not produce outcome-prediction language in the flags I read. I did not read every counter-offer in full, only searched for words such as "unenforceable" and "would win".
 
 Not tested: refreshing during an analysis (I only reloaded after waiting), and uploading a real PDF or .docx. Both are on the could-not-verify list in BUILD-REPORT.md and I did not get to them; the only file types I used were .txt.
+
+## Security review
+
+Whole-codebase review, 2026-10-02, on branch fix-critical-findings. Method: Anthropic's published security-review instructions (the same ones the /security-review command uses: confidence bar of 8 out of 10, their false-positive exclusions), applied to every file in app/, lib/, supabase/migrations/, middleware.ts and next.config.ts instead of to a diff. Tests, fixtures and lock files skipped. Code was read, not run; the only live checks were the row-level security proof done earlier in the session and `npm audit`.
+
+Result: no high or medium findings. One low finding, below.
+
+### 15. The demo page shows the model provider's raw error to any signed-in account
+
+Where: app/demo/actions.ts (the catch block returns the error message as-is) and app/demo/page.tsx. The route is live in production.
+
+How someone would use it: sign-up is open, so anyone can make an account, open /demo and click "Send a test message". Whenever the provider returns an error, the page prints the provider's response body verbatim. On 2026-10-02 that included the OpenRouter account's internal user id and the provider's rate-limit internals. If a setting is missing, it prints "OPENROUTER_API_KEY is not set.", which confirms which settings the deployment uses. No key or secret is exposed.
+
+Severity: low. Below the review's usual reporting bar; recorded because it was seen on screen. The same click also spends model credit on demand for any account (cost abuse, which the review's rules exclude).
+
+Status: FIXED on branch fix-critical-findings by removing the route. The page was a leftover from an early ticket and nothing linked to it any more. app/demo is deleted (page, action, form and stylesheet), and /demo now returns 404. That also closes the cost-abuse path through that page. BUILD-REPORT.md still mentions it, as the historical record.
+
+### Checked and held up
+
+- Row-level security: every table has it on, with per-owner policies; child tables check ownership through their document. A signed-in stranger and a signed-out visitor both saw 0 rows in the live proof (documents table). Supabase's security advisor reported nothing.
+- Every server action (saveDocument, runAnalysis, askQuestion, saveRedLine, the demo) checks the signed-in user, and queries use that user's own session, so the database enforces ownership. A document id belonging to someone else returns no row.
+- No service-role or secret Supabase key is read anywhere in the app. The only environment reads are the two public Supabase values and the two OpenRouter settings, and the OpenRouter ones are used only in server code (no client component imports them).
+- No secrets in tracked files or git history (searched for OpenRouter and Supabase secret-key patterns). .env.local is ignored; only .env.local.example is tracked, with no values.
+- New /auth/callback route: fixed destination, no `next` parameter, so no open redirect; a bad code lands on /login.
+- No dangerouslySetInnerHTML, eval, or innerHTML. Document text, citations, filenames and model output are rendered as React text.
+- Uploaded files are parsed in the browser; only extracted text is sent to the server (the project's own invariant).
+
+### Not reported, by the review's own exclusions
+
+- Open sign-up plus no rate limiting means any account can spend model credit (analysis, Q&A, the demo page). Resource and cost abuse is excluded.
+- Instructions hidden inside a contract are treated as data by the app; text reaching the model's prompt is not a vulnerability under the review's rules.
+- No security headers are configured in next.config.ts. A hardening gap, not a vulnerability.
+- `npm audit --omit=dev` reports postcss 8.4.31, bundled inside next 15.5.25, as vulnerable (4 advisories, rated high). It processes the app's own CSS at build time, and no attacker-controlled CSS or source map reaches it, so it is not reachable here. The suggested fix is a major Next.js upgrade (`npm audit fix --force` would install Next 16), which is a decision for later. pdfjs-dist 6.3.289 and mammoth 1.12.2, the libraries that read uploaded contracts, were not flagged.
+- Supabase dashboard settings (minimum password length, email confirmation) are configuration, not code, and were not reviewed beyond the security advisor.

@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
-import { runAnalysis } from "./actions";
 import { QaForm } from "./qa-form";
+import { RunAnalysisForm } from "./run-analysis-form";
 import styles from "./document.module.css";
 import ledgerStyles from "./ledger.module.css";
 import defectsStyles from "./defects.module.css";
@@ -67,6 +67,11 @@ const TIER_LABELS: Record<SeverityTier, string> = {
   top: "Top",
   middle: "Middle",
   "cite-only": "Cite-only",
+};
+
+const STANDARD_LABELS: Record<StandardOrUnusual, string> = {
+  standard: "Standard",
+  unusual: "Unusual",
 };
 
 const TIER_CLASS: Record<SeverityTier, string> = {
@@ -291,6 +296,9 @@ export default async function DocumentPage({ params }: Props) {
                         <div className={ledgerStyles.clauseCell}>
                           <p className={ledgerStyles.clauseName}>
                             {CLAUSE_LABELS[flag.clause_type]}
+                            <span className={ledgerStyles.standardLabel}>
+                              {STANDARD_LABELS[flag.standard_or_unusual]}
+                            </span>
                           </p>
                           <p className={ledgerStyles.citation}>{flag.citation}</p>
                           {counterOffer ? (
@@ -329,11 +337,7 @@ export default async function DocumentPage({ params }: Props) {
               produces a summary and a severity-ranked list of flagged
               clauses, cited to the exact sentence each one came from.
             </p>
-            <form action={runAnalysis.bind(null, document.id as string)}>
-              <button type="submit" className={styles.runButton}>
-                Run analysis
-              </button>
-            </form>
+            <RunAnalysisForm documentId={document.id as string} />
           </div>
         )}
 
