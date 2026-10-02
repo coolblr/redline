@@ -122,7 +122,7 @@ PRD says: items 1 and 9 above. The reader's first screen after signing in does n
 
 Severity: stops a reader
 
-Status: FIXED on branch fix-critical-findings (checked by hand: pending). Signing in now goes to /app (the upload page, which links to the library and red lines), and the signed-in state on /login links to "Upload a document". The /demo page itself is untouched. No automated test: the login page is a client component that talks to Supabase.
+Status: FIXED on branch fix-critical-findings (checked by hand: confirmed, signing in with email and password lands on the upload page). Signing in now goes to /app (the upload page, which links to the library and red lines), and the signed-in state on /login links to "Upload a document". The /demo page itself is untouched. No automated test: the login page is a client component that talks to Supabase.
 
 ## 10. The email confirmation link does not sign the reader in
 
@@ -135,6 +135,8 @@ What happened: the link opens the landing page at `/?code=...` and the reader is
 PRD says: nothing about onboarding. Items 1 and 9 are reachable only after a second, unexplained sign-in.
 
 Severity: stops a reader
+
+Status: FIXED on branch fix-critical-findings (end-to-end check by hand: pending, see below). The sign-up call set no redirect, so Supabase sent the link to the Site URL, and nothing exchanged the `?code=` for a session. A new route, app/auth/callback/route.ts, now exchanges the code and sends the reader to /app (fixed destination, no `next` parameter, so it is not an open redirect); a missing, rejected or already-used code goes to /login; the sign-up call points the link at it. Five tests cover the route (they failed before it existed). The existing Supabase redirect URLs (`<origin>/**`) already cover /auth/callback, so no Supabase setting changed. Not yet checked end to end: that needs a real confirmation email to an address Supabase will deliver to (see finding 12).
 
 ## 11. The landing page has no sign-in or create-account link
 
