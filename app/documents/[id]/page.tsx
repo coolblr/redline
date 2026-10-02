@@ -1,7 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
-import { runAnalysis } from "./actions";
 import { QaForm } from "./qa-form";
-import { RunAnalysisButton } from "./run-analysis-button";
+import { RunAnalysisForm } from "./run-analysis-form";
 import styles from "./document.module.css";
 import ledgerStyles from "./ledger.module.css";
 import defectsStyles from "./defects.module.css";
@@ -338,9 +337,7 @@ export default async function DocumentPage({ params }: Props) {
               produces a summary and a severity-ranked list of flagged
               clauses, cited to the exact sentence each one came from.
             </p>
-            <form action={runAnalysis.bind(null, document.id as string)}>
-              <RunAnalysisButton />
-            </form>
+            <RunAnalysisForm documentId={document.id as string} />
           </div>
         )}
 

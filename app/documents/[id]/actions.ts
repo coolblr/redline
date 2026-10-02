@@ -8,6 +8,7 @@ import { answerQuestion } from "@/lib/seams/answer-question";
 import { filterFlagsByRedLines } from "@/lib/red-lines";
 import { getOrSeedRedLines } from "@/lib/red-lines-store";
 import type { DocumentDefect, Flag } from "@/lib/domain-types";
+import { friendlyAnalysisError, type AnalysisActionState } from "@/lib/analysis-errors";
 
 // Server Action bound to a specific document id from the page (a Server
 // Component), per Next.js's pattern for passing extra arguments into a
@@ -164,6 +165,24 @@ export async function runAnalysis(documentId: string): Promise<void> {
   }
 
   revalidatePath(`/documents/${documentId}`);
+}
+
+// The form's action (see ./run-analysis-form.tsx). Wraps runAnalysis so a
+// failure comes back as a short message the page can show, instead of an
+// uncaught error that takes the whole page down. The original error stays in
+// the server log.
+export async function runAnalysisAction(
+  documentId: string,
+  _previous: AnalysisActionState,
+  _formData: FormData
+): Promise<AnalysisActionState> {
+  try {
+    await runAnalysis(documentId);
+    return { error: null };
+  } catch (err) {
+    console.error("runAnalysis failed:", err);
+    return { error: friendlyAnalysisError(err) };
+  }
 }
 
 // Server Action for the document-scoped Q&A box (ticket 09). Doesn't

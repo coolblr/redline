@@ -170,6 +170,8 @@ PRD says: nothing about failure handling.
 
 Severity: stops a reader
 
+Status: FIXED on branch fix-critical-findings (checked by hand: pending). Run analysis now goes through a wrapper action (runAnalysisAction in app/documents/[id]/actions.ts) that catches the failure and returns a short message, shown under the button: "The analysis service is busy right now. Wait a few seconds and try again." for a 429, and "The analysis didn't finish. Try again in a moment." for anything else. The raw provider text is no longer shown (it stays in the server log). lib/analysis-errors.ts does the mapping; six tests cover it and failed before it existed. A 429 happens before anything is saved, so a retry is safe. No automatic retry was added. Not changed: the /demo page still prints the raw error.
+
 ## Seen once
 
 - Q&A shows raw markdown symbols: the answer to "should I sign it" displays literal `**Indemnification (Section 7):**` and "- " list markers. I saw it in one answer only.

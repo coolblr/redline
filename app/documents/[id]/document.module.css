@@ -141,3 +141,9 @@
   opacity: 0.6;
   cursor: progress;
 }
+
+.runError {
+  font-size: 0.875rem;
+  color: var(--flag);
+  margin: 0.75rem 0 0;
+}
