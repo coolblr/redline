@@ -64,3 +64,6 @@ Thumbs.db
 
 # Turbopack
 .turbo/
+
+.vercel
+.env*
