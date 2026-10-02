@@ -207,3 +207,37 @@ Status: DEFERRED until after the critical-fix branch is merged (the handbook say
 - Hidden-instruction and legal-advice requests did not produce outcome-prediction language in the flags I read. I did not read every counter-offer in full, only searched for words such as "unenforceable" and "would win".
 
 Not tested: refreshing during an analysis (I only reloaded after waiting), and uploading a real PDF or .docx. Both are on the could-not-verify list in BUILD-REPORT.md and I did not get to them; the only file types I used were .txt.
+
+## Security review
+
+Whole-codebase review, 2026-10-02, on branch fix-critical-findings. Method: Anthropic's published security-review instructions (the same ones the /security-review command uses: confidence bar of 8 out of 10, their false-positive exclusions), applied to every file in app/, lib/, supabase/migrations/, middleware.ts and next.config.ts instead of to a diff. Tests, fixtures and lock files skipped. Code was read, not run; the only live checks were the row-level security proof done earlier in the session and `npm audit`.
+
+Result: no high or medium findings. One low finding, below.
+
+### 15. The demo page shows the model provider's raw error to any signed-in account
+
+Where: app/demo/actions.ts (the catch block returns the error message as-is) and app/demo/page.tsx. The route is live in production.
+
+How someone would use it: sign-up is open, so anyone can make an account, open /demo and click "Send a test message". Whenever the provider returns an error, the page prints the provider's response body verbatim. On 2026-10-02 that included the OpenRouter account's internal user id and the provider's rate-limit internals. If a setting is missing, it prints "OPENROUTER_API_KEY is not set.", which confirms which settings the deployment uses. No key or secret is exposed.
+
+Severity: low. Below the review's usual reporting bar; recorded because it was seen on screen. The same click also spends model credit on demand for any account (cost abuse, which the review's rules exclude).
+
+Not fixed here. The page is a leftover from an early ticket. Removing the route, or returning a generic message the way runAnalysis now does (lib/analysis-errors.ts), would close it.
+
+### Checked and held up
+
+- Row-level security: every table has it on, with per-owner policies; child tables check ownership through their document. A signed-in stranger and a signed-out visitor both saw 0 rows in the live proof (documents table). Supabase's security advisor reported nothing.
+- Every server action (saveDocument, runAnalysis, askQuestion, saveRedLine, the demo) checks the signed-in user, and queries use that user's own session, so the database enforces ownership. A document id belonging to someone else returns no row.
+- No service-role or secret Supabase key is read anywhere in the app. The only environment reads are the two public Supabase values and the two OpenRouter settings, and the OpenRouter ones are used only in server code (no client component imports them).
+- No secrets in tracked files or git history (searched for OpenRouter and Supabase secret-key patterns). .env.local is ignored; only .env.local.example is tracked, with no values.
+- New /auth/callback route: fixed destination, no `next` parameter, so no open redirect; a bad code lands on /login.
+- No dangerouslySetInnerHTML, eval, or innerHTML. Document text, citations, filenames and model output are rendered as React text.
+- Uploaded files are parsed in the browser; only extracted text is sent to the server (the project's own invariant).
+
+### Not reported, by the review's own exclusions
+
+- Open sign-up plus no rate limiting means any account can spend model credit (analysis, Q&A, the demo page). Resource and cost abuse is excluded.
+- Instructions hidden inside a contract are treated as data by the app; text reaching the model's prompt is not a vulnerability under the review's rules.
+- No security headers are configured in next.config.ts. A hardening gap, not a vulnerability.
+- `npm audit --omit=dev` reports postcss 8.4.31, bundled inside next 15.5.25, as vulnerable (4 advisories, rated high). It processes the app's own CSS at build time, and no attacker-controlled CSS or source map reaches it, so it is not reachable here. The suggested fix is a major Next.js upgrade (`npm audit fix --force` would install Next 16), which is a decision for later. pdfjs-dist 6.3.289 and mammoth 1.12.2, the libraries that read uploaded contracts, were not flagged.
+- Supabase dashboard settings (minimum password length, email confirmation) are configuration, not code, and were not reviewed beyond the security advisor.
