@@ -222,7 +222,7 @@ How someone would use it: sign-up is open, so anyone can make an account, open /
 
 Severity: low. Below the review's usual reporting bar; recorded because it was seen on screen. The same click also spends model credit on demand for any account (cost abuse, which the review's rules exclude).
 
-Not fixed here. The page is a leftover from an early ticket. Removing the route, or returning a generic message the way runAnalysis now does (lib/analysis-errors.ts), would close it.
+Status: FIXED on branch fix-critical-findings by removing the route. The page was a leftover from an early ticket and nothing linked to it any more. app/demo is deleted (page, action, form and stylesheet), and /demo now returns 404. That also closes the cost-abuse path through that page. BUILD-REPORT.md still mentions it, as the historical record.
 
 ### Checked and held up
 
