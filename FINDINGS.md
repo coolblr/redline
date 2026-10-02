@@ -186,7 +186,7 @@ PRD says: nothing about layout.
 
 Severity: cosmetic
 
-Status: DEFERRED until after the critical-fix branch is merged (the handbook says to fix nothing cosmetic first). Planned change: `align-items: flex-start` on `.main`, and make DESIGN.md's layout sentence agree with its own rule.
+Status: FIXED on branch fix-landing-alignment (checked by eye: pending), after the critical-fix branch was merged. `.main` now uses `align-items: flex-start`, so the column sits under the wordmark (both use the same left padding), and DESIGN.md's layout sentence now says so. CSS only, so no automated test.
 
 ## Seen once
 

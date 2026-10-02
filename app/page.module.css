@@ -21,7 +21,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   padding: clamp(1.5rem, 4vw, 2.75rem) clamp(1.25rem, 5vw, 4rem) 3rem;
 }
 
