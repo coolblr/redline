@@ -151,7 +151,7 @@ Severity: cosmetic (confusing, but there is a path)
 
 ## 12. A new reader with their own email may never receive the confirmation email
 
-Status: NOT reproduced on 2026-10-02. A confirmation email was sent to a second Gmail address and arrived, and the account was confirmed. Still to rule out: whether that address is on the Supabase project's team (the handbook says only team members receive email until a custom mail sender is set up). If it is not a team member, this finding is closed; if it is, a client with an outside address may still get nothing. This comes from the course handbook, not from a test of an unrelated address.
+Status: CLOSED, not reproduced on 2026-10-02. A confirmation email was sent to a second Gmail address and arrived, and the account was confirmed. That address is not the Supabase team member: the GitHub account the Supabase project was created from has one verified email (a different Gmail address), and nobody else was invited. So Supabase delivered to an address outside the team, which the course handbook said it would not. The Supabase Team page itself was not opened. Still true and worth knowing: Supabase's built-in email sender is rate-limited (the handbook says about two auth emails an hour on a new project), so a burst of sign-ups can run into that limit; a custom mail sender is the usual fix before inviting many clients.
 
 What the handbook says: until a custom mail sender is set up in Supabase, sign-in and confirmation emails are sent only to people on the Supabase project's own team, and a new project sends about two auth emails an hour. If true, a client who signs up with their own email gets no confirmation and cannot finish creating an account.
 
