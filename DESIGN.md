@@ -118,7 +118,7 @@ A four-color, restrained palette: a warm off-white ground, a near-black ink, a c
 
 ## Layout
 
-Single-column, left-aligned composition capped at a 46rem content width (`max-width: 46rem` on both the hero and the ledger), centered on the page via flex, with fluid edge padding (`clamp(1.25rem, 5vw, 4rem)`). The ledger's own grid is three columns (`minmax(0,1fr) auto auto`: Clause / Exposure / Tier) with a fixed 1.5rem gap, right-aligning the two numeric/status columns against the left-aligned clause column.
+Single-column, left-aligned composition capped at a 46rem content width (`max-width: 46rem` on both the hero and the ledger), aligned to the left edge under the wordmark via flex, matching the app's other pages, with fluid edge padding (`clamp(1.25rem, 5vw, 4rem)`). The ledger's own grid is three columns (`minmax(0,1fr) auto auto`: Clause / Exposure / Tier) with a fixed 1.5rem gap, right-aligning the two numeric/status columns against the left-aligned clause column.
 
 Vertical rhythm is set by the ledger's own rule lines rather than card gutters: a full-ink top border opens the ledger, slate-18% dividers separate each row, and a full-ink border closes the totals row — the same register as a paper invoice. Rows animate in with a 6px settle-and-fade (`cubic-bezier(0.16, 1, 0.3, 1)`, 0.6s), staggered 0.12s per row, respecting `prefers-reduced-motion`.
 
