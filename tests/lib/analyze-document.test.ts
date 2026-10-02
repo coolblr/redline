@@ -260,6 +260,28 @@ describe("analyzeDocument", () => {
     });
   });
 
+  describe("no flags at all (no clauses to be cite-only)", () => {
+    // An empty file, a recipe, or a contract whose every candidate failed
+    // citation resolution returns zero flags. "Every clause below is
+    // cite-only" is false then: there is no clause below.
+    it("does not claim nothing reached top or middle severity when there are no flags", async () => {
+      const client = createStubClient({
+        summary: "A short note that is not a contract.",
+        candidateFlags: [],
+        candidateDefects: [],
+      });
+      const { summary, flags } = await analyzeDocument(
+        "Pay me ten dollars.",
+        DEFAULT_RED_LINES,
+        { client }
+      );
+
+      expect(flags).toHaveLength(0);
+      expect(summary).toBe("A short note that is not a contract.");
+      expect(summary).not.toContain(NOTHING_ABOVE_CITE_ONLY_SENTENCE);
+    });
+  });
+
   describe("citation-resolution enforcement (ADR-0001)", () => {
     it("drops a candidate flag whose citation is not an exact substring of documentText", async () => {
       const client = createStubClient(ADHESION_STUB_RESPONSE);

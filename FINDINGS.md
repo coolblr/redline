@@ -47,6 +47,8 @@ What happened: all three results said "Nothing in this document reached Redline'
 
 Severity: misleads a reader
 
+Status: FIXED on branch fix-critical-findings. The "nothing reached top or middle severity... every clause below is cite-only" sentence was added whenever no flag was above cite-only, which included having no flags at all. It is now added only when at least one flag exists. The model-written parts of those summaries (for example "pasted or attached", "four sentences") are not code and are not changed.
+
 ## 4. The flag list never shows the standard-or-unusual label
 
 Steps:

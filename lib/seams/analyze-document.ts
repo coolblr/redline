@@ -329,8 +329,10 @@ export async function analyzeDocument(
 
   // Computed from the already-computed tiers, not left to model compliance:
   // if nothing survived at top or middle, say so plainly, every time.
+  // Only when there are flags to be cite-only: with none, "every clause
+  // below" has nothing below it.
   const hasAboveCiteOnly = flags.some((flag) => flag.severityTier !== "cite-only");
-  if (!hasAboveCiteOnly) {
+  if (flags.length > 0 && !hasAboveCiteOnly) {
     summary = `${summary} ${NOTHING_ABOVE_CITE_ONLY_SENTENCE}`;
   }
 
