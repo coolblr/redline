@@ -273,6 +273,86 @@ describe("analyzeDocument", () => {
     });
   });
 
+  describe("citation matching tolerates line breaks and spacing in extracted text (ADR-0001)", () => {
+    // PDF extraction leaves hard line breaks and runs of spaces inside
+    // sentences. The model quotes the same sentence on one line with single
+    // spaces. That is a real quote, so it must survive -- and what the User
+    // is shown must be the document's own text, line breaks included.
+    const WRAPPED_LIABILITY =
+      "The Contractor is not liable for damages of any kind, except where prohibited by law, and\neven then liability may be limited.";
+    const WRAPPED_PAYMENT = "Payment schedule will be   communicated\nverbally or implied.";
+    const wrappedText = `Liability \n${WRAPPED_LIABILITY} \nPayment Terms \n${WRAPPED_PAYMENT}\n`;
+
+    function wrappedResponse(flagCitation: string, defectCitation: string) {
+      return {
+        summary: "A flooring agreement.",
+        candidateFlags: [
+          {
+            clauseType: "limitation-of-liability" as ClauseType,
+            citation: flagCitation,
+            isExposureCapped: false,
+            isMutual: false,
+            ipAssignmentTiming: null,
+            standardOrUnusual: "unusual" as StandardOrUnusual,
+            rationale: "States that one party carries no liability for damages of any kind.",
+          },
+        ],
+        candidateDefects: [
+          {
+            defectType: "dangling-reference" as DefectType,
+            citation: defectCitation,
+            description: "The payment schedule is not in the document.",
+          },
+        ],
+      };
+    }
+
+    it("keeps a flag whose citation differs from the text only in whitespace, and cites the document's own wording", async () => {
+      const client = createStubClient(
+        wrappedResponse(
+          "The Contractor is not liable for damages of any kind, except where prohibited by law, and even then liability may be limited.",
+          "Payment schedule will be communicated verbally or implied."
+        )
+      );
+      const { flags } = await analyzeDocument(wrappedText, DEFAULT_RED_LINES, { client });
+
+      expect(flags).toHaveLength(1);
+      expect(flags[0].citation).toBe(WRAPPED_LIABILITY);
+      expect(wrappedText.includes(flags[0].citation)).toBe(true);
+    });
+
+    it("keeps a defect whose citation differs from the text only in whitespace, and cites the document's own wording", async () => {
+      const client = createStubClient(
+        wrappedResponse(
+          "The Contractor is not liable for damages of any kind, except where prohibited by law, and even then liability may be limited.",
+          "Payment schedule will be communicated verbally or implied."
+        )
+      );
+      const { documentDefects } = await analyzeDocument(wrappedText, DEFAULT_RED_LINES, {
+        client,
+      });
+
+      expect(documentDefects).toHaveLength(1);
+      expect(documentDefects[0].citation).toBe(WRAPPED_PAYMENT);
+      expect(wrappedText.includes(documentDefects[0].citation)).toBe(true);
+    });
+
+    it("still drops a citation whose words are not in the document, however it is spaced", async () => {
+      const client = createStubClient(
+        wrappedResponse(
+          "The Contractor is liable for all damages of any kind, without exception.",
+          "Payment is due in full on signing."
+        )
+      );
+      const { flags, documentDefects } = await analyzeDocument(wrappedText, DEFAULT_RED_LINES, {
+        client,
+      });
+
+      expect(flags).toHaveLength(0);
+      expect(documentDefects).toHaveLength(0);
+    });
+  });
+
   it("carries the scope-creep lower-confidence marker in its rationale", async () => {
     const client = createStubClient(ADHESION_STUB_RESPONSE);
     const { flags } = await analyzeDocument(adhesionText, DEFAULT_RED_LINES, { client });
