@@ -204,8 +204,35 @@ export const NOTHING_ABOVE_CITE_ONLY_SENTENCE =
 // sentences; the model quotes the same sentence on one line. Match ignoring
 // whitespace differences, but hand back the document's own wording (ADR-0001:
 // the User must be able to find the cited sentence in their own document).
-// Returns null if the words themselves are not in the document.
+// Returns null if the words themselves are not in the document, or if they
+// are only part of a sentence (or span more than one): a flag must point at
+// one whole sentence the User can find, not a fragment of it.
+const sentenceSegmenter = new Intl.Segmenter("en", { granularity: "sentence" });
+// Clause numbers ("7.1 ", "11.2. ") are part of the segment but not of the
+// sentence the model quotes.
+const LEADING_CLAUSE_NUMBER = /^\d+(?:\.\d+)*\.?\s+/;
+
 function makeCitationResolver(documentText: string): (citation: string) => string | null {
+  // The segmenter treats every line break as a sentence break. Extracted PDF
+  // text hard-wraps sentences, so a line break followed by a lowercase letter
+  // is a wrap, not a break. Same length, so offsets still index documentText.
+  const forSegmenting = documentText.replace(/(?<=[^\n])\n(?=[ \t]*[a-z])/g, " ");
+  const sentences: Array<{ start: number; end: number }> = [];
+  for (const { segment, index } of sentenceSegmenter.segment(forSegmenting)) {
+    const lead = segment.length - segment.trimStart().length;
+    const trimmed = segment.trim();
+    const number = LEADING_CLAUSE_NUMBER.exec(trimmed)?.[0].length ?? 0;
+    sentences.push({
+      start: index + lead + number,
+      end: index + lead + trimmed.length,
+    });
+  }
+
+  // True when [start, end) is exactly one sentence, ignoring surrounding
+  // whitespace and a leading clause number.
+  const isWholeSentence = (start: number, end: number) =>
+    sentences.some((s) => s.start === start && s.end === end);
+
   let collapsed = "";
   const origin: number[] = [];
   let i = 0;
@@ -221,12 +248,16 @@ function makeCitationResolver(documentText: string): (citation: string) => strin
   }
 
   return (citation) => {
-    if (documentText.includes(citation)) return citation;
     const wanted = citation.trim().replace(/\s+/g, " ");
     if (wanted === "") return null;
-    const at = collapsed.indexOf(wanted);
-    if (at === -1) return null;
-    return documentText.slice(origin[at], origin[at + wanted.length - 1] + 1);
+    // Try every occurrence: the same sentence can appear twice, and one
+    // copy may sit inside a longer sentence.
+    for (let at = collapsed.indexOf(wanted); at !== -1; at = collapsed.indexOf(wanted, at + 1)) {
+      const start = origin[at];
+      const end = origin[at + wanted.length - 1] + 1;
+      if (isWholeSentence(start, end)) return documentText.slice(start, end);
+    }
+    return null;
   };
 }
 
