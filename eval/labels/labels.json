@@ -31,9 +31,15 @@
       "history": []
     },
     "7": {
-      "label": "PASS",
-      "note": "Yes, this is a unilateral termination clause, and yes, it costs the reader because Cascade can suspend or end service whenever certain conditions occur, leaving the customer without service and still responsible for charges.",
-      "history": []
+      "label": "FAIL",
+      "note": "Updated to FAIL because the clause is conditional, not unilateral termination under the rubric, and the consequences are ordinary rather than a real cost.",
+      "history": [
+        {
+          "label": "PASS",
+          "note": "Yes, this is a unilateral termination clause, and yes, it costs the reader because Cascade can suspend or end service whenever certain conditions occur, leaving the customer without service and still responsible for charges.",
+          "changedAt": "2026-10-30T16:58:35.906Z"
+        }
+      ]
     },
     "8": {
       "label": "PASS",
@@ -52,5 +58,5 @@
     }
   },
   "reflection": "",
-  "updatedAt": 1793378371369
+  "updatedAt": 1793379527452
 }
