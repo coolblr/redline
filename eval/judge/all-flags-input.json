@@ -1,0 +1,189 @@
+{
+  "run": "2026-10-30T16-13-19-230Z.json",
+  "flags": [
+    {
+      "number": 1,
+      "document": "adhesion-contract",
+      "clauseType": "indemnification",
+      "severity": "top",
+      "quotedSentence": "You will indemnify, defend and hold harmless Meridian and its ofﬁcers, employees, instructors and contractors against any claim, demand, loss, liability or expense, including reasonable legal fees, that is brought by a third party and arises out of your use of the facilities, your conduct on club premises, the conduct of a guest you bring, or any service you provide to another member.",
+      "paragraph": "You will indemnify, defend and hold harmless Meridian and its ofﬁcers, employees, instructors and contractors against any claim, demand, loss, liability or expense, including reasonable legal fees, that is brought by a third party and arises out of your use of the facilities, your conduct on club premises, the conduct of a guest you bring, or any service you provide to another member. Meridian will select counsel, and you will not settle a claim covered by this Section without Meridian’s written consent."
+    },
+    {
+      "number": 2,
+      "document": "adhesion-contract",
+      "clauseType": "non-compete",
+      "severity": "top",
+      "quotedSentence": "For twelve (12) months after your Program candidacy ends for any reason, you will not teach, coach or deliver group ﬁtness instruction or personal training, whether as an employee, as a contractor or on your own account, at any facility within ﬁfteen (15) miles of a Meridian location at which you taught or trained.",
+      "paragraph": "For twelve (12) months after your Program candidacy ends for any reason, you will not teach, coach or deliver group ﬁtness instruction or personal training, whether as an employee, as a contractor or on your own account, at any facility within ﬁfteen (15) miles of a Meridian location at which you taught or trained. You will not, during that period, solicit any Meridian member or candidate for instruction outside a Meridian location. You will return the coaching manual and any Meridian teaching materials in your possession within fourteen (14) days of the end of your candidacy."
+    },
+    {
+      "number": 3,
+      "document": "adhesion-contract",
+      "clauseType": "arbitration",
+      "severity": "top",
+      "quotedSentence": "Any dispute, claim or controversy between you and Meridian arising out of or relating to this Agreement, your membership or the Program will be resolved by ﬁnal and binding arbitration administered by a nationally recognised arbitration provider under its consumer arbitration rules, and you and Meridian each waive any right to a trial by jury and any right to bring or participate in a class, collective or representative action.",
+      "paragraph": "Any dispute, claim or controversy between you and Meridian arising out of or relating to this Agreement, your membership or the Program will be resolved by ﬁnal and binding arbitration administered by a nationally recognised arbitration provider under its consumer arbitration rules, and you and Meridian each waive any right to a trial by jury and any right to bring or participate in a class, collective or representative action. You may opt out of this Section 12 by delivering written notice to the address in Section 11 within thirty (30) days after you ﬁrst accept this Agreement, and opting out will not affect your membership or your standing in the Program. Arbitration is conducted by a single arbitrator, the arbitrator decides the scope of this Section, and the award is ﬁnal and may be entered as a judgment."
+    },
+    {
+      "number": 4,
+      "document": "saas-subscription",
+      "clauseType": "limitation-of-liability",
+      "severity": "middle",
+      "quotedSentence": "Northwind’s aggregate liability to you for every claim relating to the service, whether framed in contract, in tort, in warranty or otherwise — and including any claim arising from lost work, lost revenue or a failed export — will not exceed the amount you actually paid us under Section 2 for the Billing Period in which the claim arose.",
+      "paragraph": "Northwind’s aggregate liability to you for every claim relating to the service, whether framed in contract, in tort, in warranty or otherwise — and including any claim arising from lost work, lost revenue or a failed export — will not exceed the amount you actually paid us under Section 2 for the Billing Period in which the claim arose.\r"
+    },
+    {
+      "number": 5,
+      "document": "saas-subscription",
+      "clauseType": "indemnification",
+      "severity": "top",
+      "quotedSentence": "You will indemnify and hold Northwind harmless from any claim brought by a third party that relates to content you uploaded, exported or published through the service, including a claim that the content infringes a copyright, a trade mark or a right of privacy, and you will pay our reasonable legal costs of defending such a claim.",
+      "paragraph": "You will indemnify and hold Northwind harmless from any claim brought by a third party that relates to content you uploaded, exported or published through the service, including a claim that the content infringes a copyright, a trade mark or a right of privacy, and you will pay our reasonable legal costs of defending such a claim.\r"
+    },
+    {
+      "number": 6,
+      "document": "saas-subscription",
+      "clauseType": "arbitration",
+      "severity": "middle",
+      "quotedSentence": "Any dispute between you and Northwind arising out of these terms or out of your use of the service will be settled by binding arbitration before a single arbitrator under the consumer rules of a recognised arbitration body, and you agree to bring any claim only in your individual capacity and not as a plaintiff or class member in any purported class, collective or representative proceeding.",
+      "paragraph": "Any dispute between you and Northwind arising out of these terms or out of your use of the service will be settled by binding arbitration before a single arbitrator under the consumer rules of a recognised arbitration body, and you agree to bring any claim only in your individual capacity and not as a plaintiff or class member in any purported class, collective or representative proceeding.\r"
+    },
+    {
+      "number": 7,
+      "document": "offer-letter",
+      "clauseType": "unilateral-termination",
+      "severity": "top",
+      "quotedSentence": "Either you or Ardent may end it at any time, with or without cause and with or without notice.",
+      "paragraph": "Your employment is at will. Either you or Ardent may end it at any time, with or without cause and with or without notice. Nothing in this letter is a contract of employment for a fixed term.\r"
+    },
+    {
+      "number": 8,
+      "document": "offer-letter",
+      "clauseType": "non-compete",
+      "severity": "top",
+      "quotedSentence": "For a period of twelve (12) months following the last day of your employment, whether that employment ends at your choice or at ours, you will not provide services that are the same as or substantially similar to those you provided to Ardent, whether as an employee, a consultant, a contractor, an adviser or a principal, to any business that develops, manufactures or sells a product within the Restricted Field as that term is defined in Exhibit B to this letter.",
+      "paragraph": "For a period of twelve (12) months following the last day of your employment, whether that employment ends at your choice or at ours, you will not provide services that are the same as or substantially similar to those you provided to Ardent, whether as an employee, a consultant, a contractor, an adviser or a principal, to any business that develops, manufactures or sells a product within the Restricted Field as that term is defined in Exhibit B to this letter.\r"
+    },
+    {
+      "number": 9,
+      "document": "offer-letter",
+      "clauseType": "indemnification",
+      "severity": "top",
+      "quotedSentence": "You will indemnify Ardent and hold it harmless against any claim, loss, liability or expense, including reasonable attorney fees, that arises out of a breach by you of Section 4 or Section 5 of this letter, or out of a claim by a former employer that your employment with Ardent breaches an obligation you owe to them.",
+      "paragraph": "You will indemnify Ardent and hold it harmless against any claim, loss, liability or expense, including reasonable attorney fees, that arises out of a breach by you of Section 4 or Section 5 of this letter, or out of a claim by a former employer that your employment with Ardent breaches an obligation you owe to them.\r"
+    },
+    {
+      "number": 10,
+      "document": "offer-letter",
+      "clauseType": "arbitration",
+      "severity": "top",
+      "quotedSentence": "You and Ardent each agree that any claim arising out of or relating to your employment, its terms, or its end, including any statutory claim, will be resolved by final and binding arbitration administered under the employment rules of a nationally recognised arbitration provider, on an individual basis only, and each of us waives any right to a jury trial and any right to participate in a class, collective or representative action.",
+      "paragraph": "You and Ardent each agree that any claim arising out of or relating to your employment, its terms, or its end, including any statutory claim, will be resolved by final and binding arbitration administered under the employment rules of a nationally recognised arbitration provider, on an individual basis only, and each of us waives any right to a jury trial and any right to participate in a class, collective or representative action.\r"
+    },
+    {
+      "number": 11,
+      "document": "storage-unit-rental",
+      "clauseType": "indemnification",
+      "severity": "top",
+      "quotedSentence": "The Occupant will indemnify, defend and hold the Operator harmless from every claim, demand, loss, cost and expense, including reasonable attorney fees, brought by any person and arising out of the Occupant's use of the unit or the premises, the property stored in the unit, or the acts of anyone the Occupant allows on to the premises.",
+      "paragraph": "The Occupant will indemnify, defend and hold the Operator harmless from every claim, demand, loss, cost and expense, including reasonable attorney fees, brought by any person and arising out of the Occupant's use of the unit or the premises, the property stored in the unit, or the acts of anyone the Occupant allows on to the premises.\r"
+    },
+    {
+      "number": 12,
+      "document": "storage-unit-rental",
+      "clauseType": "limitation-of-liability",
+      "severity": "middle",
+      "quotedSentence": "The Operator's total liability to the Occupant for any loss of or damage to stored property, however caused, including loss or damage caused by the Operator's own negligence, is limited to five thousand dollars ($5,000) unless the Occupant has declared a higher value on the Unit Schedule and paid the corresponding value protection fee.",
+      "paragraph": "The Operator's total liability to the Occupant for any loss of or damage to stored property, however caused, including loss or damage caused by the Operator's own negligence, is limited to five thousand dollars ($5,000) unless the Occupant has declared a higher value on the Unit Schedule and paid the corresponding value protection fee.\r"
+    },
+    {
+      "number": 13,
+      "document": "storage-unit-rental",
+      "clauseType": "unilateral-termination",
+      "severity": "top",
+      "quotedSentence": "The Operator may end this Agreement on thirty days written notice.",
+      "paragraph": "The Occupant may end this Agreement by giving written notice at least ten days before the end of a month, removing all property and leaving the unit swept clean. The Operator may end this Agreement on thirty days written notice.\r"
+    },
+    {
+      "number": 14,
+      "document": "phone-plan-terms",
+      "clauseType": "limitation-of-liability",
+      "severity": "middle",
+      "quotedSentence": "Cascade’s entire liability to you for any claim relating to the service, a device, or this Agreement, whether the claim is made in contract, in negligence, in warranty or under any statute, is limited to the service charges applied to the affected line during the bill period in which the claim arose, and Cascade is not liable for lost profits, lost data, or any indirect or consequential loss.",
+      "paragraph": "Cascade’s entire liability to you for any claim relating to the service, a device, or this Agreement, whether the claim is made in contract, in negligence, in warranty or under any statute, is limited to the service charges applied to the affected line during the bill period in which the claim arose, and Cascade is not liable for lost profits, lost data, or any indirect or consequential loss.\r"
+    },
+    {
+      "number": 15,
+      "document": "phone-plan-terms",
+      "clauseType": "indemnification",
+      "severity": "top",
+      "quotedSentence": "You will indemnify and hold Cascade harmless from any claim, loss or expense, including reasonable legal fees, arising out of your use of the service, out of anything sent from or stored on your device, out of the use of your line by anyone you allow to use it, and out of any charge incurred on your account.",
+      "paragraph": "You will indemnify and hold Cascade harmless from any claim, loss or expense, including reasonable legal fees, arising out of your use of the service, out of anything sent from or stored on your device, out of the use of your line by anyone you allow to use it, and out of any charge incurred on your account.\r"
+    },
+    {
+      "number": 16,
+      "document": "phone-plan-terms",
+      "clauseType": "arbitration",
+      "severity": "top",
+      "quotedSentence": "You and Cascade agree that any dispute arising out of or relating to this Agreement, the service or any device will be resolved by individual binding arbitration administered by a nationally recognised arbitration provider under its consumer rules, and both of us give up the right to a jury trial and the right to bring or join a class, collective or representative action.",
+      "paragraph": "You and Cascade agree that any dispute arising out of or relating to this Agreement, the service or any device will be resolved by individual binding arbitration administered by a nationally recognised arbitration provider under its consumer rules, and both of us give up the right to a jury trial and the right to bring or join a class, collective or representative action.\r"
+    },
+    {
+      "number": 17,
+      "document": "phone-plan-terms",
+      "clauseType": "unilateral-termination",
+      "severity": "top",
+      "quotedSentence": "We may suspend or end service where an amount is unpaid, where the service is used in a way this Agreement prohibits, or where we are required to by law.",
+      "paragraph": "We may suspend or end service where an amount is unpaid, where the service is used in a way this Agreement prohibits, or where we are required to by law.\r"
+    },
+    {
+      "number": 18,
+      "document": "internship-agreement",
+      "clauseType": "unilateral-termination",
+      "severity": "top",
+      "quotedSentence": "The Firm may end the Programme early for any reason on one week written notice.",
+      "paragraph": "The Programme is a fixed term engagement and carries no offer or promise of further employment. The Firm may end the Programme early for any reason on one week written notice.\r"
+    },
+    {
+      "number": 19,
+      "document": "internship-agreement",
+      "clauseType": "indemnification",
+      "severity": "top",
+      "quotedSentence": "The Analyst will indemnify the Firm and hold it harmless against any claim, loss or expense, including reasonable legal costs, arising out of a breach by the Analyst of Section 4 or Section 5, or out of anything the Analyst publishes about the Firm or a client of the Firm.",
+      "paragraph": "The Analyst will indemnify the Firm and hold it harmless against any claim, loss or expense, including reasonable legal costs, arising out of a breach by the Analyst of Section 4 or Section 5, or out of anything the Analyst publishes about the Firm or a client of the Firm.\r"
+    },
+    {
+      "number": 20,
+      "document": "internship-agreement",
+      "clauseType": "non-compete",
+      "severity": "top",
+      "quotedSentence": "For six (6) months after the Programme ends, the Analyst will not accept an engagement, whether paid or unpaid and whether as an employee, a contractor or an intern, with any firm on the Restricted List issued to the Analyst in week one of the Programme, and will not approach any client of the Firm whose file the Analyst worked on.",
+      "paragraph": "For six (6) months after the Programme ends, the Analyst will not accept an engagement, whether paid or unpaid and whether as an employee, a contractor or an intern, with any firm on the Restricted List issued to the Analyst in week one of the Programme, and will not approach any client of the Firm whose file the Analyst worked on.\r"
+    },
+    {
+      "number": 21,
+      "document": "internship-agreement",
+      "clauseType": "non-compete",
+      "severity": "top",
+      "quotedSentence": "The Analyst acknowledges that the Restricted List is confidential and that it may be reissued during the Programme.",
+      "paragraph": "The Analyst acknowledges that the Restricted List is confidential and that it may be reissued during the Programme.\r"
+    },
+    {
+      "number": 22,
+      "document": "internship-agreement",
+      "clauseType": "arbitration",
+      "severity": "top",
+      "quotedSentence": "Any dispute between the Analyst and the Firm arising out of the Programme or out of this Agreement will be resolved by final and binding arbitration on an individual basis, administered under the employment rules of a nationally recognised provider, and the Analyst gives up any right to a jury trial and any right to bring or join a class or collective action.",
+      "paragraph": "Any dispute between the Analyst and the Firm arising out of the Programme or out of this Agreement will be resolved by final and binding arbitration on an individual basis, administered under the employment rules of a nationally recognised provider, and the Analyst gives up any right to a jury trial and any right to bring or join a class or collective action.\r"
+    },
+    {
+      "number": 23,
+      "document": "library-volunteer-agreement",
+      "clauseType": "unilateral-termination",
+      "severity": "cite-only",
+      "quotedSentence": "Either the volunteer or the Library may end this Agreement at any time by telling the other, in person or in writing.",
+      "paragraph": "Either the volunteer or the Library may end this Agreement at any time by telling the other, in person or in writing. Nothing needs to be paid by either side when it ends.\r"
+    }
+  ]
+}
