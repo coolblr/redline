@@ -1,0 +1,58 @@
+{
+  "run": 1,
+  "judgedAt": "2026-10-30T16:48:24.311Z",
+  "flagsFrom": "2026-10-30T16-13-19-230Z.json",
+  "rubric": "# Rubric: is this flag right?\n\nYou will be given flags from a contract-review product. Each flag has a number, a document name, a clause type, a severity, one quoted sentence, and the paragraph around it. For each flag, decide PASS or FAIL and give one sentence on why.\n\nThe product serves a freelancer or small business owner who has been sent a contract and is deciding whether to sign it. A flag is a warning to that reader, so a wrong flag wastes their time.\n\n## The rule\n\n**PASS** if the quoted sentence really is the kind of clause the flag names, and it really costs the reader something. Both must be true.\n\n**FAIL** otherwise: the sentence is a different kind of clause, or it costs the reader nothing.\n\nJudge only these two things. Do not judge the severity, and do not check whether the quote appears in the document. Both are handled elsewhere.\n\n## What each clause type means\n\nUse these meanings for the clause type the flag names.\n\n- **indemnification**: the reader must cover the other party's losses or legal costs. It is worst when the exposure is uncapped and one-sided, because a single meritless third-party claim can exceed an entire project's fee, and commercial liability insurance often does not cover it. It is least worrying when capped and mutual.\n- **ip-assignment**: who owns the work, and when ownership transfers. Transfer before or independent of payment is the dangerous pattern, because the freelancer can lose rights to work they have not been paid for.\n- **limitation-of-liability**: a cap or exclusion on what a party can be made to pay. An asymmetric cap (the other party's liability is capped, the reader's is not) is the pattern to watch.\n- **non-compete**: a restriction on the reader working for others, or in their field, after or during the deal. Danger scales with duration and with geographic or industry scope. A broad enough one can block the reader from working in their field at all.\n- **unilateral-termination**: one party can end the deal, for any reason, without notice. The danger is being cut off mid-project with no minimum notice and no kill fee.\n- **scope-creep**: unlimited revisions or an open-ended scope of work. This is the weakest-evidenced type, so be slightly more willing to FAIL a flag here that rests on thin wording.\n- **arbitration**: arbitration in place of court, or a waiver of class actions. It costs the reader the right to a day in court or to a class action. It is nearly universal boilerplate, but being standard does not stop it costing the reader something.\n\n## What \"costs the reader something\" means\n\nThe sentence, as written, puts a concrete burden or loss on the reader. Examples of a real cost:\n\n- the reader becomes financially responsible for something, such as someone else's claims or legal fees;\n- the reader can lose the job, the service, the pay or the rights to their work with little or no protection;\n- the reader is blocked from doing something they would otherwise be free to do;\n- the reader gives up a legal right.\n\nA sentence that is only descriptive, procedural or housekeeping costs the reader nothing, even when it sits next to a costly clause.\n\n## General rules for hard cases\n\n- **Judge the sentence, not its neighbours or its heading.** A sentence that only supports or refers to a restriction (how a term is defined, how information is handled, how notice is delivered) is not itself that restriction, even if the paragraph around it is. Decide what this sentence does.\n- **The type must match what the sentence does.** If the sentence is about something else (information handling, payment timing, definitions), FAIL, even if a related clause type is nearby.\n- **Notice or mutuality does not by itself make a clause costless.** A termination or similar right that applies to both sides, or that comes with a notice period, still counts if the reader is left without a guaranteed term or other protection.\n- **Do not use the severity label to decide.** A flag with a severity you disagree with can still PASS.\n- **Do not reward length or confidence.** A flag passes on what the quoted sentence says, not on how it is described.\n- **Use only the quoted sentence and its paragraph.** Do not assume terms that the text does not state.\n\n## What to return\n\nFor each flag, in order: the flag's number, PASS or FAIL, and one sentence on why.\n",
+  "verdicts": [
+    {
+      "number": 1,
+      "verdict": "PASS",
+      "reason": "Broad uncapped one-sided indemnity covering third-party claims and legal fees makes the reader financially responsible for the club's losses."
+    },
+    {
+      "number": 2,
+      "verdict": "PASS",
+      "reason": "The reader must indemnify Northwind for third-party claims over their content and pay its legal costs, a real uncapped financial burden."
+    },
+    {
+      "number": 3,
+      "verdict": "PASS",
+      "reason": "At-will termination with or without notice leaves the reader with no guaranteed term or notice protection, even though it is mutual."
+    },
+    {
+      "number": 4,
+      "verdict": "PASS",
+      "reason": "A twelve-month post-employment bar on same or similar services to a broad class of businesses blocks the reader from working in their field."
+    },
+    {
+      "number": 5,
+      "verdict": "PASS",
+      "reason": "The Operator can end the agreement on thirty days notice, which is a unilateral termination that leaves the reader with only that minimum notice and no guaranteed term."
+    },
+    {
+      "number": 6,
+      "verdict": "PASS",
+      "reason": "The Occupant must cover all claims and attorney fees from anyone arising from the unit, the stored property or guests, a one-sided uncapped indemnity."
+    },
+    {
+      "number": 7,
+      "verdict": "FAIL",
+      "reason": "The termination is limited to specific causes (nonpayment, prohibited use, legal requirement) rather than a right to end the deal at will, so it is not unilateral termination in the rubric's sense and costs the reader little beyond ordinary consequences."
+    },
+    {
+      "number": 8,
+      "verdict": "PASS",
+      "reason": "The Firm can end the programme early for any reason on only one week notice, leaving the reader without a guaranteed term."
+    },
+    {
+      "number": 9,
+      "verdict": "FAIL",
+      "reason": "This sentence only concerns confidentiality and reissue of a list, which is information handling and does not itself restrict the reader from working for others."
+    },
+    {
+      "number": 10,
+      "verdict": "FAIL",
+      "reason": "Either side can end at any time with no payment, which is mutual and costs the reader nothing in a volunteer arrangement with no pay or project at stake."
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "labels": {
+    "1": {
+      "label": "PASS",
+      "note": "Yes, this is exactly an indemnification clause, and yes, it clearly costs the reader because it makes you financially responsible for third‑party claims arising from your use, conduct, guests, or services.",
+      "history": []
+    },
+    "2": {
+      "label": "PASS",
+      "note": "Yes, it is a classic indemnification clause, and yes, it costs the reader because it makes you financially responsible for third‑party claims tied to your uploaded or published content, including paying Northwind’s legal fees.",
+      "history": []
+    },
+    "3": {
+      "label": "PASS",
+      "note": "Yes, this is a unilateral termination clause, and yes, it costs the reader because Ardent can end the job at any time, without cause or notice, leaving the employee with no protection or guaranteed term.",
+      "history": []
+    },
+    "4": {
+      "label": "PASS",
+      "note": "Yes, this is a non‑compete clause, and yes, it costs the reader because it blocks you from doing similar work for a year in the defined Restricted Field, significantly limiting your post‑employment options.",
+      "history": []
+    },
+    "5": {
+      "label": "PASS",
+      "note": "Yes, this is a unilateral termination clause, and yes, it costs the reader because the operator can end the agreement on 30 days’ notice while the occupant must meet stricter conditions and gets no refund for the month already paid.",
+      "history": []
+    },
+    "6": {
+      "label": "PASS",
+      "note": "  \nYes, this is an indemnification clause, and yes, it costs the reader because it makes the occupant financially responsible for all third‑party claims tied to their use of the unit, stored property, or guests, including paying the operator’s legal fees.",
+      "history": []
+    },
+    "7": {
+      "label": "FAIL",
+      "note": "Updated to FAIL because the clause is conditional, not unilateral termination under the rubric, and the consequences are ordinary rather than a real cost.",
+      "history": [
+        {
+          "label": "PASS",
+          "note": "Yes, this is a unilateral termination clause, and yes, it costs the reader because Cascade can suspend or end service whenever certain conditions occur, leaving the customer without service and still responsible for charges.",
+          "changedAt": "2026-10-30T16:58:35.906Z"
+        }
+      ]
+    },
+    "8": {
+      "label": "PASS",
+      "note": "Yes, it is a unilateral termination clause, and yes, it costs the reader because the Firm can end the fixed‑term programme early for any reason with only one week’s notice.",
+      "history": []
+    },
+    "9": {
+      "label": "FAIL",
+      "note": "This sentence is about confidentiality of the Restricted List, not about restricting the Analyst’s ability to work elsewhere, so it doesn’t match the non‑compete flag or impose a real cost on the reader.",
+      "history": []
+    },
+    "10": {
+      "label": "FAIL",
+      "note": "Updated to FAIL because the clause is mutual, not unilateral, and ending the agreement imposes no real cost on the volunteer in an unpaid arrangement.",
+      "history": [
+        {
+          "label": "PASS",
+          "note": "Yes, it is a unilateral termination clause, and yes, it costs the reader because either side can end the arrangement at any time, giving the volunteer no security or guaranteed duration.",
+          "changedAt": "2026-10-30T17:00:58.121Z"
+        }
+      ]
+    }
+  },
+  "reflection": "",
+  "updatedAt": 1793379704035
+}

@@ -1,0 +1,262 @@
+{
+  "judgedAt": "2026-10-30T17:03:40.360Z",
+  "flagsFrom": "2026-10-30T16-13-19-230Z.json",
+  "rubric": "# Rubric: is this flag right?\n\nYou will be given flags from a contract-review product. Each flag has a number, a document name, a clause type, a severity, one quoted sentence, and the paragraph around it. For each flag, decide PASS or FAIL and give one sentence on why.\n\nThe product serves a freelancer or small business owner who has been sent a contract and is deciding whether to sign it. A flag is a warning to that reader, so a wrong flag wastes their time.\n\n## The rule\n\n**PASS** if the quoted sentence really is the kind of clause the flag names, and it really costs the reader something. Both must be true.\n\n**FAIL** otherwise: the sentence is a different kind of clause, or it costs the reader nothing.\n\nJudge only these two things. Do not judge the severity, and do not check whether the quote appears in the document. Both are handled elsewhere.\n\n## What each clause type means\n\nUse these meanings for the clause type the flag names.\n\n- **indemnification**: the reader must cover the other party's losses or legal costs. It is worst when the exposure is uncapped and one-sided, because a single meritless third-party claim can exceed an entire project's fee, and commercial liability insurance often does not cover it. It is least worrying when capped and mutual.\n- **ip-assignment**: who owns the work, and when ownership transfers. Transfer before or independent of payment is the dangerous pattern, because the freelancer can lose rights to work they have not been paid for.\n- **limitation-of-liability**: a cap or exclusion on what a party can be made to pay. An asymmetric cap (the other party's liability is capped, the reader's is not) is the pattern to watch.\n- **non-compete**: a restriction on the reader working for others, or in their field, after or during the deal. Danger scales with duration and with geographic or industry scope. A broad enough one can block the reader from working in their field at all.\n- **unilateral-termination**: one party can end the deal, for any reason, without notice. The danger is being cut off mid-project with no minimum notice and no kill fee.\n- **scope-creep**: unlimited revisions or an open-ended scope of work. This is the weakest-evidenced type, so be slightly more willing to FAIL a flag here that rests on thin wording.\n- **arbitration**: arbitration in place of court, or a waiver of class actions. It costs the reader the right to a day in court or to a class action. It is nearly universal boilerplate, but being standard does not stop it costing the reader something.\n\n## What \"costs the reader something\" means\n\nThe sentence, as written, puts a concrete burden or loss on the reader. Examples of a real cost:\n\n- the reader becomes financially responsible for something, such as someone else's claims or legal fees;\n- the reader can lose the job, the service, the pay or the rights to their work with little or no protection;\n- the reader is blocked from doing something they would otherwise be free to do;\n- the reader gives up a legal right.\n\nA sentence that is only descriptive, procedural or housekeeping costs the reader nothing, even when it sits next to a costly clause.\n\n## General rules for hard cases\n\n- **Judge the sentence, not its neighbours or its heading.** A sentence that only supports or refers to a restriction (how a term is defined, how information is handled, how notice is delivered) is not itself that restriction, even if the paragraph around it is. Decide what this sentence does.\n- **The type must match what the sentence does.** If the sentence is about something else (information handling, payment timing, definitions), FAIL, even if a related clause type is nearby.\n- **Notice or mutuality does not by itself make a clause costless.** A termination or similar right that applies to both sides, or that comes with a notice period, still counts if the reader is left without a guaranteed term or other protection.\n- **Do not use the severity label to decide.** A flag with a severity you disagree with can still PASS.\n- **Do not reward length or confidence.** A flag passes on what the quoted sentence says, not on how it is described.\n- **Use only the quoted sentence and its paragraph.** Do not assume terms that the text does not state.\n\n## What to return\n\nFor each flag, in order: the flag's number, PASS or FAIL, and one sentence on why.\n",
+  "flags": [
+    {
+      "number": 1,
+      "document": "adhesion-contract",
+      "clauseType": "indemnification",
+      "quotedSentence": "You will indemnify, defend and hold harmless Meridian and its ofﬁcers, employees, instructors and contractors against any claim, demand, loss, liability or expense, including reasonable legal fees, that is brought by a third party and arises out of your use of the facilities, your conduct on club premises, the conduct of a guest you bring, or any service you provide to another member."
+    },
+    {
+      "number": 2,
+      "document": "adhesion-contract",
+      "clauseType": "non-compete",
+      "quotedSentence": "For twelve (12) months after your Program candidacy ends for any reason, you will not teach, coach or deliver group ﬁtness instruction or personal training, whether as an employee, as a contractor or on your own account, at any facility within ﬁfteen (15) miles of a Meridian location at which you taught or trained."
+    },
+    {
+      "number": 3,
+      "document": "adhesion-contract",
+      "clauseType": "arbitration",
+      "quotedSentence": "Any dispute, claim or controversy between you and Meridian arising out of or relating to this Agreement, your membership or the Program will be resolved by ﬁnal and binding arbitration administered by a nationally recognised arbitration provider under its consumer arbitration rules, and you and Meridian each waive any right to a trial by jury and any right to bring or participate in a class, collective or representative action."
+    },
+    {
+      "number": 4,
+      "document": "saas-subscription",
+      "clauseType": "limitation-of-liability",
+      "quotedSentence": "Northwind’s aggregate liability to you for every claim relating to the service, whether framed in contract, in tort, in warranty or otherwise — and including any claim arising from lost work, lost revenue or a failed export — will not exceed the amount you actually paid us under Section 2 for the Billing Period in which the claim arose."
+    },
+    {
+      "number": 5,
+      "document": "saas-subscription",
+      "clauseType": "indemnification",
+      "quotedSentence": "You will indemnify and hold Northwind harmless from any claim brought by a third party that relates to content you uploaded, exported or published through the service, including a claim that the content infringes a copyright, a trade mark or a right of privacy, and you will pay our reasonable legal costs of defending such a claim."
+    },
+    {
+      "number": 6,
+      "document": "saas-subscription",
+      "clauseType": "arbitration",
+      "quotedSentence": "Any dispute between you and Northwind arising out of these terms or out of your use of the service will be settled by binding arbitration before a single arbitrator under the consumer rules of a recognised arbitration body, and you agree to bring any claim only in your individual capacity and not as a plaintiff or class member in any purported class, collective or representative proceeding."
+    },
+    {
+      "number": 7,
+      "document": "offer-letter",
+      "clauseType": "unilateral-termination",
+      "quotedSentence": "Either you or Ardent may end it at any time, with or without cause and with or without notice."
+    },
+    {
+      "number": 8,
+      "document": "offer-letter",
+      "clauseType": "non-compete",
+      "quotedSentence": "For a period of twelve (12) months following the last day of your employment, whether that employment ends at your choice or at ours, you will not provide services that are the same as or substantially similar to those you provided to Ardent, whether as an employee, a consultant, a contractor, an adviser or a principal, to any business that develops, manufactures or sells a product within the Restricted Field as that term is defined in Exhibit B to this letter."
+    },
+    {
+      "number": 9,
+      "document": "offer-letter",
+      "clauseType": "indemnification",
+      "quotedSentence": "You will indemnify Ardent and hold it harmless against any claim, loss, liability or expense, including reasonable attorney fees, that arises out of a breach by you of Section 4 or Section 5 of this letter, or out of a claim by a former employer that your employment with Ardent breaches an obligation you owe to them."
+    },
+    {
+      "number": 10,
+      "document": "offer-letter",
+      "clauseType": "arbitration",
+      "quotedSentence": "You and Ardent each agree that any claim arising out of or relating to your employment, its terms, or its end, including any statutory claim, will be resolved by final and binding arbitration administered under the employment rules of a nationally recognised arbitration provider, on an individual basis only, and each of us waives any right to a jury trial and any right to participate in a class, collective or representative action."
+    },
+    {
+      "number": 11,
+      "document": "storage-unit-rental",
+      "clauseType": "indemnification",
+      "quotedSentence": "The Occupant will indemnify, defend and hold the Operator harmless from every claim, demand, loss, cost and expense, including reasonable attorney fees, brought by any person and arising out of the Occupant's use of the unit or the premises, the property stored in the unit, or the acts of anyone the Occupant allows on to the premises."
+    },
+    {
+      "number": 12,
+      "document": "storage-unit-rental",
+      "clauseType": "limitation-of-liability",
+      "quotedSentence": "The Operator's total liability to the Occupant for any loss of or damage to stored property, however caused, including loss or damage caused by the Operator's own negligence, is limited to five thousand dollars ($5,000) unless the Occupant has declared a higher value on the Unit Schedule and paid the corresponding value protection fee."
+    },
+    {
+      "number": 13,
+      "document": "storage-unit-rental",
+      "clauseType": "unilateral-termination",
+      "quotedSentence": "The Operator may end this Agreement on thirty days written notice."
+    },
+    {
+      "number": 14,
+      "document": "phone-plan-terms",
+      "clauseType": "limitation-of-liability",
+      "quotedSentence": "Cascade’s entire liability to you for any claim relating to the service, a device, or this Agreement, whether the claim is made in contract, in negligence, in warranty or under any statute, is limited to the service charges applied to the affected line during the bill period in which the claim arose, and Cascade is not liable for lost profits, lost data, or any indirect or consequential loss."
+    },
+    {
+      "number": 15,
+      "document": "phone-plan-terms",
+      "clauseType": "indemnification",
+      "quotedSentence": "You will indemnify and hold Cascade harmless from any claim, loss or expense, including reasonable legal fees, arising out of your use of the service, out of anything sent from or stored on your device, out of the use of your line by anyone you allow to use it, and out of any charge incurred on your account."
+    },
+    {
+      "number": 16,
+      "document": "phone-plan-terms",
+      "clauseType": "arbitration",
+      "quotedSentence": "You and Cascade agree that any dispute arising out of or relating to this Agreement, the service or any device will be resolved by individual binding arbitration administered by a nationally recognised arbitration provider under its consumer rules, and both of us give up the right to a jury trial and the right to bring or join a class, collective or representative action."
+    },
+    {
+      "number": 17,
+      "document": "phone-plan-terms",
+      "clauseType": "unilateral-termination",
+      "quotedSentence": "We may suspend or end service where an amount is unpaid, where the service is used in a way this Agreement prohibits, or where we are required to by law."
+    },
+    {
+      "number": 18,
+      "document": "internship-agreement",
+      "clauseType": "unilateral-termination",
+      "quotedSentence": "The Firm may end the Programme early for any reason on one week written notice."
+    },
+    {
+      "number": 19,
+      "document": "internship-agreement",
+      "clauseType": "indemnification",
+      "quotedSentence": "The Analyst will indemnify the Firm and hold it harmless against any claim, loss or expense, including reasonable legal costs, arising out of a breach by the Analyst of Section 4 or Section 5, or out of anything the Analyst publishes about the Firm or a client of the Firm."
+    },
+    {
+      "number": 20,
+      "document": "internship-agreement",
+      "clauseType": "non-compete",
+      "quotedSentence": "For six (6) months after the Programme ends, the Analyst will not accept an engagement, whether paid or unpaid and whether as an employee, a contractor or an intern, with any firm on the Restricted List issued to the Analyst in week one of the Programme, and will not approach any client of the Firm whose file the Analyst worked on."
+    },
+    {
+      "number": 21,
+      "document": "internship-agreement",
+      "clauseType": "non-compete",
+      "quotedSentence": "The Analyst acknowledges that the Restricted List is confidential and that it may be reissued during the Programme."
+    },
+    {
+      "number": 22,
+      "document": "internship-agreement",
+      "clauseType": "arbitration",
+      "quotedSentence": "Any dispute between the Analyst and the Firm arising out of the Programme or out of this Agreement will be resolved by final and binding arbitration on an individual basis, administered under the employment rules of a nationally recognised provider, and the Analyst gives up any right to a jury trial and any right to bring or join a class or collective action."
+    },
+    {
+      "number": 23,
+      "document": "library-volunteer-agreement",
+      "clauseType": "unilateral-termination",
+      "quotedSentence": "Either the volunteer or the Library may end this Agreement at any time by telling the other, in person or in writing."
+    }
+  ],
+  "verdicts": [
+    {
+      "number": 1,
+      "verdict": "PASS",
+      "reason": "Uncapped, one-sided indemnity covering third-party claims and legal fees from the reader's conduct and guests' conduct."
+    },
+    {
+      "number": 2,
+      "verdict": "PASS",
+      "reason": "A 12-month, 15-mile bar on teaching or training work blocks the reader from working in their field."
+    },
+    {
+      "number": 3,
+      "verdict": "PASS",
+      "reason": "Binding arbitration with jury and class-action waiver costs the reader the right to sue in court, even though an opt-out exists."
+    },
+    {
+      "number": 4,
+      "verdict": "PASS",
+      "reason": "Caps Northwind's liability at fees paid for one billing period, including lost work and revenue, while the reader's liability is not capped."
+    },
+    {
+      "number": 5,
+      "verdict": "PASS",
+      "reason": "The reader must indemnify Northwind and pay its legal costs for third-party claims over uploaded content, with no cap."
+    },
+    {
+      "number": 6,
+      "verdict": "PASS",
+      "reason": "Binding individual arbitration with a class waiver removes the reader's right to go to court or bring a class action."
+    },
+    {
+      "number": 7,
+      "verdict": "PASS",
+      "reason": "Termination at any time with or without notice leaves the reader with no guaranteed term or notice protection."
+    },
+    {
+      "number": 8,
+      "verdict": "PASS",
+      "reason": "A 12-month bar on similar services for any related business restricts the reader's future work, with scope set by Exhibit B."
+    },
+    {
+      "number": 9,
+      "verdict": "PASS",
+      "reason": "The reader must cover losses and attorney fees from breaches and from former-employer claims, with no cap stated."
+    },
+    {
+      "number": 10,
+      "verdict": "PASS",
+      "reason": "Binding arbitration with jury and class waivers, including statutory claims, costs the reader their day in court."
+    },
+    {
+      "number": 11,
+      "verdict": "PASS",
+      "reason": "Broad, uncapped indemnity from the reader for claims by any person, including acts of anyone the reader allows on the premises."
+    },
+    {
+      "number": 12,
+      "verdict": "PASS",
+      "reason": "Caps the Operator's liability at $5,000 even for its own negligence, a real loss of recovery for the reader."
+    },
+    {
+      "number": 13,
+      "verdict": "PASS",
+      "reason": "The Operator can end the agreement on 30 days' notice, which leaves the reader without a guaranteed term even though the reader has a shorter notice right."
+    },
+    {
+      "number": 14,
+      "verdict": "PASS",
+      "reason": "Caps Cascade's liability at one bill period's charges and excludes lost profits and data, limiting what the reader can recover."
+    },
+    {
+      "number": 15,
+      "verdict": "PASS",
+      "reason": "The reader must indemnify Cascade, including legal fees, for use by anyone they allow, with no cap."
+    },
+    {
+      "number": 16,
+      "verdict": "PASS",
+      "reason": "Individual binding arbitration with jury and class waivers means the reader gives up legal rights."
+    },
+    {
+      "number": 17,
+      "verdict": "FAIL",
+      "reason": "Suspension or termination for non-payment, prohibited use or legal requirement is conditioned on reader fault or law, not termination for any reason, so it is not a real unilateral-termination cost."
+    },
+    {
+      "number": 18,
+      "verdict": "PASS",
+      "reason": "The Firm can end the programme early for any reason on only one week's notice, leaving the reader without a guaranteed term."
+    },
+    {
+      "number": 19,
+      "verdict": "PASS",
+      "reason": "The reader must indemnify the Firm for losses and legal costs arising from breaches and anything they publish, uncapped."
+    },
+    {
+      "number": 20,
+      "verdict": "PASS",
+      "reason": "A 6-month bar on engagements with firms on a Restricted List, plus a client non-approach rule, blocks the reader from work they would otherwise be free to do."
+    },
+    {
+      "number": 21,
+      "verdict": "FAIL",
+      "reason": "This sentence only says the list is confidential and may be reissued, which is information handling and does not itself restrict the reader."
+    },
+    {
+      "number": 22,
+      "verdict": "PASS",
+      "reason": "Binding individual arbitration with jury and class waivers costs the reader the right to a day in court."
+    },
+    {
+      "number": 23,
+      "verdict": "FAIL",
+      "reason": "Either side can end the agreement at any time by telling the other, and a volunteer with no pay or guaranteed term loses nothing concrete from it."
+    }
+  ]
+}

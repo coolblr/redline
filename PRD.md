@@ -77,3 +77,13 @@ That's the complete list for v1. Nothing beyond it.
 - Anything specific about renters or gig workers: they're covered only by general justice-gap statistics, not contract-specific pain or pricing evidence at all.
 - Whether the scope-creep/unlimited-revisions clause type is actually as common a problem as it feels — two of the statistics behind it couldn't be verified and were excluded from the research, which is part of why it stays generic-treatment rather than sharp.
 - Whether counter-offer drafting and document-scoped Q&A — the two features no profiled competitor was confirmed to have — are safe, well-differentiated features or are hard to do well precisely because they require taking a normative stance on what's "fair." This brief resolves *scope* (which segment, which document, which clauses) but does not resolve whether the counter-offer feature as designed is safe to ship. The research flagged this as the open question the PRD needs to resolve, not paper over, and it remains open after this brief — it's a build-and-test question, not a research one.
+
+## How we measure it
+
+The gold set is nine documents copied from the instructor's build into `eval/gold-set/`. Six hide 40 planted clauses between them, across seven clause types. Three should come back clean. `npm run eval` runs each one through `analyzeDocument`, the same function `npm run smoke` calls, and saves the run to `eval-runs/`.
+
+- **Recall.** Planted clauses found, out of planted clauses of the types this PRD says the product flags: indemnification, limitation of liability, non-compete, and arbitration. A planted clause counts as found when a flag quotes a sentence that overlaps it. The run also reports whether that flag named the right type. Auto-renewal, junk fees and unilateral modification are listed as out of scope and never counted as misses (see "My red lines" above, and `eval/README.md` for each reason).
+- **Groundedness.** Flags whose quoted sentence appears in the document character for character, out of every flag the model returned. That includes flags the product drops before showing them.
+- **Clean documents.** How many flags come back on the three documents that should come back clean. The target is zero.
+- **A failed model call** leaves that document out of every denominator. It is never a miss.
+- **The limit.** A model wrote the gold set. These numbers are an upper bound, good for comparing this build with itself after a change, and never a promise to a reader.
