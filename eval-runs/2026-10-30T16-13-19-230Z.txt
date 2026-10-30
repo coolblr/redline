@@ -1,0 +1,46 @@
+Redline gold-set eval, started 2026-10-30T16:13:19.230Z
+Model: z-ai/glm-5.3-flash
+Documents: 9 ran, 0 left out of every denominator (failed model call)
+
+RECALL (planted clauses of types PRD.md says this product flags)
+  found:                 17/19 (89%)
+  named the right type:  17/17 (100%) of those found
+  limitation-of-liability -> limitation-of-liability: 3/4 (75%)
+  indemnification -> indemnification: 6/6 (100%)
+  non-compete -> non-compete: 3/4 (75%)
+  arbitration-and-class-action-waiver -> arbitration: 5/5 (100%)
+
+OUT OF SCOPE (21 planted clauses, never counted as misses)
+  auto-renewal: 6 planted, 0 had a flag on them anyway. PRD.md red lines: auto-renewal is not part of v1's core red-line set (consumer ToS territory, ADR-0002 and ADR-0003).
+  fee-escalators-and-late-fees: 9 planted, 0 had a flag on them anyway. PRD.md red lines: junk fees are not part of v1's core red-line set (ADR-0002 and ADR-0003).
+  unilateral-modification: 6 planted, 0 had a flag on them anyway. The product flags unilateral termination (ending the deal), not unilateral modification (rewriting its terms). Different clause.
+
+GROUNDEDNESS (quotes in the document character for character, of every flag the model returned)
+  24/25 (96%)
+  dropped by the product's resolver before showing: 2 of 25
+  flags shown to the reader: 23
+
+CLEAN DOCUMENTS (flags on documents that should come back clean; target 0)
+  1 flags across 3 clean documents
+  clean-document: 0
+  library-volunteer-agreement: 1
+  swim-lesson-registration: 0
+
+CHARACTER SPLIT (recall on in-scope planted sentences)
+  with curly quote, non-breaking space, fi/fl ligature, em dash or double space: 5/6 (83%)
+  plain:                                                                         12/13 (92%)
+
+MISSED (in-scope planted clauses with no flag on them)
+  adhesion-contract P-05 limitation-of-liability [curly quote, non-breaking space, em dash]
+  offer-letter P-03 non-compete
+
+FLAGS WITH NO PLANTED CLAUSE UNDER THEM
+  6 of 23 flags shown
+  offer-letter unilateral-termination top
+  storage-unit-rental unilateral-termination top
+  phone-plan-terms unilateral-termination top
+  internship-agreement unilateral-termination top
+  internship-agreement non-compete top
+  library-volunteer-agreement unilateral-termination cite-only
+
+Limit: a model wrote the gold set, so these are an upper bound, never a promise to a reader.
