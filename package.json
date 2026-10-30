@@ -12,7 +12,8 @@
     "test:watch": "vitest",
     "smoke": "tsx scripts/smoke.ts",
     "eval": "tsx eval/run.ts",
-    "eval:sharp": "tsx scripts/eval-sharp.ts"
+    "eval:sharp": "tsx scripts/eval-sharp.ts",
+    "label": "node eval/labels/server.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
