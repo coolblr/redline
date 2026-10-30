@@ -52,11 +52,17 @@
       "history": []
     },
     "10": {
-      "label": "PASS",
-      "note": "Yes, it is a unilateral termination clause, and yes, it costs the reader because either side can end the arrangement at any time, giving the volunteer no security or guaranteed duration.",
-      "history": []
+      "label": "FAIL",
+      "note": "Updated to FAIL because the clause is mutual, not unilateral, and ending the agreement imposes no real cost on the volunteer in an unpaid arrangement.",
+      "history": [
+        {
+          "label": "PASS",
+          "note": "Yes, it is a unilateral termination clause, and yes, it costs the reader because either side can end the arrangement at any time, giving the volunteer no security or guaranteed duration.",
+          "changedAt": "2026-10-30T17:00:58.121Z"
+        }
+      ]
     }
   },
   "reflection": "",
-  "updatedAt": 1793379527452
+  "updatedAt": 1793379704035
 }
